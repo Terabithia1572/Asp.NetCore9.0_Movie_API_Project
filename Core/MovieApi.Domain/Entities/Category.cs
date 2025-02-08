@@ -8,7 +8,7 @@ namespace MovieApi.Domain.Entities
 {
     public class Category
     {
-        public int CategoryID { get; set; }
-        public string CategoryName { get; set; }
+        public int CategoryID { get; set; } //Kategori ID
+        public string CategoryName { get; set; } //Kategori adı
     }
 }
