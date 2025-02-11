@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\QCRSDesignPattern\Handlers\CategoryHandlers\" />
+    <Folder Include="Features\QCRSDesignPattern\Handlers\MovieHandlers\" />
+  </ItemGroup>
+
 </Project>
