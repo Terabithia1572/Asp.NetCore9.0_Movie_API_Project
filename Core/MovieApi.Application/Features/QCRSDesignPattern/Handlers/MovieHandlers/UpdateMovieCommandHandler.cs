@@ -17,7 +17,7 @@ namespace MovieApi.Application.Features.QCRSDesignPattern.Handlers.MovieHandlers
             _context = context;
         }
 
-        public async void Handle(UpdateMovieCommand updateMovieCommand)
+        public async Task Handle(UpdateMovieCommand updateMovieCommand)
         {
             var values = await _context.Movies.FindAsync(updateMovieCommand.MovieID);
             values.MovieStatus = updateMovieCommand.MovieStatus;

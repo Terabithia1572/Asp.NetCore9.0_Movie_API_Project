@@ -17,7 +17,7 @@ namespace MovieApi.Application.Features.QCRSDesignPattern.Handlers.MovieHandlers
             _context = context;
         }
 
-        public async void Handle(RemoveMovieCommand removeMovieCommand)
+        public async Task Handle(RemoveMovieCommand removeMovieCommand)
         {
             var values = _context.Movies.Find(removeMovieCommand.MovieID);
             _context.Movies.Remove(values);
