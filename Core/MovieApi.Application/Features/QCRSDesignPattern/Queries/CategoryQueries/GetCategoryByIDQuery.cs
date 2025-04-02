@@ -8,6 +8,11 @@ namespace MovieApi.Application.Features.QCRSDesignPattern.Queries.CategoryQuerie
 {
     public class GetCategoryByIDQuery
     {
+        public GetCategoryByIDQuery(int categoryID)
+        {
+            CategoryID = categoryID;
+        }
+
         public int CategoryID { get; set; } // Kategori ID
     }
 }
