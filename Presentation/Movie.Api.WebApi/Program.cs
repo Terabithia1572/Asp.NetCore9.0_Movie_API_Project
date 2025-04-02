@@ -1,8 +1,21 @@
+using MovieApi.Application.Features.QCRSDesignPattern.Handlers.CategoryHandlers;
+using MovieApi.Application.Features.QCRSDesignPattern.Handlers.MovieHandlers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddScoped<GetCategoryQueryHandler>();
+builder.Services.AddScoped<GetCategoryByIDQueryHandler>();
+builder.Services.AddScoped<CreateCategoryCommandHandler>();
+builder.Services.AddScoped<RemoveCategoryCommandHandler>();
+builder.Services.AddScoped<UpdateCategoryCommandHandler>();
 
+builder.Services.AddScoped<GetMovieQueryHandler>();
+builder.Services.AddScoped<GetMovieByIDQueryHandler>();
+builder.Services.AddScoped<CreateMovieCommandHandler>();
+builder.Services.AddScoped<RemoveMovieCommandHandler>();
+builder.Services.AddScoped<UpdateMovieCommandHandler>();
 
 
 
