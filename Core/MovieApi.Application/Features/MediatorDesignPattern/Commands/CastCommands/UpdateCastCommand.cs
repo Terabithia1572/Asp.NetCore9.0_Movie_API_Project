@@ -9,7 +9,7 @@ namespace MovieApi.Application.Features.MediatorDesignPattern.Commands.CastComma
 {
     public class UpdateCastCommand:IRequest
     {
-        //public int CastID { get; set; } //Oyuncu ID
+        public int CastID { get; set; } //Oyuncu ID
         public string CastTitle { get; set; } //Oyuncu Başlık
         public string CastName { get; set; } //Oyuncu Ad
         public string CastSurname { get; set; } //Oyuncu Soyad
