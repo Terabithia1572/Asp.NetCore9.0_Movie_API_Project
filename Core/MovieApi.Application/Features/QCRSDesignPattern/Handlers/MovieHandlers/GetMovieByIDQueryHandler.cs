@@ -23,7 +23,7 @@ namespace MovieApi.Application.Features.QCRSDesignPattern.Handlers.MovieHandlers
             var values=await _context.Movies.FindAsync(getMovieByIDQuery.MovieID);
             return new GetMovieByIDQueryResult
             {
-                
+                MovieID=values.MovieID,
                 MovieTitle = values.MovieTitle,
                 MovieCoverImageURL = values.MovieCoverImageURL,
                 MovieRating = values.MovieRating,
