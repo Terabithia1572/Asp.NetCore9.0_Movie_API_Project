@@ -8,6 +8,11 @@ namespace MovieApi.Application.Features.QCRSDesignPattern.Queries.MovieQueries
 {
     public class GetMovieByIDQuery
     {
+        public GetMovieByIDQuery(int movieID)
+        {
+            MovieID = movieID;
+        }
+
         public int MovieID { get; set; } //Film ID
       
     }
