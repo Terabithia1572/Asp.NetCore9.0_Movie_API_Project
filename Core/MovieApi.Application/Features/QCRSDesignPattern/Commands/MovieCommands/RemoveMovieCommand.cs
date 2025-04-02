@@ -8,6 +8,11 @@ namespace MovieApi.Application.Features.QCRSDesignPattern.Commands.MovieCommands
 {
     public class RemoveMovieCommand
     {
+        public RemoveMovieCommand(int movieID)
+        {
+            MovieID = movieID;
+        }
+
         public int MovieID { get; set; } //Film ID
         public string MovieTitle { get; set; } //Film adı
         public string MovieCoverImageURL { get; set; } //Film kapak resmi
@@ -19,4 +24,4 @@ namespace MovieApi.Application.Features.QCRSDesignPattern.Commands.MovieCommands
         public bool MovieStatus { get; set; } //Film durumu
     }
 }
-}
+
