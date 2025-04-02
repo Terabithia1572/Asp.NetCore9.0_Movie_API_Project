@@ -19,4 +19,4 @@ namespace MovieApi.Application.Features.QCRSDesignPattern.Results.MovieResults
         public bool MovieStatus { get; set; } //Film durumu
     }
 }
-}
+
