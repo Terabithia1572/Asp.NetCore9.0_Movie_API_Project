@@ -18,34 +18,34 @@ namespace Movie.Api.WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult CastList()
+        public async Task< IActionResult> CastList()
         {
-            var values = _mediator.Send(new GetCastQuery());
+            var values =await _mediator.Send(new GetCastQuery());
             return Ok(values);
         }
         [HttpPost]
-        public IActionResult CreateCast(CreateCastCommand createCastCommand)
+        public async Task<IActionResult> CreateCast(CreateCastCommand createCastCommand)
         {
-            _mediator.Send(createCastCommand);
+            await _mediator.Send(createCastCommand);
             return Ok("Ekleme İşlemi Başarılı..");
 
         }
         [HttpDelete]
-        public IActionResult DeleteCast(int id)
+        public async Task<IActionResult> DeleteCast(int id)
         {
-            _mediator.Send(new RemoveCastCommand(id));
+           await _mediator.Send(new RemoveCastCommand(id));
             return Ok("Silme İşlemi Başarılı..");
         }
         [HttpGet("GetCastByID")]
-        public IActionResult GetCastByID(int id)
+        public async Task<IActionResult> GetCastByID(int id)
         {
-            var values = _mediator.Send(new GetCastByIDQuery(id));
+            var values = await _mediator.Send(new GetCastByIDQuery(id));
             return Ok(values);
         }
         [HttpPut]
-        public IActionResult UpdateCast(UpdateCastCommand updateCastCommand)
+        public async Task<IActionResult> UpdateCast(UpdateCastCommand updateCastCommand)
         {
-            _mediator.Send(updateCastCommand);
+            await _mediator.Send(updateCastCommand);
             return Ok("Güncelleme İşlemi Başarılı..");
         }
     }

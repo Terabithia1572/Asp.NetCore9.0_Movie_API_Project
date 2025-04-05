@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using MovieApi.Application.Features.MediatorDesignPattern.Handlers.TagHandler;
 using MovieApi.Application.Features.QCRSDesignPattern.Handlers.CategoryHandlers;
 using MovieApi.Application.Features.QCRSDesignPattern.Handlers.MovieHandlers;
 using MovieApi.Persistence.Context;
@@ -22,12 +23,12 @@ builder.Services.AddScoped<CreateMovieCommandHandler>();
 builder.Services.AddScoped<RemoveMovieCommandHandler>();
 builder.Services.AddScoped<UpdateMovieCommandHandler>();
 
-builder.Services.AddMediatR(cfg=>cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly())); //Bu satýr .NET'te MediatR kütüphanesini yapýlandýrmak için kullanýlýr.
-                                                                                                     //MediatR, uygulamada "mediator pattern" (arabulucu deseni) uygulamanýzý saðlar.
-                                                                                                     //Yani, nesnelerin doðrudan birbirleriyle iletiþim kurmak yerine, bir arabulucu (mediator) üzerinden haberleþmesini saðlar.
-                                                                                                     //Bu desen, özellikle CQRS (Command Query Responsibility Segregation) gibi yaklaþýmlarda çok yaygýndýr.
-                                                                                                     //Bu satýr, projenizde MediatR kütüphanesini kullanabilmeniz için gerekli olan servisleri, mevcut assembly içinden otomatik olarak bulup uygulamanýza dahil eder.
-
+//builder.Services.AddMediatR(cfg=>cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly())); //Bu satýr .NET'te MediatR kütüphanesini yapýlandýrmak için kullanýlýr.
+//MediatR, uygulamada "mediator pattern" (arabulucu deseni) uygulamanýzý saðlar.
+//Yani, nesnelerin doðrudan birbirleriyle iletiþim kurmak yerine, bir arabulucu (mediator) üzerinden haberleþmesini saðlar.
+//Bu desen, özellikle CQRS (Command Query Responsibility Segregation) gibi yaklaþýmlarda çok yaygýndýr.
+//Bu satýr, projenizde MediatR kütüphanesini kullanabilmeniz için gerekli olan servisleri, mevcut assembly içinden otomatik olarak bulup uygulamanýza dahil eder.
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetTagQueryHandler).Assembly));
 
 
 
