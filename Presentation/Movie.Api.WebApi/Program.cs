@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using MovieApi.Application.Features.MediatorDesignPattern.Handlers.TagHandler;
 using MovieApi.Application.Features.QCRSDesignPattern.Handlers.CategoryHandlers;
 using MovieApi.Application.Features.QCRSDesignPattern.Handlers.MovieHandlers;
+using MovieApi.Application.Features.QCRSDesignPattern.Handlers.UserRegisterHandlers;
 using MovieApi.Persistence.Context;
+using MovieApi.Persistence.Identity;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +25,10 @@ builder.Services.AddScoped<GetMovieByIDQueryHandler>();
 builder.Services.AddScoped<CreateMovieCommandHandler>();
 builder.Services.AddScoped<RemoveMovieCommandHandler>();
 builder.Services.AddScoped<UpdateMovieCommandHandler>();
+
+
+builder.Services.AddScoped<CreateUserRegisterCommandHandler>();
+builder.Services.AddIdentity<AppUser,IdentityRole>().AddEntityFrameworkStores<MovieContext>(); //bu satýr, Identity kütüphanesini kullanarak uygulamanýzda kimlik doðrulama ve yetkilendirme iþlemlerini yönetmek için gerekli olan servisleri ekler.
 
 //builder.Services.AddMediatR(cfg=>cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly())); //Bu satýr .NET'te MediatR kütüphanesini yapýlandýrmak için kullanýlýr.
 //MediatR, uygulamada "mediator pattern" (arabulucu deseni) uygulamanýzý saðlar.
