@@ -8,10 +8,10 @@ namespace MovieApi.DTOs.DTOs.UserRegisterDTOs
 {
     public class CreateUserRegisterDTO
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Email { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string Name { get; set; } //Ad
+        public string Surname { get; set; } //Soyad
+        public string Email { get; set; } //Email
+        public string Username { get; set; } //Kullanıcı Adı
+        public string Password { get; set; } //Şifre
     }
 }
