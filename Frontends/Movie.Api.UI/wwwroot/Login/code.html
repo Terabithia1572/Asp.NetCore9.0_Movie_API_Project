@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BlockBuster Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e60a15",
+                        "background-light": "#f8f5f6",
+                        "background-dark": "#221011",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(34, 16, 17, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-background-dark text-white h-screen w-full overflow-hidden flex items-center justify-center relative">
+<!-- Cinematic Background -->
+<div class="absolute inset-0 z-0 w-full h-full">
+<!-- Dark Overlay Gradient -->
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/80 to-background-dark/60 z-10"></div>
+<!-- Background Image -->
+<div class="w-full h-full bg-cover bg-center blur-[6px] scale-105 opacity-60" data-alt="Blurred collage of movie posters background" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBG_av3Ime99izcS-qB2-6Lqy4MOkREQM-Z4OIYx1QW4M5LBSZk0rwbq-oWKUj2sUx9kAW6DzfGEBxLsGCoq_gMhiQ7u_IHOH6E8ehpkv3yNM5KjhduetBnqOeTW05h4lFKv5h1yBQ-seGg8sPaBwJhGMgeVTm2ugcKgl9uT-jKbPyzq3I39l5qFP5_4amiuItROAnEbBA71N3xBeYYSFarSkXdfJkzlQob199blqD9LhhlNZd4s6CPNGvuVrqSmoggG0FWWMTK-vw');">
+</div>
+</div>
+<!-- Main Layout Container -->
+<div class="relative z-20 w-full h-full flex flex-col items-center justify-center p-4 sm:p-6 overflow-y-auto">
+<!-- Login Card -->
+<div class="glass-card w-full max-w-[440px] rounded-xl shadow-2xl animate-fade-in flex flex-col overflow-hidden">
+<!-- Card Content -->
+<div class="p-8 sm:p-10 flex flex-col gap-6">
+<!-- Header Section -->
+<div class="flex flex-col items-center text-center gap-3">
+<div class="h-14 w-14 bg-primary rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(230,10,21,0.3)] mb-2 transform transition-transform hover:scale-105 cursor-default">
+<span class="text-white font-extrabold text-3xl tracking-tight">B</span>
+</div>
+<div class="flex flex-col gap-1">
+<h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Sign in to BlockBuster</h1>
+<p class="text-gray-400 text-sm font-medium">Discover movies, TV shows &amp; reviews</p>
+</div>
+</div>
+<!-- Inputs Section -->
+<form class="flex flex-col gap-4 mt-2">
+<!-- Email Field -->
+<div class="flex flex-col gap-1.5">
+<label class="text-xs font-semibold text-gray-300 ml-1 uppercase tracking-wide">Email Address</label>
+<div class="group flex w-full items-stretch rounded-xl transition-all duration-200 focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary">
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-l-xl text-white focus:outline-0 focus:ring-0 border border-[#543b3c] bg-[#271b1c]/80 focus:border-primary h-12 placeholder:text-[#ba9c9d] px-4 text-base font-normal leading-normal border-r-0 transition-colors" placeholder="name@example.com" type="email"/>
+<div class="text-[#ba9c9d] flex border border-[#543b3c] bg-[#271b1c]/80 items-center justify-center w-12 rounded-r-xl border-l-0 group-focus-within:border-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+</div>
+</div>
+</div>
+<!-- Password Field -->
+<div class="flex flex-col gap-1.5">
+<div class="flex justify-between items-center ml-1">
+<label class="text-xs font-semibold text-gray-300 uppercase tracking-wide">Password</label>
+<a class="text-xs text-primary font-medium hover:text-red-400 hover:underline transition-colors" href="#">Forgot password?</a>
+</div>
+<div class="group flex w-full items-stretch rounded-xl transition-all duration-200 focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary">
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-l-xl text-white focus:outline-0 focus:ring-0 border border-[#543b3c] bg-[#271b1c]/80 focus:border-primary h-12 placeholder:text-[#ba9c9d] px-4 text-base font-normal leading-normal border-r-0 transition-colors" placeholder="Enter your password" type="password"/>
+<div class="text-[#ba9c9d] flex border border-[#543b3c] bg-[#271b1c]/80 items-center justify-center w-12 rounded-r-xl border-l-0 group-focus-within:border-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</div>
+</div>
+</div>
+<!-- Submit Button -->
+<button class="mt-2 flex items-center justify-center h-12 w-full bg-primary hover:bg-red-600 active:scale-[0.98] transition-all rounded-xl text-white font-bold text-base shadow-lg shadow-primary/25 tracking-wide" type="button">
+                        Sign In
+                    </button>
+</form>
+<!-- Divider -->
+<div class="flex items-center gap-3 w-full">
+<div class="h-px bg-white/10 flex-1"></div>
+<span class="text-xs text-gray-500 font-medium whitespace-nowrap">or continue with</span>
+<div class="h-px bg-white/10 flex-1"></div>
+</div>
+<!-- Social Login -->
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 h-11 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all active:scale-[0.98]">
+<img alt="Google" class="h-5 w-5" data-alt="Google G logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhdv702-SoWDW9qjr1bL8mKbMjltlz-c74cgRZcp8V6btPJwPQgo_IhH0WB1dT_2KIZZ_QhjTrtj0j_SHRuYiFmCPDzFCc7GbLgf_N8cMJ_01hbhI1bMLQcy2rwwgq6-D7Ci9covWOFd2uWqU1uCn-2HQhhhVz87gPFKWqODvKPhVyGbuZ-2hjNwg_NFgo14wBQyn1UVqRLFNrGkWloS5ZbQOrTrLfbg4bD_j7PmrEIRJTBRmDyZpkO67Zzp1OdvrT4bUBt3kkSPE"/>
+<span class="text-white text-sm font-medium">Google</span>
+</button>
+<button class="flex items-center justify-center gap-2 h-11 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-white text-[22px]">ios</span>
+<span class="text-white text-sm font-medium">Apple</span>
+</button>
+</div>
+</div>
+<!-- Footer Section -->
+<div class="p-4 bg-black/20 border-t border-white/5 text-center">
+<p class="text-gray-400 text-sm">
+                    New to BlockBuster? 
+                    <a class="text-white font-semibold hover:text-primary transition-colors ml-1" href="#">Create an account</a>
+</p>
+</div>
+</div>
+<!-- Bottom branding/copyright optional -->
+<div class="mt-8 text-white/20 text-xs">
+            © 2024 BlockBuster Inc.
+        </div>
+</div>
+</body></html>

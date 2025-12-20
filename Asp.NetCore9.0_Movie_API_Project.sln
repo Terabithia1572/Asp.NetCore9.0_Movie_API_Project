@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.11.35208.52
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11312.210 d18.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{45E09FCF-758A-46E7-9BA6-1E1620F25E94}"
 EndProject
@@ -24,6 +24,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movie.Api.UI", "Frontends\Movie.Api.UI\Movie.Api.UI.csproj", "{6A972DEB-0E0D-4365-900E-E9D85FD25804}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieApi.DTOs", "Frontends\MovieApi.DTOs\MovieApi.DTOs.csproj", "{16DD3EA5-9C14-4F1B-ACAF-9D37F325C668}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StitchAI", "StitchAI", "{C998DE1A-0E4D-476C-A26D-DE3C2E484193}"
+	ProjectSection(SolutionItems) = preProject
+		StitchAIChatGPTCodePrompt.txt = StitchAIChatGPTCodePrompt.txt
+		..\..\..\Downloads\stitch_blockbuster_login_page.zip = ..\..\..\Downloads\stitch_blockbuster_login_page.zip
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +72,7 @@ Global
 		{5C8294E3-9F6B-414D-9E06-E9088036CDFB} = {45E09FCF-758A-46E7-9BA6-1E1620F25E94}
 		{6A972DEB-0E0D-4365-900E-E9D85FD25804} = {A96B2C56-1CA3-4930-A4B5-105383102DAD}
 		{16DD3EA5-9C14-4F1B-ACAF-9D37F325C668} = {A96B2C56-1CA3-4930-A4B5-105383102DAD}
+		{C998DE1A-0E4D-476C-A26D-DE3C2E484193} = {59D5A165-EFCB-4460-867B-FC1412AAD978}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1671A3B-D806-436B-A76F-32A8A971BF8E}

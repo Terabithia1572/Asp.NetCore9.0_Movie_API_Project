@@ -1,0 +1,90 @@
+﻿🎬 Murat Hoca'nın Sinema Temalı Giriş Sayfası Tasarımı
+
+Design a modern, cinematic login page for a movie and TV series streaming and review website.
+
+The theme should feel premium and immersive, inspired by cinema and streaming platforms.
+Use a dark mode color palette with deep blacks, dark blues, and subtle red or gold accent colors.
+
+Layout requirements:
+- Centered login card with soft rounded corners and a slight glassmorphism effect
+- Large cinematic background image (blurred movie theater or film strip aesthetic)
+- Platform logo at the top (movie reel or play icon style)
+- Welcome headline such as: "Welcome Back to CineVerse" or "Sign in to explore movies & series"
+- Email and password input fields with modern icons
+- Primary login button with a bold accent color
+- "Forgot password?" link
+- "Sign up" call-to-action for new users
+- Optional social login buttons (Google, Apple) styled minimally
+
+Typography:
+- Modern sans-serif font
+- Strong hierarchy with a bold headline and clean form labels
+
+UX details:
+- Smooth hover and focus animations
+- Subtle shadows and depth
+- Clean, uncluttered layout suitable for desktop and mobile
+
+The design should feel like a professional streaming platform login page focused on movies, TV series, and user reviews.
+
+🎬 Yunus İNAN'ın Stitch AI Prompt – BlockBuster Uyumlu Login Page Promptu
+
+
+Design a cinematic, dark-themed login page fully compatible with the "BlockBuster – Film Review & Movie Database" HTML template.
+
+The design must visually match the BlockBuster theme style:
+- Premium, cinematic, and immersive
+- Inspired by movie streaming platforms and film databases
+- Dark UI with a professional, modern look
+
+Color & Style:
+- Primary colors: deep navy blue, charcoal black, and dark gray
+- Accent colors: BlockBuster red (#e50914-style) used subtly for buttons and highlights
+- Avoid bright or pastel colors
+- High contrast for readability
+
+Layout:
+- Fullscreen layout with a cinematic background (blurred movie posters, film reels, or theater lights)
+- Dark gradient overlay on the background for readability
+- Centered login card with:
+  - Slight glassmorphism effect
+  - Soft rounded corners (10–14px)
+  - Subtle shadow depth
+- Layout must be fully responsive (mobile-first, desktop optimized)
+
+Header Area:
+- BlockBuster-style logo at the top (simple “B” icon or film/play icon)
+- Minimal branding, no oversized logos
+
+Login Card Content:
+- Title: “Sign in to BlockBuster” or “Welcome Back to BlockBuster”
+- Subtitle: “Discover movies, TV shows & reviews”
+- Email input with icon (envelope)
+- Password input with icon (lock)
+- Inputs with dark backgrounds, soft borders, and focus glow
+- Primary login button in BlockBuster red
+- Hover animation on button (slight glow or brightness)
+- “Forgot password?” link below inputs
+- “Create an account” / “Sign up” link styled subtly
+
+Optional Elements:
+- Minimal social login buttons (Google / Apple)
+- Social buttons should be outlined or monochrome, not colorful
+- Divider line with text: “or continue with”
+
+Typography:
+- Modern sans-serif font (Inter, Poppins, or similar)
+- Bold headline
+- Clean, readable labels and placeholders
+- Consistent spacing and hierarchy
+
+UX & Interaction:
+- Smooth hover and focus animations
+- Soft transitions (150–250ms)
+- No clutter, minimal distractions
+- Professional streaming-platform experience
+
+Overall Feel:
+- Feels like a real movie database or streaming platform login page
+- Matches the BlockBuster HTML theme visually and stylistically
+- Suitable for both desktop and mobile users
