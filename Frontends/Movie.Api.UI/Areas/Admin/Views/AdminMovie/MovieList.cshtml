@@ -1,0 +1,68 @@
+﻿@model List<AdminResultMovieDTO>
+@{
+    ViewData["Title"] = "MovieList";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <h5 class="mb-0">Film Listesi</h5>
+            <form class="ms-auto position-relative">
+                <div class="position-absolute top-50 translate-middle-y search-icon px-3">
+                    <ion-icon name="search-sharp"></ion-icon>
+                </div>
+                <input class="form-control ps-5" type="text" placeholder="Ara..">
+            </form>
+        </div>
+
+        <div class="table-responsive mt-3">
+            <table class="table align-middle">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>#</th>
+                        <th>Film Adı</th>
+                        <th>Reyting</th>
+                        <th>Çıkış Yılı</th>
+                        <th>Durum</th>
+                        <th>Güncelle</th>
+                        <th>Detaylar</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        count++;
+                        <tr>
+                            <td>@count</td>
+                            <td>@item.MovieTitle</td>
+                            <td>@item.MovieRating</td>
+                            <td>@item.MovileCreatedYear</td>
+
+                            <td>
+                                @* MovieStatus bool/int olabilir; şimdilik düz gösterelim *@
+                                @item.MovieStatus
+                            </td>
+
+                            <td>
+                                <a href="javascript:;" class="btn btn-sm btn-warning">
+                                    Güncelle
+                                </a>
+                            </td>
+
+                            <td>
+                                <a href="javascript:;" class="btn btn-sm btn-primary">
+                                    Detaylar
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <a href="javascript:;" class="btn btn-primary">Yeni Film Ekle</a>
+        </div>
+    </div>
+</div>
