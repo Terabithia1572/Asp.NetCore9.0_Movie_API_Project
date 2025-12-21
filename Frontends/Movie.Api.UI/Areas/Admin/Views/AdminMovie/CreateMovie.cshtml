@@ -1,0 +1,210 @@
+﻿@model AdminCreateMovieDTO
+@{
+    ViewData["Title"] = "CreateMovie";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="cinema-shell">
+    <div class="cinema-topbar">
+        <div class="d-flex align-items-start align-items-md-center justify-content-between gap-3 flex-column flex-md-row">
+            <div>
+                <h5 class="cinema-title">
+                    <span class="badge-dot"></span>
+                    Yeni Film Ekle
+                </h5>
+                <div class="cinema-sub">Film bilgilerini gir ve kaydet • sinematik görünüm</div>
+            </div>
+
+            <div class="cinema-actions">
+                <a href="/Admin/AdminMovie/MovieList" class="btn-cinema btn-cinema-ghost">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    Listeye Dön
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="cinema-body">
+        <div class="cinema-card">
+            <div class="cinema-card-head">
+                <div class="d-flex align-items-center gap-3 cinema-card-head-row">
+                    <span class="tag tag-lg">
+                        <ion-icon name="film-outline"></ion-icon>
+                    </span>
+
+                    <div>
+                        <div class="cinema-card-title">Film Bilgileri</div>
+                        <div class="muted">Başlık, görsel, açıklama ve yayın bilgileri • sinematik panel</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cinema-card-body">
+                <form method="post" asp-area="Admin" asp-action="CreateMovie" asp-controller="AdminMovie">
+                    @Html.AntiForgeryToken()
+
+                    <div class="row g-3">
+                        <!-- SOL: Temel Bilgiler -->
+                        <div class="col-12 col-lg-7">
+                            <label class="cinema-label">Film Adı</label>
+                            <div class="cinema-input">
+                                <span class="cinema-input-icon">
+                                    <ion-icon name="videocam-outline"></ion-icon>
+                                </span>
+                                <input asp-for="MovieTitle"
+                                       class="form-control cinema-control"
+                                       placeholder="Örn: Interstellar"
+                                       autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="MovieTitle" class="cinema-val"></span>
+
+                            <div class="mt-3">
+                                <label class="cinema-label">Kapak Görsel URL</label>
+                                <div class="cinema-input">
+                                    <span class="cinema-input-icon">
+                                        <ion-icon name="image-outline"></ion-icon>
+                                    </span>
+                                    <input asp-for="MovieCoverImageURL"
+                                           class="form-control cinema-control"
+                                           placeholder="https://.../cover.jpg"
+                                           autocomplete="off" />
+                                </div>
+                                <span asp-validation-for="MovieCoverImageURL" class="cinema-val"></span>
+
+                                <!-- mini preview: sadece UI, istersen JS ile canlılaştırırız -->
+                                <div class="mt-2 muted d-flex align-items-center gap-2">
+                                    <ion-icon name="information-circle-outline"></ion-icon>
+                                    <span>İpucu: URL girince kapak önizleme için küçük bir JS ekleyebiliriz.</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <label class="cinema-label">Film Açıklaması</label>
+                                <div class="cinema-input">
+                                    <span class="cinema-input-icon" style="align-self:flex-start; margin-top: 10px;">
+                                        <ion-icon name="document-text-outline"></ion-icon>
+                                    </span>
+                                    <textarea asp-for="MovieDescription"
+                                              class="form-control cinema-control"
+                                              rows="6"
+                                              placeholder="Filmin konusu / kısa açıklama..."
+                                              style="resize:none;"></textarea>
+                                </div>
+                                <span asp-validation-for="MovieDescription" class="cinema-val"></span>
+                            </div>
+                        </div>
+
+                        <!-- SAĞ: Yayın / Puan / Süre / Durum -->
+                        <div class="col-12 col-lg-5">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="cinema-label d-flex align-items-center justify-content-between">
+                                        <span>Durum</span>
+                                        <span class="muted">Yayında / Kapalı</span>
+                                    </label>
+
+                                    <!-- premium switch (CreateCategory ile aynı mantık) -->
+                                    <label class="cinema-switch w-100">
+                                        <input type="checkbox" asp-for="MovieStatus" />
+                                        <span class="cinema-switch-ui">
+                                            <span class="cinema-switch-pill">
+                                                <span class="on">
+                                                    <ion-icon name="flash-outline"></ion-icon> Aktif
+                                                </span>
+                                                <span class="off">
+                                                    <ion-icon name="moon-outline"></ion-icon> Pasif
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                    <span asp-validation-for="MovieStatus" class="cinema-val"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <label class="cinema-label">Puan</label>
+                                    <div class="cinema-input">
+                                        <span class="cinema-input-icon">
+                                            <ion-icon name="star-outline"></ion-icon>
+                                        </span>
+                                        <input asp-for="MovieRating"
+                                               class="form-control cinema-control"
+                                               type="number"
+                                               step="0.1"
+                                               min="0"
+                                               max="10"
+                                               placeholder="8.7" />
+                                    </div>
+                                    <span asp-validation-for="MovieRating" class="cinema-val"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <label class="cinema-label">Süre (dk)</label>
+                                    <div class="cinema-input">
+                                        <span class="cinema-input-icon">
+                                            <ion-icon name="time-outline"></ion-icon>
+                                        </span>
+                                        <input asp-for="MovieDuration"
+                                               class="form-control cinema-control"
+                                               type="number"
+                                               min="1"
+                                               placeholder="169" />
+                                    </div>
+                                    <span asp-validation-for="MovieDuration" class="cinema-val"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <label class="cinema-label">Yayın Tarihi</label>
+                                    <div class="cinema-input">
+                                        <span class="cinema-input-icon">
+                                            <ion-icon name="calendar-outline"></ion-icon>
+                                        </span>
+                                        <input asp-for="MovieReleaseDate"
+                                               class="form-control cinema-control"
+                                               type="date" />
+                                    </div>
+                                    <span asp-validation-for="MovieReleaseDate" class="cinema-val"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <label class="cinema-label">Çıkış Yılı</label>
+                                    <div class="cinema-input">
+                                        <span class="cinema-input-icon">
+                                            <ion-icon name="albums-outline"></ion-icon>
+                                        </span>
+                                        <input asp-for="MovileCreatedYear"
+                                               class="form-control cinema-control"
+                                               placeholder="2014"
+                                               autocomplete="off" />
+                                    </div>
+                                    <span asp-validation-for="MovileCreatedYear" class="cinema-val"></span>
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <div class="cinema-divider"></div>
+                            </div>
+
+                            <div class="d-flex gap-2 flex-wrap mt-3">
+                                <button type="submit" class="btn-cinema btn-cinema-primary">
+                                    <ion-icon name="save-outline"></ion-icon>
+                                    Kaydet
+                                </button>
+
+                                <a href="/Admin/AdminMovie/MovieList" class="btn-cinema btn-cinema-ghost">
+                                    <ion-icon name="close-circle-outline"></ion-icon>
+                                    Vazgeç
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- küçük “pro tip” kartı -->
+        <div class="mt-3 muted d-flex align-items-center gap-2">
+            <ion-icon name="sparkles-outline"></ion-icon>
+            <span>İstersen bir sonraki adımda: kapak URL yazınca sağ tarafta canlı “poster preview” ekleyelim (çok film paneli havası verir).</span>
+        </div>
+    </div>
+</div>

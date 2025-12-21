@@ -46,5 +46,15 @@ namespace Movie.Api.UI.Areas.Admin.Controllers
             }
             return View(); // istek başarısız ise aynı sayfada kalıyoruz
         }
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            var client = _httpClientFactory.CreateClient(); //burada client oluşturuyoruz
+            var responseMessage = await client.DeleteAsync($"https://localhost:44319/api/Categories/{id}"); // buraya api url yazılacak istek yapmak istediğimiz URL'ye istek yapılıyor
+            if (responseMessage.IsSuccessStatusCode) // istek başarılı ise
+            {
+                return RedirectToAction("CategoryList"); // CategoryList action'ına yönlendiriyoruz
+            }
+            return View(); // istek başarısız ise aynı sayfada kalıyoruz
+        }
     }
 }

@@ -31,5 +31,37 @@ namespace Movie.Api.UI.Areas.Admin.Controllers
             }
             return View();
         }
+        [HttpGet]
+        public IActionResult CreateMovie()
+        {
+            ViewBag.v1 = "Film Ekleme";
+            ViewBag.v2 = "Ana Sayfa";
+            ViewBag.v3 = "Film Ekleme";
+            return View();
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateMovie(AdminCreateMovieDTO adminCreateMovieDTO)
+        {
+            var client = _httpClientFactory.CreateClient(); //burada client oluşturuyoruz
+            var jsonData = JsonConvert.SerializeObject(adminCreateMovieDTO); // gelen veriyi json formatına çeviriyoruz
+            StringContent stringContent = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json"); // gelen veriyi string olarak gönderiyoruz
+            var responseMessage = await client.PostAsync("https://localhost:44319/api/Movies", stringContent); // buraya api url yazılacak istek yapmak istediğimiz URL'ye istek yapılıyor
+            if (responseMessage.IsSuccessStatusCode) // istek başarılı ise
+            {
+                return RedirectToAction("MovieList"); // MovieList action'ına yönlendiriyoruz
+            }
+            return View(); // istek başarısız ise aynı sayfada kalıyoruz
+        }
+        public async Task<IActionResult> DeleteMovie(int id)
+        {
+            var client = _httpClientFactory.CreateClient(); //burada client oluşturuyoruz
+            var responseMessage = await client.DeleteAsync($"https://localhost:44319/api/Movies/{id}"); // buraya api url yazılacak istek yapmak istediğimiz URL'ye istek yapılıyor
+            if (responseMessage.IsSuccessStatusCode) // istek başarılı ise
+            {
+                return RedirectToAction("MovieList"); // MovieList action'ına yönlendiriyoruz
+            }
+            return View(); // istek başarısız ise aynı sayfada kalıyoruz
+        }
     }
 }
