@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MovieApi.DTOs.DTOs.AdminCategoryDTOs;
+using MovieApi.DTOs.DTOs.AdminMovieDTOs;
 using Newtonsoft.Json;
 
 namespace Movie.Api.UI.Areas.Admin.Controllers
@@ -25,7 +25,7 @@ namespace Movie.Api.UI.Areas.Admin.Controllers
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync(); // gelen veriyi string olarak okuyoruz
-                var values = JsonConvert.DeserializeObject<List<AdminResultCategoryDTO>>(jsonData); // gelen veriyi deserialize ediyoruz burada jsonData daki verileri ile ResultMovieDTO eşleşiyor
+                var values = JsonConvert.DeserializeObject<List<AdminResultMovieDTO>>(jsonData); // gelen veriyi deserialize ediyoruz burada jsonData daki verileri ile ResultMovieDTO eşleşiyor
                 return View(values); // gelen veriyi view'e gönderiyoruz
 
             }

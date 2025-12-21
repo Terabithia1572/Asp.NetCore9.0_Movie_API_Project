@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieApi.DTOs.DTOs.AdminCategoryDTOs;
-using MovieApi.DTOs.DTOs.AdminMovieDTOs;
 using Newtonsoft.Json;
 
 namespace Movie.Api.UI.Areas.Admin.Controllers
@@ -27,6 +26,25 @@ namespace Movie.Api.UI.Areas.Admin.Controllers
 
             }
             return View();
+        }
+        [HttpGet]
+        public IActionResult CreateCategory()
+        {
+            return View();
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateCategory(AdminCreateCategoryDTO adminCreateCategoryDTO)
+        {
+            var client = _httpClientFactory.CreateClient(); //burada client oluşturuyoruz
+            var jsonData = JsonConvert.SerializeObject(adminCreateCategoryDTO); // gelen veriyi json formatına çeviriyoruz
+            StringContent stringContent = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json"); // gelen veriyi string olarak gönderiyoruz
+            var responseMessage = await client.PostAsync("https://localhost:44319/api/Categories", stringContent); // buraya api url yazılacak istek yapmak istediğimiz URL'ye istek yapılıyor
+            if (responseMessage.IsSuccessStatusCode) // istek başarılı ise
+            {
+                return RedirectToAction("CategoryList"); // CategoryList action'ına yönlendiriyoruz
+            }
+            return View(); // istek başarısız ise aynı sayfada kalıyoruz
         }
     }
 }

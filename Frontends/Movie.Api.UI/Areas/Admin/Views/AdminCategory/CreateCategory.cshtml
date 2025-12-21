@@ -1,0 +1,108 @@
+﻿@model AdminCreateCategoryDTO
+@{
+    ViewData["Title"] = "CreateCategory";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="cinema-shell">
+    <div class="cinema-topbar">
+        <div class="d-flex align-items-start align-items-md-center justify-content-between gap-3 flex-column flex-md-row">
+            <div>
+                <h5 class="cinema-title">
+                    <span class="badge-dot"></span>
+                    Yeni Kategori Ekle
+                </h5>
+                <div class="cinema-sub">Kategori adını gir ve kaydet • sinematik görünüm</div>
+            </div>
+
+            <div class="cinema-actions">
+                <a href="/Admin/AdminCategory/CategoryList" class="btn-cinema btn-cinema-ghost">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    Listeye Dön
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="cinema-body">
+        <div class="cinema-card">
+            <div class="cinema-card-head">
+                <div class="d-flex align-items-center gap-3 cinema-card-head-row">
+                    <span class="tag tag-lg">
+                        <ion-icon name="pricetag-outline"></ion-icon>
+                    </span>
+
+                    <div>
+                        <div class="cinema-card-title">Kategori Bilgileri</div>
+                        <div class="muted">Sadece kategori adı yeterli • diğer metrikler listede hesaplanır</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cinema-card-body">
+                <form method="post" asp-area="Admin" asp-action="CreateCategory" asp-controller="AdminCategory">
+                    @Html.AntiForgeryToken()
+
+                    <div class="row g-3">
+                        <div class="col-12 col-lg-8">
+                            <label class="cinema-label">Kategori Adı</label>
+
+                            <div class="cinema-input">
+                                <span class="cinema-input-icon">
+                                    <ion-icon name="pricetag-outline"></ion-icon>
+                                </span>
+
+                                <input asp-for="CategoryName"
+                                       class="form-control cinema-control"
+                                       placeholder="Örn: Aksiyon, Dram, Bilim Kurgu..."
+                                       autocomplete="off" />
+                            </div>
+
+                            <span asp-validation-for="CategoryName" class="cinema-val"></span>
+                        </div>
+
+                        <div class="col-12 col-lg-4">
+                            <label class="cinema-label d-flex align-items-center justify-content-between">
+                                <span>Durum</span>
+                                <span class="muted">Yayında / Kapalı</span>
+                            </label>
+
+                            <!-- Daha premium toggle -->
+                            <label class="cinema-switch">
+                                <input type="checkbox" asp-for="IsActive" />
+                                <span class="cinema-switch-ui">
+                                    <span class="cinema-switch-pill">
+                                        <span class="on">
+                                            <ion-icon name="flash-outline"></ion-icon> Aktif
+                                        </span>
+                                        <span class="off">
+                                            <ion-icon name="moon-outline"></ion-icon> Pasif
+                                        </span>
+                                    </span>
+                                </span>
+                            </label>
+
+                            <span asp-validation-for="IsActive" class="cinema-val"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="cinema-divider"></div>
+                        </div>
+
+                        <div class="col-12 d-flex gap-2 flex-wrap">
+                            <button type="submit" class="btn-cinema btn-cinema-primary">
+                                <ion-icon name="save-outline"></ion-icon>
+                                Kaydet
+                            </button>
+
+                            <a href="/Admin/AdminCategory/CategoryList" class="btn-cinema btn-cinema-ghost">
+                                <ion-icon name="close-circle-outline"></ion-icon>
+                                Vazgeç
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
