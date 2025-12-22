@@ -10,5 +10,9 @@ namespace MovieApi.Domain.Entities
     {
         public int CategoryID { get; set; } //Kategori ID
         public string CategoryName { get; set; } //Kategori adı
+        public string? CategoryDescription { get; set; } //Kategori açıklaması
+        public bool CategoryStatus { get; set; } //Kategori durumu
+        public List<Movie> Movies { get; set; } //Kategoriye ait filmler
+       
     }
 }
