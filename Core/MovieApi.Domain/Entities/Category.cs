@@ -13,6 +13,7 @@ namespace MovieApi.Domain.Entities
         public string? CategoryDescription { get; set; } //Kategori açıklaması
         public bool CategoryStatus { get; set; } //Kategori durumu
         public List<Movie> Movies { get; set; } //Kategoriye ait filmler
-       
+        public List<Series> Series { get; set; } //Kategoriye ait diziler
+
     }
 }

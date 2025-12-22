@@ -16,7 +16,7 @@ namespace MovieApi.Domain.Entities
         public int MovieDuration { get; set; } //Film süresi
         public DateTime MovieReleaseDate { get; set; } //Film yayın tarihi
         public string MovileCreatedYear { get; set; } //Film çıkış yılı
-        public string MovieStatus { get; set; } //Film durumu
+        public bool MovieStatus { get; set; } //Film durumu
         public int CategoryID { get; set; } //Kategori ID
         public Category Category { get; set; } //Kategori nesnesi 
     }
