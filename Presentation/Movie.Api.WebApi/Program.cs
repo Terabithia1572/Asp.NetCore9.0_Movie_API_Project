@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using MovieApi.Application.Features.MediatorDesignPattern.Handlers.TagHandler;
-using MovieApi.Application.Features.QCRSDesignPattern.Handlers.CategoryHandlers;
-using MovieApi.Application.Features.QCRSDesignPattern.Handlers.MovieHandlers;
-using MovieApi.Application.Features.QCRSDesignPattern.Handlers.UserRegisterHandlers;
+using MovieApi.Application.Features.CQRSDesignPattern.Handlers.CategoryHandlers;
+using MovieApi.Application.Features.CQRSDesignPattern.Handlers.MovieHandlers;
+using MovieApi.Application.Features.CQRSDesignPattern.Handlers.UserRegisterHandlers;
 using MovieApi.Persistence.Context;
 using MovieApi.Persistence.Identity;
 using System.Reflection;
