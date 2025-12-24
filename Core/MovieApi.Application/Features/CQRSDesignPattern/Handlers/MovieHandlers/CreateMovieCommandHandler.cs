@@ -1,4 +1,4 @@
-﻿using MovieApi.Application.Features.QCRSDesignPattern.Commands.MovieCommands;
+﻿using MovieApi.Application.Features.CQRSDesignPattern.Commands.MovieCommands;
 using MovieApi.Domain.Entities;
 using MovieApi.Persistence.Context;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieApi.Application.Features.QCRSDesignPattern.Handlers.MovieHandlers
+namespace MovieApi.Application.Features.CQRSDesignPattern.Handlers.MovieHandlers
 {
     public class CreateMovieCommandHandler
     {

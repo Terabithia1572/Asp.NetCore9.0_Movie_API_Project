@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieApi.Application.Features.QCRSDesignPattern.Commands.CategoryCommands
+namespace MovieApi.Application.Features.CQRSDesignPattern.Commands.CategoryCommands
 {
     public class CreateCategoryCommand
     {

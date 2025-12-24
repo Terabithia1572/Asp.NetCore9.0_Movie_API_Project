@@ -1,5 +1,5 @@
-﻿using MovieApi.Application.Features.QCRSDesignPattern.Queries.MovieQueries;
-using MovieApi.Application.Features.QCRSDesignPattern.Results.MovieResults;
+﻿using MovieApi.Application.Features.CQRSDesignPattern.Queries.MovieQueries;
+using MovieApi.Application.Features.CQRSDesignPattern.Results.MovieResults;
 using MovieApi.Persistence.Context;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieApi.Application.Features.QCRSDesignPattern.Handlers.MovieHandlers
+namespace MovieApi.Application.Features.CQRSDesignPattern.Handlers.MovieHandlers
 {
     public class GetMovieByIDQueryHandler
     {

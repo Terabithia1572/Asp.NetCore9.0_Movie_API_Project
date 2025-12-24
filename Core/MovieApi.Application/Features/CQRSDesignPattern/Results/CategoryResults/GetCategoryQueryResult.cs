@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieApi.Application.Features.QCRSDesignPattern.Results.CategoryResults
+namespace MovieApi.Application.Features.CQRSDesignPattern.Results.CategoryResults
 {
     public class GetCategoryQueryResult
     {
