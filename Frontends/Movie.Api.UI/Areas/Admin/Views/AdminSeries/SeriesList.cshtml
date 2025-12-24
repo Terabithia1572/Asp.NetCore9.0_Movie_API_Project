@@ -1,0 +1,132 @@
+﻿@model List<AdminResultSeriesDTO>
+@{
+    ViewData["Title"] = "SeriesList";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+}
+
+<div class="cinema-shell">
+    <div class="cinema-topbar">
+        <div class="d-flex align-items-start align-items-md-center justify-content-between gap-3 flex-column flex-md-row">
+            <div>
+                <h5 class="cinema-title">
+                    <span class="badge-dot"></span>
+                    Dizi Yönetim Paneli
+                </h5>
+                <div class="cinema-sub">Katalog, sezon/bölüm ve durum yönetimi • sinematik görünüm</div>
+            </div>
+
+            <div class="cinema-actions">
+                <div class="cinema-search">
+                    <span class="search-icon">
+                        <ion-icon name="search-sharp"></ion-icon>
+                    </span>
+                    <input class="form-control" type="text" placeholder="Dizi ara (ad, yıl, reyting)...">
+                </div>
+
+                <a href="/Admin/AdminSeries/CreateSeries" class="btn-cinema btn-cinema-primary">
+                    <ion-icon name="add-circle-outline"></ion-icon>
+                    Yeni Dizi Ekle
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="cinema-body">
+        <div class="table-responsive">
+            <table class="cinema-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Dizi</th>
+                        <th>Reyting</th>
+                        <th>Yıl</th>
+                        <th>Sezon</th>
+                        <th>Bölüm</th>
+                        <th>Ort. Süre</th>
+                        <th>Durum</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        count++;
+
+                        // Status bool/int olabilir; güvenli yorumlayalım:
+                        var statusText = item.SeriesStatus.ToString() ?? "";
+                        var isActive = statusText.Equals("True", StringComparison.OrdinalIgnoreCase)
+                        || statusText == "1";
+
+                        <tr class="cinema-row">
+                            <td>@count</td>
+
+                            <td>
+                                <div class="movie-title">
+                                    <span class="clap">
+                                        <ion-icon name="tv-outline"></ion-icon>
+                                    </span>
+                                    <div>
+                                        <div>@item.SeriesTitle</div>
+                                        <div class="muted">İlk yayın: @(item.FirstAirDate.ToString("dd.MM.yyyy"))</div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="rating-badge">
+                                    <ion-icon name="star"></ion-icon>
+                                    @item.SeriesRating
+                                </span>
+                            </td>
+
+                            <td class="muted">@item.SeriesCreatedYear</td>
+
+                            <td>
+                                <span class="metric">
+                                    <ion-icon name="albums-outline"></ion-icon>
+                                    @item.SeriesSeasonCount
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="metric">
+                                    <ion-icon name="list-outline"></ion-icon>
+                                    @item.SeriesEpisodeCount
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="metric">
+                                    <ion-icon name="time-outline"></ion-icon>
+                                    @item.SeriesAverageEpisodeDuration dk
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="pill @(isActive ? "on" : "off")">
+                                    <span class="dot"></span>
+                                    @(isActive ? "Yayında" : "Taslak")
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <a href="javascript:;" class="btn-mini btn-mini-warning">
+                                        <ion-icon name="create-outline"></ion-icon>
+                                        Güncelle
+                                    </a>
+                                    <a href="javascript:;" class="btn-mini btn-mini-primary">
+                                        <ion-icon name="information-circle-outline"></ion-icon>
+                                        Detaylar
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

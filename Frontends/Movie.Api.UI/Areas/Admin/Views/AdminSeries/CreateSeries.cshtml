@@ -1,0 +1,248 @@
+﻿@model MovieApi.DTOs.DTOs.AdminSeriesDTOs.AdminCreateSeriesDTO
+@{
+    ViewData["Title"] = "CreateSeries";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="cinema-shell">
+    <div class="cinema-topbar">
+        <div class="d-flex align-items-start align-items-md-center justify-content-between gap-3 flex-column flex-md-row">
+            <div>
+                <h5 class="cinema-title">
+                    <span class="badge-dot"></span>
+                    Yeni Dizi Ekle
+                </h5>
+                <div class="cinema-sub">Dizi bilgilerini gir ve kaydet • sinematik görünüm</div>
+            </div>
+
+            <div class="cinema-actions">
+                <a href="/Admin/AdminSeries/SeriesList" class="btn-cinema btn-cinema-ghost">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    Listeye Dön
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="cinema-body">
+        <div class="cinema-card">
+            <div class="cinema-card-head">
+                <div class="d-flex align-items-center gap-3 cinema-card-head-row">
+                    <span class="tag tag-lg">
+                        <ion-icon name="tv-outline"></ion-icon>
+                    </span>
+
+                    <div>
+                        <div class="cinema-card-title">Dizi Bilgileri</div>
+                        <div class="muted">Başlık, kategori, sezon/bölüm ve yayın bilgileri • premium panel</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cinema-card-body">
+                <form method="post" asp-area="Admin" asp-action="CreateSeries" asp-controller="AdminSeries">
+                    @Html.AntiForgeryToken()
+
+                    <div class="row g-3">
+                        <!-- SOL: Temel Bilgiler -->
+                        <div class="col-12 col-lg-7">
+                            <label class="cinema-label">Dizi Adı</label>
+                            <div class="cinema-input">
+                                <span class="cinema-input-icon">
+                                    <ion-icon name="videocam-outline"></ion-icon>
+                                </span>
+                                <input asp-for="SeriesTitle"
+                                       class="form-control cinema-control"
+                                       placeholder="Örn: Breaking Bad"
+                                       autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="SeriesTitle" class="cinema-val"></span>
+
+                            <div class="mt-3">
+                                <label class="cinema-label">Kategori</label>
+                                <div class="cinema-input">
+                                    <span class="cinema-input-icon">
+                                        <ion-icon name="pricetag-outline"></ion-icon>
+                                    </span>
+
+                                    <select asp-for="CategoryID"
+                                            class="form-control cinema-control"
+                                            asp-items="(List<SelectListItem>)ViewBag.CategoryList">
+                                        <option value="">Kategori seç...</option>
+                                    </select>
+                                </div>
+                                <span asp-validation-for="CategoryID" class="cinema-val"></span>
+                            </div>
+
+                            <div class="mt-3">
+                                <label class="cinema-label">Kapak Görsel URL</label>
+                                <div class="cinema-input">
+                                    <span class="cinema-input-icon">
+                                        <ion-icon name="image-outline"></ion-icon>
+                                    </span>
+                                    <input asp-for="SeriesCoverImageURL"
+                                           class="form-control cinema-control"
+                                           placeholder="https://.../poster.jpg"
+                                           autocomplete="off" />
+                                </div>
+                                <span asp-validation-for="SeriesCoverImageURL" class="cinema-val"></span>
+                            </div>
+
+                            <div class="mt-3">
+                                <label class="cinema-label">Dizi Açıklaması</label>
+                                <div class="cinema-input">
+                                    <span class="cinema-input-icon" style="align-self:flex-start; margin-top:10px;">
+                                        <ion-icon name="document-text-outline"></ion-icon>
+                                    </span>
+                                    <textarea asp-for="SeriesDescription"
+                                              class="form-control cinema-control"
+                                              rows="6"
+                                              placeholder="Dizinin konusu / kısa açıklama..."
+                                              style="resize:none;"></textarea>
+                                </div>
+                                <span asp-validation-for="SeriesDescription" class="cinema-val"></span>
+                            </div>
+                        </div>
+
+                        <!-- SAĞ: Yayın / Puan / Sezon-Bölüm / Durum -->
+                        <div class="col-12 col-lg-5">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="cinema-label d-flex align-items-center justify-content-between">
+                                        <span>Durum</span>
+                                        <span class="muted">Yayında / Kapalı</span>
+                                    </label>
+
+                                    <label class="cinema-switch w-100">
+                                        <input type="checkbox" asp-for="SeriesStatus" />
+                                        <span class="cinema-switch-ui">
+                                            <span class="cinema-switch-pill">
+                                                <span class="on">
+                                                    <ion-icon name="flash-outline"></ion-icon> Aktif
+                                                </span>
+                                                <span class="off">
+                                                    <ion-icon name="moon-outline"></ion-icon> Pasif
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </label>
+                                    <span asp-validation-for="SeriesStatus" class="cinema-val"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <label class="cinema-label">Puan</label>
+                                    <div class="cinema-input">
+                                        <span class="cinema-input-icon">
+                                            <ion-icon name="star-outline"></ion-icon>
+                                        </span>
+                                        <input asp-for="SeriesRating"
+                                               class="form-control cinema-control"
+                                               type="number"
+                                               step="0.1"
+                                               min="0"
+                                               max="10"
+                                               placeholder="9.2" />
+                                    </div>
+                                    <span asp-validation-for="SeriesRating" class="cinema-val"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <label class="cinema-label">İlk Yayın</label>
+                                    <div class="cinema-input">
+                                        <span class="cinema-input-icon">
+                                            <ion-icon name="calendar-outline"></ion-icon>
+                                        </span>
+                                        <input asp-for="FirstAirDate"
+                                               class="form-control cinema-control"
+                                               type="date" />
+                                    </div>
+                                    <span asp-validation-for="FirstAirDate" class="cinema-val"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <label class="cinema-label">Yıl</label>
+                                    <div class="cinema-input">
+                                        <span class="cinema-input-icon">
+                                            <ion-icon name="albums-outline"></ion-icon>
+                                        </span>
+                                        <input asp-for="SeriesCreatedYear"
+                                               class="form-control cinema-control"
+                                               placeholder="2008"
+                                               autocomplete="off" />
+                                    </div>
+                                    <span asp-validation-for="SeriesCreatedYear" class="cinema-val"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <label class="cinema-label">Ort. Bölüm (dk)</label>
+                                    <div class="cinema-input">
+                                        <span class="cinema-input-icon">
+                                            <ion-icon name="time-outline"></ion-icon>
+                                        </span>
+                                        <input asp-for="SeriesAverageEpisodeDuration"
+                                               class="form-control cinema-control"
+                                               type="number"
+                                               min="1"
+                                               placeholder="50" />
+                                    </div>
+                                    <span asp-validation-for="SeriesAverageEpisodeDuration" class="cinema-val"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <label class="cinema-label">Sezon</label>
+                                    <div class="cinema-input">
+                                        <span class="cinema-input-icon">
+                                            <ion-icon name="layers-outline"></ion-icon>
+                                        </span>
+                                        <input asp-for="SeriesSeasonCount"
+                                               class="form-control cinema-control"
+                                               type="number"
+                                               min="1"
+                                               placeholder="5" />
+                                    </div>
+                                    <span asp-validation-for="SeriesSeasonCount" class="cinema-val"></span>
+                                </div>
+
+                                <div class="col-12 col-md-6 col-lg-6">
+                                    <label class="cinema-label">Bölüm</label>
+                                    <div class="cinema-input">
+                                        <span class="cinema-input-icon">
+                                            <ion-icon name="list-outline"></ion-icon>
+                                        </span>
+                                        <input asp-for="SeriesEpisodeCount"
+                                               class="form-control cinema-control"
+                                               type="number"
+                                               min="1"
+                                               placeholder="62" />
+                                    </div>
+                                    <span asp-validation-for="SeriesEpisodeCount" class="cinema-val"></span>
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <div class="cinema-divider"></div>
+                            </div>
+
+                            <div class="d-flex gap-2 flex-wrap mt-3">
+                                <button type="submit" class="btn-cinema btn-cinema-primary">
+                                    <ion-icon name="save-outline"></ion-icon>
+                                    Kaydet
+                                </button>
+
+                                <a href="/Admin/AdminSeries/SeriesList" class="btn-cinema btn-cinema-ghost">
+                                    <ion-icon name="close-circle-outline"></ion-icon>
+                                    Vazgeç
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="mt-3 muted d-flex align-items-center gap-2">
+            <ion-icon name="sparkles-outline"></ion-icon>
+            <span>İstersen sonraki adım: Kapak URL girilince sağda “poster preview” gösterecek mini JS ekleyelim.</span>
+        </div>
+    </div>
+</div>
