@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieApi.DTOs.DTOs.AdminMovieDTOs
+namespace MovieApi.Application.Features.CQRSDesignPattern.Results.MovieResults
 {
-    public class AdminResultMovieDTO
+    public class GetMovieWithCategoryQueryResult
     {
         public int MovieID { get; set; } //Film ID
         public string MovieTitle { get; set; } //Film adı
@@ -17,7 +17,7 @@ namespace MovieApi.DTOs.DTOs.AdminMovieDTOs
         public DateTime MovieReleaseDate { get; set; } //Film yayın tarihi
         public string MovileCreatedYear { get; set; } //Film çıkış yılı
         public bool MovieStatus { get; set; } //Film durumu
-        public int CategoryID { get; set; } // Filmin Kategori ID'si
+        public int CategoryID { get; set; } // Filmin Kateogri ID'si
         public string CategoryName { get; set; } // Filmin Kategori adı
     }
 }

@@ -21,7 +21,7 @@ namespace Movie.Api.UI.Areas.Admin.Controllers
             ViewBag.v3 = "Tüm Filmler";
 
             var client = _httpClientFactory.CreateClient(); //burada client oluşturuyoruz
-            var responseMessage = await client.GetAsync("https://localhost:44319/api/Movies"); // buraya api url yazılacak istek yapmak istediğimiz URL'ye istek yapılıyor
+            var responseMessage = await client.GetAsync("https://localhost:44319/api/Movies/GetMovieWithCategory"); // buraya api url yazılacak istek yapmak istediğimiz URL'ye istek yapılıyor
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync(); // gelen veriyi string olarak okuyoruz

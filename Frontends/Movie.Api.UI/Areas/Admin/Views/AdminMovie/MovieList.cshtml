@@ -70,7 +70,7 @@
                                     </span>
                                     <div>
                                         <div>@item.MovieTitle</div>
-                                        <div class="muted">Katalog kaydı</div>
+                                        <div class="muted">@item.CategoryName</div>
                                     </div>
                                 </div>
                             </td>
@@ -87,7 +87,7 @@
                             <td>
                                 <span class="pill @(isActive ? "on" : "off")">
                                     <span class="dot"></span>
-                                    @(isActive ? "Yayında" : "Taslak")
+                                    @(isActive ? "Aktif" : "Pasif")
                                 </span>
                             </td>
 

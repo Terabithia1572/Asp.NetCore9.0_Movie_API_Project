@@ -15,14 +15,16 @@ namespace Movie.Api.WebApi.Controllers
         private readonly CreateMovieCommandHandler _createMovieCommandHandler;
         private readonly UpdateMovieCommandHandler _updateMovieCommandHandler;
         private readonly RemoveMovieCommandHandler _removeMovieCommandHandler;
+        private readonly GetMovieWithCategoryQueryHandler _getMovieWithCategoryQueryHandler;
 
-        public MoviesController(GetMovieByIDQueryHandler getMovieByIDQueryHandler, GetMovieQueryHandler getMovieQueryHandler, CreateMovieCommandHandler createMovieCommandHandler, UpdateMovieCommandHandler updateMovieCommandHandler, RemoveMovieCommandHandler removeMovieCommandHandler)
+        public MoviesController(GetMovieByIDQueryHandler getMovieByIDQueryHandler, GetMovieQueryHandler getMovieQueryHandler, CreateMovieCommandHandler createMovieCommandHandler, UpdateMovieCommandHandler updateMovieCommandHandler, RemoveMovieCommandHandler removeMovieCommandHandler, GetMovieWithCategoryQueryHandler getMovieWithCategoryQueryHandler)
         {
             _getMovieByIDQueryHandler = getMovieByIDQueryHandler;
             _getMovieQueryHandler = getMovieQueryHandler;
             _createMovieCommandHandler = createMovieCommandHandler;
             _updateMovieCommandHandler = updateMovieCommandHandler;
             _removeMovieCommandHandler = removeMovieCommandHandler;
+            _getMovieWithCategoryQueryHandler = getMovieWithCategoryQueryHandler;
         }
 
         [HttpGet]
@@ -54,6 +56,12 @@ namespace Movie.Api.WebApi.Controllers
         {
             await _updateMovieCommandHandler.Handle(updateMovieCommand);
             return Ok("Film Başarıyla Güncellendi..");
+        }
+        [HttpGet("GetMovieWithCategory")]
+        public async Task<IActionResult> GetMovieWithCategory()
+        {
+            var values = await _getMovieWithCategoryQueryHandler.Handle();
+            return Ok(values);
         }
     }
 }
