@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.3.11312.210 d18.3
+VisualStudioVersion = 18.3.11312.210
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{45E09FCF-758A-46E7-9BA6-1E1620F25E94}"
 EndProject
@@ -34,6 +34,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClaudeAI", "ClaudeAI", "{8D6438CB-E777-4EEC-8F0C-C2964011D30B}"
 	ProjectSection(SolutionItems) = preProject
 		AdminLayoutSidebarByMovieAndSeries.txt = AdminLayoutSidebarByMovieAndSeries.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChatGPT", "ChatGPT", "{21FEA84D-1E06-4D23-9C3B-0E81A34625CB}"
+	ProjectSection(SolutionItems) = preProject
+		ReviewUserJson.txt = ReviewUserJson.txt
 	EndProjectSection
 EndProject
 Global
@@ -79,6 +84,7 @@ Global
 		{16DD3EA5-9C14-4F1B-ACAF-9D37F325C668} = {A96B2C56-1CA3-4930-A4B5-105383102DAD}
 		{C998DE1A-0E4D-476C-A26D-DE3C2E484193} = {59D5A165-EFCB-4460-867B-FC1412AAD978}
 		{8D6438CB-E777-4EEC-8F0C-C2964011D30B} = {59D5A165-EFCB-4460-867B-FC1412AAD978}
+		{21FEA84D-1E06-4D23-9C3B-0E81A34625CB} = {59D5A165-EFCB-4460-867B-FC1412AAD978}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1671A3B-D806-436B-A76F-32A8A971BF8E}
