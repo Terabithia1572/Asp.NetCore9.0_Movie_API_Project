@@ -11,6 +11,16 @@ namespace MovieApi.Persistence.Context
         {
            optionsBuilder.UseSqlServer("Server=.;Initial Catalog=ApiMovieDB;Integrated Security=True;TrustServerCertificate=true;");
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Review>()
+                .HasOne<AppUser>()          // Navigation yok!
+                .WithMany()
+                .HasForeignKey(r => r.UserID)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
         public DbSet<Category> Categories { get; set; } //Kategoriler tablosu
         public DbSet<Movie> Movies { get; set; } //Filmler tablosu
         public DbSet<Review> Reviews { get; set; } //Yorumlar tablosu

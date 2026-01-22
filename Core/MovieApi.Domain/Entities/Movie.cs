@@ -19,5 +19,6 @@ namespace MovieApi.Domain.Entities
         public bool MovieStatus { get; set; } //Film durumu
         public int CategoryID { get; set; } //Kategori ID
         public Category Category { get; set; } //Kategori nesnesi 
+        public List<Review> Reviews { get; set; }
     }
 }
