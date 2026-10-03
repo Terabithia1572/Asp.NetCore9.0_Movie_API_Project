@@ -1,4 +1,5 @@
-﻿using MovieApi.Application.Features.MediatorDesignPattern.Handlers.TagHandler;
+﻿using MovieApi.Application.Features.MediatorDesignPattern.Handlers.ReviewHandler;
+using MovieApi.Application.Features.MediatorDesignPattern.Handlers.TagHandler;
 
 namespace Movie.Api.WebApi.Extensions
 {
@@ -12,6 +13,7 @@ namespace Movie.Api.WebApi.Extensions
             //Bu desen, özellikle CQRS (Command Query Responsibility Segregation) gibi yaklaşımlarda çok yaygındır.
             //Bu satır, projenizde MediatR kütüphanesini kullanabilmeniz için gerekli olan servisleri, mevcut assembly içinden otomatik olarak bulup uygulamanıza dahil eder.
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetTagQueryHandler).Assembly));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetReviewQueryHandler).Assembly));
 
             return services;
         }
