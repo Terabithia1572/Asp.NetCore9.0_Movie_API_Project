@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using MovieApi.DTOs.DTOs.AdminCategoryDTOs;
 using MovieApi.DTOs.DTOs.AdminMovieDTOs;
 using Newtonsoft.Json;
 
@@ -32,12 +34,22 @@ namespace Movie.Api.UI.Areas.Admin.Controllers
             return View();
         }
         [HttpGet]
-        public IActionResult CreateMovie()
+        public async Task<IActionResult> CreateMovie()
         {
             ViewBag.v1 = "Film Ekleme";
             ViewBag.v2 = "Ana Sayfa";
             ViewBag.v3 = "Film Ekleme";
+
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync("https://localhost:44319/api/Categories");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                var categories = JsonConvert.DeserializeObject<List<AdminResultCategoryDTO>>(jsonData);
+                ViewBag.Categories = new SelectList(categories, "CategoryID", "CategoryName");
+            }
             return View();
+            
 
         }
         [HttpPost]

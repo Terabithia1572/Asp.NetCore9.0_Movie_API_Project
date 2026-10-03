@@ -17,5 +17,6 @@ namespace MovieApi.DTOs.DTOs.AdminMovieDTOs
         public DateTime MovieReleaseDate { get; set; } //Film yayın tarihi
         public string MovileCreatedYear { get; set; } //Film çıkış yılı
         public bool MovieStatus { get; set; } //Film durumu
+        public int CategoryID { get; set; } //Film kategorisi
     }
 }

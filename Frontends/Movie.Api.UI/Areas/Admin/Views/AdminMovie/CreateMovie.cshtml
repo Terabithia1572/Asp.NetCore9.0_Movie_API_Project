@@ -1,210 +1,788 @@
 ﻿@model AdminCreateMovieDTO
+
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+
 @{
     ViewData["Title"] = "CreateMovie";
     Layout = "~/Views/AdminLayout/Index.cshtml";
 }
 
-<div class="cinema-shell">
-    <div class="cinema-topbar">
-        <div class="d-flex align-items-start align-items-md-center justify-content-between gap-3 flex-column flex-md-row">
-            <div>
-                <h5 class="cinema-title">
-                    <span class="badge-dot"></span>
-                    Yeni Film Ekle
-                </h5>
-                <div class="cinema-sub">Film bilgilerini gir ve kaydet • sinematik görünüm</div>
-            </div>
 
-            <div class="cinema-actions">
-                <a href="/Admin/AdminMovie/MovieList" class="btn-cinema btn-cinema-ghost">
-                    <ion-icon name="arrow-back-outline"></ion-icon>
-                    Listeye Dön
-                </a>
+<style>
+    :root {
+        --bg: #080808;
+        --surface: #111111;
+        --surface2: #1a1a1a;
+        --surface3: #222222;
+        --border: #2c2c2c;
+        --border-hover: #444;
+        --red: #e50914;
+        --red-glow: rgba(229,9,20,0.2);
+        --red-dim: rgba(229,9,20,0.08);
+        --text: #f2f2f2;
+        --muted: #666;
+        --muted2: #888;
+        --accent: #ff6b35;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Sora', sans-serif;
+        min-height: 100vh;
+    }
+
+    /* ── Page Shell ── */
+    .create-page {
+        min-height: 100vh;
+        background:
+            radial-gradient(ellipse 60% 50% at 70% 0%, rgba(229,9,20,0.07) 0%, transparent 60%),
+            radial-gradient(ellipse 40% 30% at 0% 80%, rgba(255,107,53,0.04) 0%, transparent 50%),
+            var(--bg);
+        padding: 48px 56px 80px;
+    }
+
+    /* ── Header ── */
+    .create-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 48px;
+        animation: fadeDown 0.5s ease both;
+    }
+
+    @@keyframes fadeDown {
+        from { opacity: 0; transform: translateY(-16px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 12px;
+        letter-spacing: 0.5px;
+    }
+
+    .breadcrumb a { color: var(--muted); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--red); }
+    .breadcrumb span { color: var(--muted2); }
+
+    .page-title {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 56px;
+        letter-spacing: 4px;
+        line-height: 1;
+    }
+
+    .page-title em {
+        color: var(--red);
+        font-style: normal;
+    }
+
+    .page-subtitle {
+        font-size: 13px;
+        color: var(--muted2);
+        margin-top: 8px;
+        letter-spacing: 0.3px;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding-top: 4px;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-family: 'Sora', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        border: none;
+    }
+
+    .btn-ghost {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--muted2);
+    }
+    .btn-ghost:hover { border-color: var(--border-hover); color: var(--text); }
+
+    .btn-primary {
+        background: var(--red);
+        color: #fff;
+        box-shadow: 0 0 24px rgba(229,9,20,0.3);
+    }
+    .btn-primary:hover {
+        background: #ff1a24;
+        box-shadow: 0 0 36px rgba(229,9,20,0.5);
+        transform: translateY(-1px);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* ── Layout ── */
+    .form-layout {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 28px;
+        align-items: start;
+    }
+
+    /* ── Cards ── */
+    .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        animation: fadeUp 0.5s ease both;
+    }
+
+    @@keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.25s; }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 20px 28px;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface2);
+    }
+
+    .card-icon {
+        width: 32px;
+        height: 32px;
+        background: var(--red-dim);
+        border: 1px solid rgba(229,9,20,0.2);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .card-title {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        color: var(--text);
+    }
+
+    .card-desc {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+    }
+
+    .card-body { padding: 28px; }
+
+    /* ── Form Fields ── */
+    .field-group {
+        margin-bottom: 24px;
+    }
+
+    .field-group:last-child { margin-bottom: 0; }
+
+    .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .field-row-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+    }
+
+    label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--muted2);
+        margin-bottom: 8px;
+    }
+
+    label .required {
+        color: var(--red);
+        margin-left: 3px;
+    }
+
+    .field-hint {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 6px;
+        letter-spacing: 0.2px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="url"],
+    textarea,
+    select {
+        width: 100%;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text);
+        font-family: 'Sora', sans-serif;
+        font-size: 14px;
+        padding: 12px 16px;
+        transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        outline: none;
+        appearance: none;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        border-color: var(--red);
+        box-shadow: 0 0 0 3px var(--red-glow);
+        background: var(--surface3);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: var(--muted);
+        font-size: 13px;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 120px;
+        line-height: 1.6;
+    }
+
+    select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        padding-right: 40px;
+        cursor: pointer;
+    }
+
+    select option {
+        background: #1a1a1a;
+        color: var(--text);
+    }
+
+    /* Category select focus glow */
+    select:focus {
+        border-color: var(--red);
+        box-shadow: 0 0 0 3px var(--red-glow);
+        background-color: var(--surface3);
+    }
+
+    /* ── Rating Slider ── */
+    .rating-wrapper {
+        position: relative;
+    }
+
+    .rating-display {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 22px;
+        color: var(--red);
+        letter-spacing: 1px;
+        pointer-events: none;
+    }
+
+    input[type="number"].rating-input {
+        padding-right: 56px;
+    }
+
+    /* ── Cover Preview ── */
+    .cover-preview-area {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 2/3;
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--surface2);
+        border: 2px dashed var(--border);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: border-color 0.2s;
+        margin-bottom: 16px;
+    }
+
+    .cover-preview-area.has-image {
+        border-style: solid;
+        border-color: rgba(229,9,20,0.3);
+    }
+
+    .cover-preview-area img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .cover-preview-area .cover-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+        border-radius: 10px;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    .cover-preview-area:hover .cover-overlay { opacity: 1; }
+
+    .cover-placeholder {
+        text-align: center;
+        color: var(--muted);
+    }
+
+    .cover-placeholder-icon {
+        font-size: 36px;
+        margin-bottom: 10px;
+        opacity: 0.4;
+    }
+
+    .cover-placeholder p {
+        font-size: 12px;
+        letter-spacing: 0.3px;
+    }
+
+    /* ── Status Toggle ── */
+    .status-options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .status-option {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        cursor: pointer;
+        transition: all 0.15s;
+        background: var(--surface2);
+    }
+
+    .status-option:hover { border-color: var(--border-hover); }
+
+    .status-option input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: var(--red);
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+
+    .status-option.selected {
+        border-color: rgba(229,9,20,0.4);
+        background: var(--red-dim);
+    }
+
+    .status-option-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+    }
+
+    .status-option-sub {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        margin-left: auto;
+    }
+
+    .dot-draft { background: #f39c12; }
+    .dot-published { background: #2ecc71; }
+    .dot-archived { background: var(--muted); }
+
+    /* ── Divider ── */
+    .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 24px 0;
+    }
+
+    /* ── Char Counter ── */
+    .field-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 6px;
+    }
+
+    .char-count {
+        font-size: 11px;
+        color: var(--muted);
+        transition: color 0.2s;
+    }
+
+    .char-count.warn { color: var(--accent); }
+    .char-count.over { color: var(--red); }
+
+    /* ── Bottom Bar ── */
+    .form-bottom-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 32px;
+        padding-top: 28px;
+        border-top: 1px solid var(--border);
+        animation: fadeUp 0.5s ease 0.35s both;
+    }
+
+    .form-note {
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .form-note::before {
+        content: '✦';
+        color: var(--red);
+        font-size: 10px;
+    }
+
+    .bottom-actions { display: flex; gap: 12px; }
+
+    /* Validation */
+    .field-error {
+        font-size: 11px;
+        color: var(--red);
+        margin-top: 5px;
+    }
+
+    span.text-danger {
+        font-size: 11px;
+        color: var(--red);
+        display: block;
+        margin-top: 5px;
+    }
+</style>
+
+<div class="create-page">
+
+    <!-- Header -->
+    <div class="create-header">
+        <div>
+            <div class="breadcrumb">
+                <a href="/Admin/AdminMovie">Filmler</a>
+                <span>›</span>
+                <span>Yeni Film</span>
             </div>
+            <h1 class="page-title">YENİ <em>FİLM</em></h1>
+            <p class="page-subtitle">Kataloğa yeni bir yapım ekleyin</p>
+        </div>
+        <div class="header-actions">
+            <a href="/Admin/AdminMovie" class="btn btn-ghost">
+                ← Geri Dön
+            </a>
         </div>
     </div>
 
-    <div class="cinema-body">
-        <div class="cinema-card">
-            <div class="cinema-card-head">
-                <div class="d-flex align-items-center gap-3 cinema-card-head-row">
-                    <span class="tag tag-lg">
-                        <ion-icon name="film-outline"></ion-icon>
-                    </span>
+    <form asp-action="CreateMovie" method="post">
 
-                    <div>
-                        <div class="cinema-card-title">Film Bilgileri</div>
-                        <div class="muted">Başlık, görsel, açıklama ve yayın bilgileri • sinematik panel</div>
+        <div class="form-layout">
+
+            <!-- LEFT COLUMN -->
+            <div>
+
+                <!-- Temel Bilgiler -->
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <div class="card-icon">🎬</div>
+                        <div>
+                            <div class="card-title">Temel Bilgiler</div>
+                            <div class="card-desc">Film adı ve açıklama</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="field-group">
+                            <label asp-for="MovieTitle">Film Adı <span class="required">*</span></label>
+                            <input asp-for="MovieTitle" type="text" placeholder="Örn: Esaretin Bedeli" id="titleInput" maxlength="150" />
+                            <div class="field-footer">
+                                <span asp-validation-for="MovieTitle" class="text-danger"></span>
+                                <span class="char-count" id="titleCount">0 / 150</span>
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label asp-for="MovieDescription">Açıklama <span class="required">*</span></label>
+                            <textarea asp-for="MovieDescription" placeholder="Film hakkında kısa ve etkileyici bir açıklama yazın..." id="descInput" maxlength="1000" rows="5"></textarea>
+                            <div class="field-footer">
+                                <span asp-validation-for="MovieDescription" class="text-danger"></span>
+                                <span class="char-count" id="descCount">0 / 1000</span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-            </div>
 
-            <div class="cinema-card-body">
-                <form method="post" asp-area="Admin" asp-action="CreateMovie" asp-controller="AdminMovie">
-                    @Html.AntiForgeryToken()
+                <!-- Detaylar -->
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <div class="card-icon">📊</div>
+                        <div>
+                            <div class="card-title">Film Detayları</div>
+                            <div class="card-desc">Yıl, süre, reyting bilgileri</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
 
-                    <div class="row g-3">
-                        <!-- SOL: Temel Bilgiler -->
-                        <div class="col-12 col-lg-7">
-                            <label class="cinema-label">Film Adı</label>
-                            <div class="cinema-input">
-                                <span class="cinema-input-icon">
-                                    <ion-icon name="videocam-outline"></ion-icon>
-                                </span>
-                                <input asp-for="MovieTitle"
-                                       class="form-control cinema-control"
-                                       placeholder="Örn: Interstellar"
-                                       autocomplete="off" />
+                        <div class="field-group">
+                            <label asp-for="CategoryID">Kategori <span class="required">*</span></label>
+                            <select asp-for="CategoryID" asp-items="ViewBag.Categories">
+                                <option value="">— Kategori Seçin —</option>
+                            </select>
+                            <span asp-validation-for="CategoryID" class="text-danger"></span>
+                        </div>
+
+                        <div class="field-group field-row">
+                            <div>
+                                <label asp-for="MovileCreatedYear">Yapım Yılı <span class="required">*</span></label>
+                                <input asp-for="MovileCreatedYear" type="text" placeholder="Örn: 1994" maxlength="4" />
+                                <span asp-validation-for="MovileCreatedYear" class="text-danger"></span>
                             </div>
-                            <span asp-validation-for="MovieTitle" class="cinema-val"></span>
-
-                            <div class="mt-3">
-                                <label class="cinema-label">Kapak Görsel URL</label>
-                                <div class="cinema-input">
-                                    <span class="cinema-input-icon">
-                                        <ion-icon name="image-outline"></ion-icon>
-                                    </span>
-                                    <input asp-for="MovieCoverImageURL"
-                                           class="form-control cinema-control"
-                                           placeholder="https://.../cover.jpg"
-                                           autocomplete="off" />
-                                </div>
-                                <span asp-validation-for="MovieCoverImageURL" class="cinema-val"></span>
-
-                                <!-- mini preview: sadece UI, istersen JS ile canlılaştırırız -->
-                                <div class="mt-2 muted d-flex align-items-center gap-2">
-                                    <ion-icon name="information-circle-outline"></ion-icon>
-                                    <span>İpucu: URL girince kapak önizleme için küçük bir JS ekleyebiliriz.</span>
-                                </div>
-                            </div>
-
-                            <div class="mt-3">
-                                <label class="cinema-label">Film Açıklaması</label>
-                                <div class="cinema-input">
-                                    <span class="cinema-input-icon" style="align-self:flex-start; margin-top: 10px;">
-                                        <ion-icon name="document-text-outline"></ion-icon>
-                                    </span>
-                                    <textarea asp-for="MovieDescription"
-                                              class="form-control cinema-control"
-                                              rows="6"
-                                              placeholder="Filmin konusu / kısa açıklama..."
-                                              style="resize:none;"></textarea>
-                                </div>
-                                <span asp-validation-for="MovieDescription" class="cinema-val"></span>
+                            <div>
+                                <label asp-for="MovieReleaseDate">Yayın Tarihi <span class="required">*</span></label>
+                                <input asp-for="MovieReleaseDate" type="date" />
+                                <span asp-validation-for="MovieReleaseDate" class="text-danger"></span>
                             </div>
                         </div>
 
-                        <!-- SAĞ: Yayın / Puan / Süre / Durum -->
-                        <div class="col-12 col-lg-5">
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <label class="cinema-label d-flex align-items-center justify-content-between">
-                                        <span>Durum</span>
-                                        <span class="muted">Yayında / Kapalı</span>
-                                    </label>
-
-                                    <!-- premium switch (CreateCategory ile aynı mantık) -->
-                                    <label class="cinema-switch w-100">
-                                        <input type="checkbox" asp-for="MovieStatus" />
-                                        <span class="cinema-switch-ui">
-                                            <span class="cinema-switch-pill">
-                                                <span class="on">
-                                                    <ion-icon name="flash-outline"></ion-icon> Aktif
-                                                </span>
-                                                <span class="off">
-                                                    <ion-icon name="moon-outline"></ion-icon> Pasif
-                                                </span>
-                                            </span>
-                                        </span>
-                                    </label>
-                                    <span asp-validation-for="MovieStatus" class="cinema-val"></span>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-lg-6">
-                                    <label class="cinema-label">Puan</label>
-                                    <div class="cinema-input">
-                                        <span class="cinema-input-icon">
-                                            <ion-icon name="star-outline"></ion-icon>
-                                        </span>
-                                        <input asp-for="MovieRating"
-                                               class="form-control cinema-control"
-                                               type="number"
-                                               step="0.1"
-                                               min="0"
-                                               max="10"
-                                               placeholder="8.7" />
-                                    </div>
-                                    <span asp-validation-for="MovieRating" class="cinema-val"></span>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-lg-6">
-                                    <label class="cinema-label">Süre (dk)</label>
-                                    <div class="cinema-input">
-                                        <span class="cinema-input-icon">
-                                            <ion-icon name="time-outline"></ion-icon>
-                                        </span>
-                                        <input asp-for="MovieDuration"
-                                               class="form-control cinema-control"
-                                               type="number"
-                                               min="1"
-                                               placeholder="169" />
-                                    </div>
-                                    <span asp-validation-for="MovieDuration" class="cinema-val"></span>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-lg-6">
-                                    <label class="cinema-label">Yayın Tarihi</label>
-                                    <div class="cinema-input">
-                                        <span class="cinema-input-icon">
-                                            <ion-icon name="calendar-outline"></ion-icon>
-                                        </span>
-                                        <input asp-for="MovieReleaseDate"
-                                               class="form-control cinema-control"
-                                               type="date" />
-                                    </div>
-                                    <span asp-validation-for="MovieReleaseDate" class="cinema-val"></span>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-lg-6">
-                                    <label class="cinema-label">Çıkış Yılı</label>
-                                    <div class="cinema-input">
-                                        <span class="cinema-input-icon">
-                                            <ion-icon name="albums-outline"></ion-icon>
-                                        </span>
-                                        <input asp-for="MovileCreatedYear"
-                                               class="form-control cinema-control"
-                                               placeholder="2014"
-                                               autocomplete="off" />
-                                    </div>
-                                    <span asp-validation-for="MovileCreatedYear" class="cinema-val"></span>
-                                </div>
+                        <div class="field-group field-row">
+                            <div>
+                                <label asp-for="MovieDuration">Süre <span class="required">*</span></label>
+                                <input asp-for="MovieDuration" type="number" placeholder="Dakika olarak" min="1" max="999" />
+                                <div class="field-hint">Dakika cinsinden girin</div>
+                                <span asp-validation-for="MovieDuration" class="text-danger"></span>
                             </div>
-
-                            <div class="mt-3">
-                                <div class="cinema-divider"></div>
+                            <div>
+                                <label asp-for="MovieRating">Reyting <span class="required">*</span></label>
+                                <div class="rating-wrapper">
+                                    <input asp-for="MovieRating" type="number" class="rating-input" placeholder="0.0" min="0" max="10" step="0.1" id="ratingInput" />
+                                    <span class="rating-display" id="ratingDisplay">—</span>
+                                </div>
+                                <div class="field-hint">0.0 – 10.0 arasında</div>
+                                <span asp-validation-for="MovieRating" class="text-danger"></span>
                             </div>
+                        </div>
 
-                            <div class="d-flex gap-2 flex-wrap mt-3">
-                                <button type="submit" class="btn-cinema btn-cinema-primary">
-                                    <ion-icon name="save-outline"></ion-icon>
-                                    Kaydet
-                                </button>
+                    </div>
+                </div>
 
-                                <a href="/Admin/AdminMovie/MovieList" class="btn-cinema btn-cinema-ghost">
-                                    <ion-icon name="close-circle-outline"></ion-icon>
-                                    Vazgeç
-                                </a>
+                <!-- Kapak Görseli -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🖼️</div>
+                        <div>
+                            <div class="card-title">Kapak Görseli</div>
+                            <div class="card-desc">Poster URL adresi</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="field-group">
+                            <label asp-for="MovieCoverImageURL">Görsel URL <span class="required">*</span></label>
+                            <input asp-for="MovieCoverImageURL" type="text" placeholder="https://image.tmdb.org/..." id="coverUrlInput" />
+                            <div class="field-hint">Önerilen: 500×750 piksel, TMDB veya IMDB poster linki</div>
+                            <span asp-validation-for="MovieCoverImageURL" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div>
+
+                <!-- Cover Preview -->
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <div class="card-icon">👁️</div>
+                        <div>
+                            <div class="card-title">Önizleme</div>
+                            <div class="card-desc">Kapak görseli</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="cover-preview-area" id="coverPreview">
+                            <img id="coverImg" src="" alt="" style="display:none;" />
+                            <div class="cover-overlay"></div>
+                            <div class="cover-placeholder" id="coverPlaceholder">
+                                <div class="cover-placeholder-icon">🎥</div>
+                                <p>URL girin,<br>poster burada görünür</p>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
+
+                <!-- Yayın Durumu -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📡</div>
+                        <div>
+                            <div class="card-title">Yayın Durumu</div>
+                            <div class="card-desc">İçerik görünürlüğü</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="status-options">
+
+                            <label class="status-option" id="opt-draft">
+                                <input type="radio" asp-for="MovieStatus" value="Taslak" checked onchange="updateStatus(this.closest('.status-option'))" />
+                                <div>
+                                    <div class="status-option-label">Taslak</div>
+                                    <div class="status-option-sub">Henüz yayınlanmadı</div>
+                                </div>
+                                <span class="status-dot dot-draft"></span>
+                            </label>
+
+                            <label class="status-option" id="opt-published">
+                                <input type="radio" asp-for="MovieStatus" value="Yayında" onchange="updateStatus(this.closest('.status-option'))" />
+                                <div>
+                                    <div class="status-option-label">Yayında</div>
+                                    <div class="status-option-sub">Kullanıcılar görebilir</div>
+                                </div>
+                                <span class="status-dot dot-published"></span>
+                            </label>
+
+                            <label class="status-option" id="opt-archived">
+                                <input type="radio" asp-for="MovieStatus" value="Arşivlendi" onchange="updateStatus(this.closest('.status-option'))" />
+                                <div>
+                                    <div class="status-option-label">Arşivlendi</div>
+                                    <div class="status-option-sub">Gizlendi, silinmedi</div>
+                                </div>
+                                <span class="status-dot dot-archived"></span>
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <!-- küçük “pro tip” kartı -->
-        <div class="mt-3 muted d-flex align-items-center gap-2">
-            <ion-icon name="sparkles-outline"></ion-icon>
-            <span>İstersen bir sonraki adımda: kapak URL yazınca sağ tarafta canlı “poster preview” ekleyelim (çok film paneli havası verir).</span>
+        <!-- Bottom Bar -->
+        <div class="form-bottom-bar">
+            <div class="form-note">Tüm zorunlu alanları doldurun</div>
+            <div class="bottom-actions">
+                <a href="/Admin/AdminMovie" class="btn btn-ghost">İptal</a>
+                <button type="submit" class="btn btn-primary">
+                    ✦ Filmi Ekle
+                </button>
+            </div>
         </div>
-    </div>
+
+    </form>
+
 </div>
+
+<script>
+    // Cover preview
+    const coverInput = document.getElementById('coverUrlInput');
+    const coverImg = document.getElementById('coverImg');
+    const coverPlaceholder = document.getElementById('coverPlaceholder');
+    const coverPreview = document.getElementById('coverPreview');
+
+    coverInput?.addEventListener('input', function () {
+        const url = this.value.trim();
+        if (url) {
+            coverImg.src = url;
+            coverImg.style.display = 'block';
+            coverPlaceholder.style.display = 'none';
+            coverPreview.classList.add('has-image');
+            coverImg.onerror = () => {
+                coverImg.style.display = 'none';
+                coverPlaceholder.style.display = 'flex';
+                coverPreview.classList.remove('has-image');
+            };
+        } else {
+            coverImg.style.display = 'none';
+            coverPlaceholder.style.display = 'flex';
+            coverPreview.classList.remove('has-image');
+        }
+    });
+
+    // Rating display
+    const ratingInput = document.getElementById('ratingInput');
+    const ratingDisplay = document.getElementById('ratingDisplay');
+
+    ratingInput?.addEventListener('input', function () {
+        ratingDisplay.textContent = this.value ? parseFloat(this.value).toFixed(1) : '—';
+    });
+
+    // Char counters
+    function setupCharCounter(inputId, counterId, max) {
+        const input = document.getElementById(inputId);
+        const counter = document.getElementById(counterId);
+        if (!input || !counter) return;
+
+        const update = () => {
+            const len = input.value.length;
+            counter.textContent = `${len} / ${max}`;
+            counter.className = 'char-count';
+            if (len > max * 0.9) counter.classList.add('warn');
+            if (len >= max) counter.classList.add('over');
+        };
+
+        input.addEventListener('input', update);
+        update();
+    }
+
+    setupCharCounter('titleInput', 'titleCount', 150);
+    setupCharCounter('descInput', 'descCount', 1000);
+
+    // Status radio highlight
+    function updateStatus(selectedEl) {
+        document.querySelectorAll('.status-option').forEach(el => el.classList.remove('selected'));
+        selectedEl?.classList.add('selected');
+    }
+
+    // Init selected state
+    document.querySelector('input[name="Status"]:checked')
+        ?.closest('.status-option')
+        ?.classList.add('selected');
+</script>

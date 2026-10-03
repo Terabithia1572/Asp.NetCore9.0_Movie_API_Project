@@ -28,7 +28,8 @@ namespace MovieApi.Application.Features.CQRSDesignPattern.Handlers.MovieHandlers
                 MovieDuration = createMovieCommand.MovieDuration,//Film süresi
                 MovieReleaseDate = createMovieCommand.MovieReleaseDate,//Film yayın tarihi
                 MovileCreatedYear = createMovieCommand.MovileCreatedYear,//Film çıkış yılı
-                MovieStatus = createMovieCommand.MovieStatus //Film durumu
+                MovieStatus = createMovieCommand.MovieStatus, //Film durumu
+                CategoryID = createMovieCommand.CategoryID //Film kategorisi
             });
             await _context.SaveChangesAsync();
         }
