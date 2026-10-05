@@ -1,0 +1,79 @@
+@model List<Movie.Api.UI.Areas.Admin.Controllers.BackupHistoryItem>
+
+@{
+    ViewData["Title"] = "Yedekleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="container-fluid" style="padding: 24px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px;">
+        <div>
+            <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px; color: #fff; margin: 0;">
+                SİSTEM <em style="color: #e50914; font-style: normal;">YEDEKLEME</em>
+            </h2>
+            <p style="color: #777; font-size: 13px; margin-top: 4px;">Veritabanı ve medya dosyaları yedekleme geçmişi ve anlık yedek oluşturma</p>
+        </div>
+        <div style="display: flex; gap: 12px;">
+            <form asp-action="CreateBackup" method="post" style="display: inline;">
+                <input type="hidden" name="backupType" value="database" />
+                <button type="submit" style="background: #e50914; color: #fff; padding: 10px 20px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer;">
+                    💾 DB Yedeği Al
+                </button>
+            </form>
+            <form asp-action="CreateBackup" method="post" style="display: inline;">
+                <input type="hidden" name="backupType" value="media" />
+                <button type="submit" style="background: #222; color: #fff; border: 1px solid #333; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;">
+                    📦 Medya Yedeği Al
+                </button>
+            </form>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div style="background: rgba(0,184,148,0.15); color: #00b894; border: 1px solid #00b894; padding: 16px; border-radius: 8px; margin-bottom: 24px; font-weight: 600;">
+            ✔ @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; overflow: hidden;">
+        <table class="table" style="width: 100%; color: #eee; border-collapse: collapse; margin: 0;">
+            <thead style="background: #181818;">
+                <tr>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase;">Yedek Dosya Adı</th>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase;">Yedek Türü</th>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase;">Boyut</th>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase;">Oluşturulma Tarihi</th>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase;">Durum</th>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase; text-align: right;">İndir</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var b in Model)
+                    {
+                        <tr style="border-bottom: 1px solid #1a1a1a;">
+                            <td style="padding: 16px; font-weight: 600; color: #fff;">@b.BackupName</td>
+                            <td style="padding: 16px; color: #aaa;">@b.BackupType</td>
+                            <td style="padding: 16px; color: #aaa;">@b.FileSize</td>
+                            <td style="padding: 16px; color: #777;">@b.CreatedDate.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td style="padding: 16px;">
+                                <span style="background: rgba(0,184,148,0.15); color: #00b894; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">✔ @b.Status</span>
+                            </td>
+                            <td style="padding: 16px; text-align: right;">
+                                <a href="/Admin/AdminBackup/DownloadBackup?fileName=@b.BackupName" style="background: #222; color: #fff; padding: 6px 14px; border-radius: 6px; text-decoration: none; font-size: 12px; border: 1px solid #333;">
+                                    📥 İndir
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="6" style="text-align: center; padding: 32px; color: #777;">Henüz yedek dosyası bulunmamaktadır.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

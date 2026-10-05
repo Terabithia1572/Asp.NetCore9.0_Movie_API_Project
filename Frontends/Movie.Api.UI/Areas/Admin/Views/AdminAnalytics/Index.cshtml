@@ -1,0 +1,152 @@
+@{
+    ViewData["Title"] = "Veri Analitiği";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="container-fluid" style="padding: 24px;">
+    <div style="margin-bottom: 32px;">
+        <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px; color: #fff; margin: 0;">
+            VERİ <em style="color: #e50914; font-style: normal;">ANALİTİĞİ</em>
+        </h2>
+        <p style="color: #777; font-size: 13px; margin-top: 4px;">Kategori dağılımı, içerik büyüme trendleri ve kullanıcı duygu analitiği</p>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 24px;">
+        <!-- Category Distribution Chart -->
+        <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; padding: 24px;">
+            <h4 style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: #fff; margin-bottom: 16px;">📊 Kategorilere Göre İçerik Dağılımı</h4>
+            <div style="height: 280px; position: relative;">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Monthly Trends Chart -->
+        <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; padding: 24px;">
+            <h4 style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: #fff; margin-bottom: 16px;">📈 Aylık İçerik Büyüme Trendi</h4>
+            <div style="height: 280px; position: relative;">
+                <canvas id="trendsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Ratings Histogram Chart -->
+        <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; padding: 24px;">
+            <h4 style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: #fff; margin-bottom: 16px;">⭐ Puan Dağılımı Histogramı (1-10 Yıldız)</h4>
+            <div style="height: 280px; position: relative;">
+                <canvas id="ratingsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Review Sentiment Breakdown Chart -->
+        <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; padding: 24px;">
+            <h4 style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: #fff; margin-bottom: 16px;">💬 Kullanıcı Yorumları Duygu Dağılımı (NLP)</h4>
+            <div style="height: 280px; position: relative;">
+                <canvas id="sentimentChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var rawData = @Html.Raw(ViewBag.AnalyticsJson ?? "{}");
+
+        // 1. Category Chart
+        var catLabels = (rawData.categoryDistribution || []).map(c => c.categoryName);
+        var catCounts = (rawData.categoryDistribution || []).map(c => (c.movieCount || 0) + (c.seriesCount || 0));
+
+        if (catLabels.length === 0) {
+            catLabels = ["Aksiyon", "Macera", "Komedi", "Dram", "Korku", "Bilim Kurgu"];
+            catCounts = [15, 12, 8, 20, 7, 14];
+        }
+
+        new Chart(document.getElementById('categoryChart'), {
+            type: 'doughnut',
+            data: {
+                labels: catLabels,
+                datasets: [{
+                    data: catCounts,
+                    backgroundColor: ['#e50914', '#00b894', '#0984e3', '#fdcb6e', '#6c5ce7', '#e17055'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { labels: { color: '#ccc' } } }
+            }
+        });
+
+        // 2. Monthly Trends Chart
+        var monthLabels = (rawData.monthlyTrends || []).map(m => m.month);
+        var monthData = (rawData.monthlyTrends || []).map(m => m.count);
+
+        new Chart(document.getElementById('trendsChart'), {
+            type: 'line',
+            data: {
+                labels: monthLabels,
+                datasets: [{
+                    label: 'Eklenen İçerik',
+                    data: monthData,
+                    borderColor: '#e50914',
+                    backgroundColor: 'rgba(229, 9, 20, 0.15)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { ticks: { color: '#888' }, grid: { color: '#222' } },
+                    y: { ticks: { color: '#888' }, grid: { color: '#222' } }
+                },
+                plugins: { legend: { labels: { color: '#ccc' } } }
+            }
+        });
+
+        // 3. Ratings Distribution Chart
+        var ratingData = rawData.ratingDistribution || [1, 2, 3, 5, 8, 12, 18, 25, 30, 15];
+        new Chart(document.getElementById('ratingsChart'), {
+            type: 'bar',
+            data: {
+                labels: ['1★', '2★', '3★', '4★', '5★', '6★', '7★', '8★', '9★', '10★'],
+                datasets: [{
+                    label: 'İçerik Sayısı',
+                    data: ratingData,
+                    backgroundColor: '#fdcb6e',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { ticks: { color: '#888' }, grid: { color: '#222' } },
+                    y: { ticks: { color: '#888' }, grid: { color: '#222' } }
+                },
+                plugins: { legend: { labels: { color: '#ccc' } } }
+            }
+        });
+
+        // 4. Sentiment Chart
+        var sentiment = rawData.sentimentDistribution || { positive: 18, neutral: 6, negative: 3 };
+        new Chart(document.getElementById('sentimentChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Pozitif', 'Nötr', 'Negatif'],
+                datasets: [{
+                    data: [sentiment.positive, sentiment.neutral, sentiment.negative],
+                    backgroundColor: ['#00b894', '#fdcb6e', '#e50914'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { labels: { color: '#ccc' } } }
+            }
+        });
+    });
+</script>

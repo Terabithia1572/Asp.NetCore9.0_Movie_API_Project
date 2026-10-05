@@ -1,0 +1,97 @@
+@model Movie.Api.UI.Areas.Admin.Controllers.AdminReportViewModel
+
+@{
+    ViewData["Title"] = "Sistem Raporları";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="container-fluid" style="padding: 24px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px;">
+        <div>
+            <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px; color: #fff; margin: 0;">
+                SİSTEM <em style="color: #e50914; font-style: normal;">RAPORLARI</em>
+            </h2>
+            <p style="color: #777; font-size: 13px; margin-top: 4px;">Film ve dizi performans raporlarını görüntüleyin ve CSV olarak dışa aktarın</p>
+        </div>
+    </div>
+
+    <!-- Top Movies Report Card -->
+    <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; padding: 24px; margin-bottom: 32px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+            <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #fff; margin: 0;">🎬 En Yüksek Puanlı 10 Film Raporu</h3>
+            <a href="/Admin/AdminReport/ExportCsv?reportType=movies" style="background: #e50914; color: #fff; padding: 8px 18px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 600;">
+                📥 CSV Dışa Aktar
+            </a>
+        </div>
+        <table style="width: 100%; color: #eee; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 1px solid #222;">
+                    <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">ID</th>
+                    <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">Film Adı</th>
+                    <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">Kategori</th>
+                    <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">Yayın Yılı</th>
+                    <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">Puan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.TopMovies.Any())
+                {
+                    foreach (var m in Model.TopMovies)
+                    {
+                        <tr style="border-bottom: 1px solid #1a1a1a;">
+                            <td style="padding: 12px; color: #777;">#@m.MovieID</td>
+                            <td style="padding: 12px; font-weight: 600; color: #fff;">@m.MovieTitle</td>
+                            <td style="padding: 12px; color: #aaa;">@(m.CategoryName ?? "-")</td>
+                            <td style="padding: 12px; color: #aaa;">@m.MovileCreatedYear</td>
+                            <td style="padding: 12px;"><span style="color: #f5b50a; font-weight: bold;">★ @m.MovieRating</span></td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="5" style="text-align: center; padding: 20px; color: #666;">Film kaydı bulunmamaktadır.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Top Series Report Card -->
+    <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; padding: 24px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+            <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #fff; margin: 0;">📺 En Yüksek Puanlı 10 Dizi Raporu</h3>
+            <a href="/Admin/AdminReport/ExportCsv?reportType=series" style="background: #e50914; color: #fff; padding: 8px 18px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: 600;">
+                📥 CSV Dışa Aktar
+            </a>
+        </div>
+        <table style="width: 100%; color: #eee; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 1px solid #222;">
+                    <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">ID</th>
+                    <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">Dizi Adı</th>
+                    <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">Yıl</th>
+                    <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">Sezon / Bölüm</th>
+                    <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">Puan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.TopSeries.Any())
+                {
+                    foreach (var s in Model.TopSeries)
+                    {
+                        <tr style="border-bottom: 1px solid #1a1a1a;">
+                            <td style="padding: 12px; color: #777;">#@s.SeriesID</td>
+                            <td style="padding: 12px; font-weight: 600; color: #fff;">@s.SeriesTitle</td>
+                            <td style="padding: 12px; color: #aaa;">@s.SeriesCreatedYear</td>
+                            <td style="padding: 12px; color: #aaa;">@s.SeriesSeasonCount Sezon / @s.SeriesEpisodeCount Bölüm</td>
+                            <td style="padding: 12px;"><span style="color: #f5b50a; font-weight: bold;">★ @s.SeriesRating</span></td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="5" style="text-align: center; padding: 20px; color: #666;">Dizi kaydı bulunmamaktadır.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

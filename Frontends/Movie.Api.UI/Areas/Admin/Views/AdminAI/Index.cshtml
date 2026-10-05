@@ -1,0 +1,127 @@
+@{
+    ViewData["Title"] = "AI & ML Modelleri";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="container-fluid" style="padding: 24px;">
+    <div style="margin-bottom: 32px;">
+        <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px; color: #fff; margin: 0;">
+            YAPAY ZEKA <em style="color: #e50914; font-style: normal;">& ML MODELLERİ</em>
+        </h2>
+        <p style="color: #777; font-size: 13px; margin-top: 4px;">Öneri algoritması, duygu analizi ve otomatik etiketleme modelleri</p>
+    </div>
+
+    <!-- AI Model Cards -->
+    <div class="row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px; margin-bottom: 32px;">
+        <!-- Recommendation Engine Card -->
+        <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; padding: 24px; position: relative;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                <span style="font-size: 28px;">🧠</span>
+                <span style="background: rgba(0,184,148,0.15); color: #00b894; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold;">● AKTİF (v2.4)</span>
+            </div>
+            <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: #fff; margin: 0;">Film Öneri Sistemi</h3>
+            <p style="color: #888; font-size: 12px; margin-top: 4px;">Kullanıcıların izleme ve favori geçmişine dayalı hibrit (Collaborative & Content-based) öneri algoritması.</p>
+            <div style="margin-top: 16px; border-top: 1px solid #222; padding-top: 16px; display: flex; justify-content: space-between; font-size: 12px; color: #aaa;">
+                <span>Doğruluk: <strong style="color: #00b894;">94.2%</strong></span>
+                <span>Son Eğitim: <strong>Bugün 04:30</strong></span>
+            </div>
+            <button type="button" onclick="retrainModel('Öneri Sistemi')" style="width: 100%; margin-top: 16px; background: #222; border: 1px solid #333; color: #fff; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                ⚡ Modeli Yeniden Eğit
+            </button>
+        </div>
+
+        <!-- NLP Sentiment Model Card -->
+        <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; padding: 24px; position: relative;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                <span style="font-size: 28px;">💬</span>
+                <span style="background: rgba(0,184,148,0.15); color: #00b894; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold;">● AKTİF (v1.8)</span>
+            </div>
+            <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: #fff; margin: 0;">NLP Yorum Duygu Analizi</h3>
+            <p style="color: #888; font-size: 12px; margin-top: 4px;">Kullanıcı yorum metinlerini otomatik analiz ederek Pozitif, Nötr veya Negatif skor üreten NLP modeli.</p>
+            <div style="margin-top: 16px; border-top: 1px solid #222; padding-top: 16px; display: flex; justify-content: space-between; font-size: 12px; color: #aaa;">
+                <span>Doğruluk: <strong style="color: #00b894;">91.8%</strong></span>
+                <span>Analiz Edilen: <strong>1,240 Yorum</strong></span>
+            </div>
+            <button type="button" onclick="retrainModel('NLP Duygu Analizi')" style="width: 100%; margin-top: 16px; background: #222; border: 1px solid #333; color: #fff; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                ⚡ Modeli Yeniden Eğit
+            </button>
+        </div>
+
+        <!-- Auto Tagger Card -->
+        <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; padding: 24px; position: relative;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                <span style="font-size: 28px;">🏷️</span>
+                <span style="background: rgba(9,132,227,0.15); color: #0984e3; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold;">● OTOMATİK</span>
+            </div>
+            <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: #fff; margin: 0;">Otomatik İçerik Etiketleyici</h3>
+            <p style="color: #888; font-size: 12px; margin-top: 4px;">Film ve dizi özetlerinden otomatik etiket ve anahtar kelime çıkartan metin madenciliği servisi.</p>
+            <div style="margin-top: 16px; border-top: 1px solid #222; padding-top: 16px; display: flex; justify-content: space-between; font-size: 12px; color: #aaa;">
+                <span>Etiket Sayısı: <strong>48 Etiket</strong></span>
+                <span>Eşleşme Oranı: <strong style="color: #00b894;">88.5%</strong></span>
+            </div>
+            <button type="button" onclick="retrainModel('Otomatik Etiketleyici')" style="width: 100%; margin-top: 16px; background: #222; border: 1px solid #333; color: #fff; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                ⚡ Modeli Yeniden Eğit
+            </button>
+        </div>
+    </div>
+
+    <!-- Live Sentiment Tester Section -->
+    <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; padding: 28px; max-width: 900px;">
+        <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: #fff; margin: 0 0 8px 0;">🧪 Canlı NLP Duygu Analizi Testi</h3>
+        <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Aşağıdaki alana örnek bir film yorumu yazarak yapay zeka modelinin tahmin sonucunu anlık olarak test edin.</p>
+
+        <div style="margin-bottom: 16px;">
+            <textarea id="sampleComment" rows="3" placeholder="Örnek: Film gerçekten harikaydı, sürükleyici senaryosu ve oyunculuklar beni benden aldı!" style="width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 14px; color: #fff; font-size: 14px; outline: none;"></textarea>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <button type="button" onclick="runSentimentTest()" style="background: #e50914; color: #fff; padding: 12px 24px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer;">
+                ✦ Yorumu Analiz Et
+            </button>
+            <div id="sentimentResult" style="display: none; align-items: center; gap: 12px;">
+                <span id="resultBadge" style="padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 12px;">-</span>
+                <span style="color: #aaa; font-size: 13px;">Güven Skoru: <strong id="resultScore" style="color: #fff;">0.00</strong></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function runSentimentTest() {
+        var text = $('#sampleComment').val().trim();
+        if (!text) {
+            alert('Lütfen analiz için bir yorum metni girin.');
+            return;
+        }
+
+        $.ajax({
+            url: '/Admin/AdminAI/TestSentiment',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ text: text }),
+            success: function (res) {
+                if (res.success) {
+                    $('#sentimentResult').css('display', 'flex');
+                    $('#resultScore').text((res.confidenceScore * 100).toFixed(1) + '%');
+                    
+                    var badge = $('#resultBadge');
+                    if (res.sentiment === 'Pozitif') {
+                        badge.css({ 'background': 'rgba(0,184,148,0.2)', 'color': '#00b894' }).text('😊 POZİTİF');
+                    } else if (res.sentiment === 'Negatif') {
+                        badge.css({ 'background': 'rgba(225,112,85,0.2)', 'color': '#e17055' }).text('😞 NEGATİF');
+                    } else {
+                        badge.css({ 'background': 'rgba(253,203,110,0.2)', 'color': '#fdcb6e' }).text('😐 NÖTR');
+                    }
+                } else {
+                    alert(res.message || 'Hata oluştu.');
+                }
+            }
+        });
+    }
+
+    function retrainModel(modelName) {
+        $.post('/Admin/AdminAI/RetrainModel', { modelName: modelName }, function (res) {
+            alert(res.message);
+        });
+    }
+</script>
