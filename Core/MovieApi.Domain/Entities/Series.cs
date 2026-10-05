@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,5 +21,6 @@ namespace MovieApi.Domain.Entities
         public bool SeriesStatus { get; set; } //Dizi durumu
         public int CategoryID { get; set; } //Kategori ID
         public Category Category { get; set; } //Kategori nesnesi 
+        public ICollection<Season> Seasons { get; set; } = new List<Season>();
     }
 }

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using MovieApi.Application.Features.CQRSDesignPattern.Handlers.CategoryHandlers;
+using MovieApi.Application.Features.CQRSDesignPattern.Handlers.EpisodeHandlers;
 using MovieApi.Application.Features.CQRSDesignPattern.Handlers.MovieHandlers;
+using MovieApi.Application.Features.CQRSDesignPattern.Handlers.SeasonHandlers;
 using MovieApi.Application.Features.CQRSDesignPattern.Handlers.SeriesHandlers;
 using MovieApi.Application.Features.CQRSDesignPattern.Handlers.UserRegisterHandlers;
 using MovieApi.Persistence.Context;
@@ -37,6 +39,22 @@ namespace Movie.Api.WebApi.Extensions
             services.AddScoped<RemoveSeriesCommandHandler>();
             services.AddScoped<UpdateSeriesCommandHandler>();
             services.AddScoped<GetSeriesWithCategoryQueryHandler>();
+
+            // Season
+            services.AddScoped<GetSeasonQueryHandler>();
+            services.AddScoped<GetSeasonByIDQueryHandler>();
+            services.AddScoped<GetSeasonBySeriesIDQueryHandler>();
+            services.AddScoped<CreateSeasonCommandHandler>();
+            services.AddScoped<RemoveSeasonCommandHandler>();
+            services.AddScoped<UpdateSeasonCommandHandler>();
+
+            // Episode
+            services.AddScoped<GetEpisodeQueryHandler>();
+            services.AddScoped<GetEpisodeByIDQueryHandler>();
+            services.AddScoped<GetEpisodeBySeasonIDQueryHandler>();
+            services.AddScoped<CreateEpisodeCommandHandler>();
+            services.AddScoped<RemoveEpisodeCommandHandler>();
+            services.AddScoped<UpdateEpisodeCommandHandler>();
 
             // User
 
