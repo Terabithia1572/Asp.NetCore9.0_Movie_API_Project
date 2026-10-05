@@ -22,5 +22,6 @@ namespace MovieApi.Domain.Entities
         public int CategoryID { get; set; } //Kategori ID
         public Category Category { get; set; } //Kategori nesnesi 
         public ICollection<Season> Seasons { get; set; } = new List<Season>();
+        public ICollection<UserFavorite> UserFavorites { get; set; } = new List<UserFavorite>();
     }
 }

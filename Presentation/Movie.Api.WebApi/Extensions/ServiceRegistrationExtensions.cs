@@ -5,6 +5,7 @@ using MovieApi.Application.Features.CQRSDesignPattern.Handlers.EpisodeHandlers;
 using MovieApi.Application.Features.CQRSDesignPattern.Handlers.MovieHandlers;
 using MovieApi.Application.Features.CQRSDesignPattern.Handlers.SeasonHandlers;
 using MovieApi.Application.Features.CQRSDesignPattern.Handlers.SeriesHandlers;
+using MovieApi.Application.Features.CQRSDesignPattern.Handlers.UserFavoriteHandlers;
 using MovieApi.Application.Features.CQRSDesignPattern.Handlers.UserRegisterHandlers;
 using MovieApi.Persistence.Context;
 using MovieApi.Persistence.Identity;
@@ -55,6 +56,15 @@ namespace Movie.Api.WebApi.Extensions
             services.AddScoped<CreateEpisodeCommandHandler>();
             services.AddScoped<RemoveEpisodeCommandHandler>();
             services.AddScoped<UpdateEpisodeCommandHandler>();
+
+            // UserFavorite
+            services.AddScoped<GetUserFavoriteMoviesQueryHandler>();
+            services.AddScoped<GetUserFavoriteSeriesQueryHandler>();
+            services.AddScoped<IsMovieFavoritedQueryHandler>();
+            services.AddScoped<IsSeriesFavoritedQueryHandler>();
+            services.AddScoped<ToggleMovieFavoriteCommandHandler>();
+            services.AddScoped<ToggleSeriesFavoriteCommandHandler>();
+            services.AddScoped<RemoveUserFavoriteCommandHandler>();
 
             // User
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,5 +20,6 @@ namespace MovieApi.Domain.Entities
         public int CategoryID { get; set; } //Kategori ID
         public Category Category { get; set; } //Kategori nesnesi 
         public List<Review> Reviews { get; set; }
+        public ICollection<UserFavorite> UserFavorites { get; set; } = new List<UserFavorite>();
     }
 }

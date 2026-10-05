@@ -58,6 +58,27 @@ namespace MovieApi.Persistence.Context
                     .HasForeignKey(e => e.SeasonID)
                     .OnDelete(DeleteBehavior.Cascade);
             });
+
+            builder.Entity<UserFavorite>(entity =>
+            {
+                entity.ToTable("UserFavorites", "dbo");
+                entity.HasKey(uf => uf.UserFavoriteID);
+
+                entity.HasOne<AppUser>()
+                    .WithMany()
+                    .HasForeignKey(uf => uf.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(uf => uf.Movie)
+                    .WithMany(m => m.UserFavorites)
+                    .HasForeignKey(uf => uf.MovieID)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(uf => uf.Series)
+                    .WithMany(s => s.UserFavorites)
+                    .HasForeignKey(uf => uf.SeriesID)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
         }
         public DbSet<Category> Categories { get; set; } //Kategoriler tablosu
         public DbSet<Movie> Movies { get; set; } //Filmler tablosu
@@ -67,5 +88,6 @@ namespace MovieApi.Persistence.Context
         public DbSet<Series> Series { get; set; } //Diziler tablosu
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Episode> Episodes { get; set; }
+        public DbSet<UserFavorite> UserFavorites { get; set; }
     }
 }
