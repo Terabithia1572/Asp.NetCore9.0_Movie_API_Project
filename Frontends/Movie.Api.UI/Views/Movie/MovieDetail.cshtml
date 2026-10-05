@@ -1,4 +1,4 @@
-﻿
+
 @{
     ViewData["Title"] = "MovieDetail";
     Layout = "~/Views/UserWebUILayout/LayoutUI.cshtml";
@@ -40,7 +40,7 @@
 								<li><a href="#moviesrelated"> Benzer</a></li>
 							</ul>
 							<div class="tab-content">
-								@await Component.InvokeAsync("_MovieDetailOverviewComponentPartial");
+								@await Component.InvokeAsync("_MovieDetailOverviewComponentPartial", new { id = ViewBag.id ?? 0 })
 								<div id="reviews" class="tab review">
 									<div class="row">
 										<div class="rv-hd">

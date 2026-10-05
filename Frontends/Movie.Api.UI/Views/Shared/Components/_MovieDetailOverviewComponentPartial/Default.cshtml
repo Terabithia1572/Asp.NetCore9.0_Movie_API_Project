@@ -1,165 +1,89 @@
-﻿<div id="overview" class="tab active">
+@model Movie.Api.UI.Models.MovieDetailOverviewViewModel
+
+<div id="overview" class="tab active">
 	<div class="row">
 		<div class="col-md-8 col-sm-12 col-xs-12">
-			<p>Leonard Hofstadter and Sheldon Cooper are both brilliant physicists working at Cal Tech in Pasadena, California. They are colleagues, best friends, and roommates, although in all capacities their relationship is always tested primarily by Sheldon's regimented, deeply eccentric, and non-conventional ways.</p>
+			<p>@(Model?.Movie?.MovieDescription ?? "Bu film için açıklama bulunmamaktadır.")</p>
+
 			<div class="title-hd-sm">
-				<h4>Current Season</h4>
-				<a href="#" class="time">View All Seasons <i class="ion-ios-arrow-right"></i></a>
+				<h4>Oyuncular (@(Model?.Casts?.Count ?? 0))</h4>
 			</div>
 			<!-- movie cast -->
 			<div class="mvcast-item">
-				<div class="cast-it">
-					<div class="cast-left series-it">
-						<img src="~/MovieTheme/images/uploads/season.jpg" alt="">
-						<div>
-							<a href="#">Season 10</a>
-							<p>21 Episodes</p>
-							<p>
-								Season 10 of The Big Bang Theory premiered on
-								September 19, 2016.
-							</p>
+				@if (Model?.Casts != null && Model.Casts.Any())
+				{
+					foreach (var cast in Model.Casts)
+					{
+						<div class="cast-it">
+							<div class="cast-left">
+								<img src="@(string.IsNullOrEmpty(cast.CastImageURL) ? "/MovieTheme/images/uploads/cast1.jpg" : cast.CastImageURL)" alt="@cast.CastFullName" style="width: 45px; height: 45px; object-fit: cover; border-radius: 50%;">
+								<a href="#" style="margin-left: 10px; font-weight: 600;">@cast.CastFullName</a>
+							</div>
+							<p style="color: #abb7c4;">@(string.IsNullOrEmpty(cast.CastTitle) ? cast.CastFullName : cast.CastTitle)</p>
 						</div>
-					</div>
-				</div>
+					}
+				}
+				else
+				{
+					<p style="color: #abb7c4; padding: 10px 0; font-style: italic;">Henüz oyuncu kadrosu eklenmemiştir.</p>
+				}
 			</div>
-			<div class="title-hd-sm">
-				<h4>Videolar & Fotoğraflar</h4>
-				<a href="#" class="time">5 Video & 26 Fotoğraf <i class="ion-ios-arrow-right"></i></a>
-			</div>
-			<div class="mvsingle-item ov-item">
-				<a class="img-lightbox" data-fancybox-group="gallery" href="~/MovieTheme/~/MovieTheme/images/uploads/image41.jpg"><img src="~/MovieTheme/images/uploads/image4.jpg" alt=""></a>
-				<a class="img-lightbox" data-fancybox-group="gallery" href="~/MovieTheme/images/uploads/image51.jpg"><img src="~/MovieTheme/images/uploads/image5.jpg" alt=""></a>
-				<a class="img-lightbox" data-fancybox-group="gallery" href="~/MovieTheme/images/uploads/image61.jpg"><img src="~/MovieTheme/images/uploads/image6.jpg" alt=""></a>
-				<div class="vd-it">
-					<img class="vd-img" src="~/MovieTheme/images/uploads/image7.jpg" alt="">
-					<a class="fancybox-media hvr-grow" href="https://www.youtube.com/embed/o-0hcF97wy0"><img src="~/MovieTheme/images/uploads/play-vd.png" alt=""></a>
-				</div>
-			</div>
-			<div class="title-hd-sm">
-				<h4>Oyuncular</h4>
-				<a href="#" class="time">Tüm oyuncuları gör  <i class="ion-ios-arrow-right"></i></a>
-			</div>
-			<!-- movie cast -->
-			<div class="mvcast-item">
-				<div class="cast-it">
-					<div class="cast-left">
-						<img src="~/MovieTheme/images/uploads/cast1.jpg" alt="">
-						<a href="#">Robert Downey Jr.</a>
-					</div>
-					<p>...  Robert Downey Jr.</p>
-				</div>
-				<div class="cast-it">
-					<div class="cast-left">
-						<img src="~/MovieTheme/images/uploads/cast2.jpg" alt="">
-						<a href="#">Chris Hemsworth</a>
-					</div>
-					<p>...  Thor</p>
-				</div>
-				<div class="cast-it">
-					<div class="cast-left">
-						<img src="~/MovieTheme/images/uploads/cast3.jpg" alt="">
-						<a href="#">Mark Ruffalo</a>
-					</div>
-					<p>...  Bruce Banner/ Hulk</p>
-				</div>
-				<div class="cast-it">
-					<div class="cast-left">
-						<img src="~/MovieTheme/images/uploads/cast4.jpg" alt="">
-						<a href="#">Chris Evans</a>
-					</div>
-					<p>...  Steve Rogers/ Captain America</p>
-				</div>
-				<div class="cast-it">
-					<div class="cast-left">
-						<img src="~/MovieTheme/images/uploads/cast5.jpg" alt="">
-						<a href="#">Scarlett Johansson</a>
-					</div>
-					<p>...  Natasha Romanoff/ Black Widow</p>
-				</div>
-				<div class="cast-it">
-					<div class="cast-left">
-						<img src="~/MovieTheme/images/uploads/cast6.jpg" alt="">
-						<a href="#">Jeremy Renner</a>
-					</div>
-					<p>...  Clint Barton/ Hawkeye</p>
-				</div>
-				<div class="cast-it">
-					<div class="cast-left">
-						<img src="~/MovieTheme/images/uploads/cast7.jpg" alt="">
-						<a href="#">James Spader</a>
-					</div>
-					<p>...  Ultron</p>
-				</div>
-				<div class="cast-it">
-					<div class="cast-left">
-						<img src="~/MovieTheme/images/uploads/cast9.jpg" alt="">
-						<a href="#">Don Cheadle</a>
-					</div>
-					<p>...  James Rhodes/ War Machine</p>
-				</div>
-			</div>
+
 			<div class="title-hd-sm">
 				<h4>Kullanıcı yorumları</h4>
-				<a href="#" class="time">Tüm Yorumları Gör <i class="ion-ios-arrow-right"></i></a>
+				<a href="#reviews" class="time">Yorumlar Sekmesi <i class="ion-ios-arrow-right"></i></a>
 			</div>
-			<!-- movie user review -->
 			<div class="mv-user-review-item">
-				<h3>Yapılan Son Yorum</h3>
+				<h3>Film Hakkında Değerlendirme</h3>
 				<div class="no-star">
-					<i class="ion-android-star"></i>
-					<i class="ion-android-star"></i>
-					<i class="ion-android-star"></i>
-					<i class="ion-android-star"></i>
-					<i class="ion-android-star"></i>
-					<i class="ion-android-star"></i>
-					<i class="ion-android-star"></i>
-					<i class="ion-android-star"></i>
-					<i class="ion-android-star"></i>
-					<i class="ion-android-star last"></i>
+					<i class="ion-android-star" style="color: #f5b50a;"></i>
+					<span style="color: #fff; font-weight: bold; margin-left: 5px;">@(Model?.Movie?.MovieRating ?? 0) / 10</span>
 				</div>
 				<p class="time">
-					17 Nisan 2025 <a href="#"> Ali Yıldız</a>
+					Yayın Yılı: @(Model?.Movie?.MovileCreatedYear ?? "-")
 				</p>
-				<p>This is by far one of my favorite movies from the MCU. The introduction of new Characters both good and bad also makes the movie more exciting. giving the characters more of a back story can also help audiences relate more to different characters better, and it connects a bond between the audience and actors or characters. Having seen the movie three times does not bother me here as it is as thrilling and exciting every time I am watching it. In other words, the movie is by far better than previous movies (and I do love everything Marvel), the plotting is splendid (they really do out do themselves in each film, there are no problems watching it more than once.</p>
+				<p>Filme yapılan kullanıcı yorumları ve incelemeleri yukarıdaki Yorumlar sekmesinden takip edebilirsiniz.</p>
 			</div>
 		</div>
+
 		<div class="col-md-4 col-xs-12 col-sm-12">
-			<div class="sb-it">
-				<h6>Yönetmen: </h6>
-				<p><a href="#">Mark Cendrowski</a></p>
-			</div>
-			<div class="sb-it">
-				<h6>Senarist: </h6>
-				<p><a href="#"> Chuck Lorre,</a> <a href="#">Bill Prady</a></p>
-			</div>
-			<div class="sb-it">
-				<h6>Oyuncular: </h6>
-				<p><a href="#">Robert Downey Jr,</a> <a href="#">Chris Evans,</a> <a href="#">Mark Ruffalo,</a><a href="#"> Scarlett Johansson</a></p>
-			</div>
-			<div class="sb-it">
-				<h6>Tür / Kategori:</h6>
-				<p><a href="#">Aksiyon, </a> <a href="#"> Korku,</a> <a href="#">Macera</a></p>
-			</div>
+			@if (Model?.Casts != null && Model.Casts.Any())
+			{
+				<div class="sb-it">
+					<h6>Öne Çıkan Oyuncular:</h6>
+					<p>
+						@string.Join(", ", Model.Casts.Take(4).Select(c => c.CastFullName))
+					</p>
+				</div>
+			}
 			<div class="sb-it">
 				<h6>Çıkış Tarihi:</h6>
-				<p>1 May 2006 (U.S.A)</p>
+				<p>@(Model?.Movie?.MovieReleaseDate.ToString("dd MMMM yyyy") ?? "-")</p>
 			</div>
 			<div class="sb-it">
 				<h6>Film Süresi:</h6>
-				<p>122 dakika</p>
+				<p>@(Model?.Movie?.MovieDuration ?? 0) dakika</p>
 			</div>
 			<div class="sb-it">
-				<h6>MMPA Rating:</h6>
-				<p>TV-14</p>
+				<h6>Reyting Puanı:</h6>
+				<p>@(Model?.Movie?.MovieRating ?? 0) / 10</p>
 			</div>
 			<div class="sb-it">
-				<h6>Anahtar Kelimeler:</h6>
-				<p class="tags">
-					<span class="time"><a href="#">superhero</a></span>
-					<span class="time"><a href="#">marvel universe</a></span>
-					<span class="time"><a href="#">comic</a></span>
-					<span class="time"><a href="#">blockbuster</a></span>
-					<span class="time"><a href="#">final battle</a></span>
+				<h6>Etiketler / Anahtar Kelimeler:</h6>
+				<p class="tags" style="margin-top: 5px;">
+					@if (Model?.Tags != null && Model.Tags.Any())
+					{
+						foreach (var tag in Model.Tags)
+						{
+							<span class="time" style="margin-right: 5px; margin-bottom: 8px; display: inline-block;">
+								<a href="#" style="background: #233a50; padding: 4px 12px; border-radius: 12px; color: #4280bf; font-size: 11px; text-decoration: none; display: inline-block;">#@tag.TagTitle</a>
+							</span>
+						}
+					}
+					else
+					{
+						<span style="color: #abb7c4; font-size: 12px; font-style: italic;">Etiket eklenmemiş</span>
+					}
 				</p>
 			</div>
 			<div class="ads">
