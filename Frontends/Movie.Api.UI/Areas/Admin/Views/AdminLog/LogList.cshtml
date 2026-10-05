@@ -1,0 +1,65 @@
+@model List<Movie.Api.UI.Areas.Admin.Controllers.SystemLogItem>
+
+@{
+    ViewData["Title"] = "Sistem Logları";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="container-fluid" style="padding: 24px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+        <div>
+            <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; color: #fff; margin: 0;">
+                SİSTEM <em style="color: #e50914; font-style: normal;">LOGLARI</em>
+            </h2>
+            <p style="color: #777; font-size: 13px; margin-top: 4px;">Uygulama etkinlikleri, denetim izleri ve hata kayıtları</p>
+        </div>
+    </div>
+
+    <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; overflow: hidden;">
+        <table class="table" style="width: 100%; color: #eee; border-collapse: collapse; margin: 0;">
+            <thead style="background: #181818;">
+                <tr>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase;">ID</th>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase;">Seviye</th>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase;">Mesaj</th>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase;">Kaynak</th>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase;">İstek Yolu</th>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase; text-align: right;">Zaman</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var log in Model)
+                    {
+                        <tr style="border-bottom: 1px solid #1a1a1a;">
+                            <td style="padding: 16px; color: #777;">#@log.LogId</td>
+                            <td style="padding: 16px;">
+                                @if (log.LogLevel == "Error")
+                                {
+                                    <span style="background: rgba(225,112,85,0.15); color: #e17055; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">Error</span>
+                                }
+                                else if (log.LogLevel == "Warning")
+                                {
+                                    <span style="background: rgba(253,203,110,0.15); color: #fdcb6e; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">Warning</span>
+                                }
+                                else
+                                {
+                                    <span style="background: rgba(9,132,227,0.15); color: #0984e3; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">Info</span>
+                                }
+                            </td>
+                            <td style="padding: 16px; font-weight: 500; color: #fff;">@log.Message</td>
+                            <td style="padding: 16px; color: #aaa;">@log.Source</td>
+                            <td style="padding: 16px; color: #4280bf; font-family: monospace;">@log.RequestPath</td>
+                            <td style="padding: 16px; text-align: right; color: #777;">@log.Timestamp.ToString("dd.MM.yyyy HH:mm:ss")</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="6" style="text-align: center; padding: 32px; color: #777;">Log kaydı bulunamadı.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

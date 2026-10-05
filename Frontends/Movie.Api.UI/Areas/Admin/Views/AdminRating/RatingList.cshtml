@@ -1,0 +1,99 @@
+@model Movie.Api.UI.Areas.Admin.Controllers.RatingListViewModel
+
+@{
+    ViewData["Title"] = "Puanlamalar";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="container-fluid" style="padding: 24px;">
+    <div style="margin-bottom: 32px;">
+        <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px; color: #fff; margin: 0;">
+            İÇERİK <em style="color: #e50914; font-style: normal;">PUANLAMALARI</em>
+        </h2>
+        <p style="color: #777; font-size: 13px; margin-top: 4px;">Film ve dizi içeriklerinin kullanıcı ve genel puanlama sıralaması</p>
+    </div>
+
+    <div class="row" style="display: flex; gap: 24px; flex-wrap: wrap;">
+        <!-- Movie Ratings Column -->
+        <div style="flex: 1; min-width: 450px;">
+            <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; padding: 20px;">
+                <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #fff; margin-bottom: 16px;">🎬 Film Puanları</h3>
+                <table style="width: 100%; color: #eee; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid #222;">
+                            <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">Film</th>
+                            <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">Kategori</th>
+                            <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">Puan</th>
+                            <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase; text-align: right;">Detay</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Movies != null && Model.Movies.Any())
+                        {
+                            foreach (var movie in Model.Movies)
+                            {
+                                <tr style="border-bottom: 1px solid #1a1a1a;">
+                                    <td style="padding: 12px; font-weight: 600; color: #fff;">@movie.MovieTitle</td>
+                                    <td style="padding: 12px; color: #aaa;">@(movie.CategoryName ?? "-")</td>
+                                    <td style="padding: 12px;">
+                                        <span style="background: rgba(245,181,10,0.15); color: #f5b50a; padding: 4px 10px; border-radius: 20px; font-weight: bold; font-size: 12px;">
+                                            ★ @movie.MovieRating / 10
+                                        </span>
+                                    </td>
+                                    <td style="padding: 12px; text-align: right;">
+                                        <a href="/Movie/MovieDetail/@movie.MovieID" target="_blank" style="color: #e50914; text-decoration: none; font-size: 12px; font-weight: 600;">Görüntüle →</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="4" style="text-align: center; padding: 20px; color: #666;">Film verisi bulunamadı.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Series Ratings Column -->
+        <div style="flex: 1; min-width: 450px;">
+            <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; padding: 20px;">
+                <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #fff; margin-bottom: 16px;">📺 Dizi Puanları</h3>
+                <table style="width: 100%; color: #eee; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid #222;">
+                            <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">Dizi</th>
+                            <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">Sezon/Bölüm</th>
+                            <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase;">Puan</th>
+                            <th style="padding: 12px; color: #888; font-size: 11px; text-transform: uppercase; text-align: right;">Detay</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Series != null && Model.Series.Any())
+                        {
+                            foreach (var series in Model.Series)
+                            {
+                                <tr style="border-bottom: 1px solid #1a1a1a;">
+                                    <td style="padding: 12px; font-weight: 600; color: #fff;">@series.SeriesTitle</td>
+                                    <td style="padding: 12px; color: #aaa;">@series.SeriesSeasonCount Sezon / @series.SeriesEpisodeCount Bölüm</td>
+                                    <td style="padding: 12px;">
+                                        <span style="background: rgba(245,181,10,0.15); color: #f5b50a; padding: 4px 10px; border-radius: 20px; font-weight: bold; font-size: 12px;">
+                                            ★ @series.SeriesRating / 10
+                                        </span>
+                                    </td>
+                                    <td style="padding: 12px; text-align: right;">
+                                        <a href="/Series/SeriesDetail/@series.SeriesID" target="_blank" style="color: #e50914; text-decoration: none; font-size: 12px; font-weight: 600;">Görüntüle →</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="4" style="text-align: center; padding: 20px; color: #666;">Dizi verisi bulunamadı.</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

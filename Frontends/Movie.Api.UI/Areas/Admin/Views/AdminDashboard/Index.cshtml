@@ -1,0 +1,256 @@
+@model MovieApi.DTOs.DTOs.DashboardDTOs.ResultDashboardStatsDto
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    .dash-stat-card {
+        background: #111111;
+        border: 1px solid #222222;
+        border-radius: 12px;
+        padding: 24px;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .dash-stat-card:hover {
+        transform: translateY(-2px);
+        border-color: #444;
+    }
+    .dash-stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-bottom: 16px;
+    }
+    .dash-stat-val {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 38px;
+        line-height: 1;
+        letter-spacing: 1px;
+        color: #fff;
+    }
+    .dash-stat-label {
+        font-size: 12px;
+        color: #888888;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 6px;
+    }
+    .dash-section-title {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 24px;
+        letter-spacing: 1px;
+        color: #fff;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .dash-table-card {
+        background: #111111;
+        border: 1px solid #222222;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 24px;
+    }
+    .dash-table {
+        width: 100%;
+        color: #eee;
+        border-collapse: collapse;
+    }
+    .dash-table th {
+        color: #777;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 12px 16px;
+        border-bottom: 1px solid #222;
+        text-align: left;
+    }
+    .dash-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid #1a1a1a;
+        font-size: 13px;
+    }
+</style>
+
+<div class="container-fluid" style="padding: 24px;">
+    <!-- Page Header -->
+    <div style="margin-bottom: 32px;">
+        <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px; color: #fff; margin: 0;">
+            YÖNETİM <em style="color: #e50914; font-style: normal;">PANELİ</em>
+        </h2>
+        <p style="color: #777; font-size: 13px; margin-top: 4px;">Sistem genel durumu, içerik sayaçları ve özet istatistikler</p>
+    </div>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div style="background: #2b1114; color: #ff6b6b; padding: 16px; border-radius: 8px; margin-bottom: 24px; border: 1px solid #4a181e;">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    <!-- Stat Cards Row -->
+    <div class="row" style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 32px;">
+        <div style="flex: 1; min-width: 180px;">
+            <div class="dash-stat-card">
+                <div class="dash-stat-icon" style="background: rgba(229,9,20,0.15); color: #e50914;">🎬</div>
+                <div class="dash-stat-val">@Model.TotalMovies</div>
+                <div class="dash-stat-label">Toplam Film</div>
+            </div>
+        </div>
+
+        <div style="flex: 1; min-width: 180px;">
+            <div class="dash-stat-card">
+                <div class="dash-stat-icon" style="background: rgba(0,184,148,0.15); color: #00b894;">📺</div>
+                <div class="dash-stat-val">@Model.TotalSeries</div>
+                <div class="dash-stat-label">Toplam Dizi</div>
+            </div>
+        </div>
+
+        <div style="flex: 1; min-width: 180px;">
+            <div class="dash-stat-card">
+                <div class="dash-stat-icon" style="background: rgba(9,132,227,0.15); color: #0984e3;">🏷️</div>
+                <div class="dash-stat-val">@Model.TotalCategories</div>
+                <div class="dash-stat-label">Kategoriler</div>
+            </div>
+        </div>
+
+        <div style="flex: 1; min-width: 180px;">
+            <div class="dash-stat-card">
+                <div class="dash-stat-icon" style="background: rgba(253,203,110,0.15); color: #fdcb6e;">🎭</div>
+                <div class="dash-stat-val">@Model.TotalCasts</div>
+                <div class="dash-stat-label">Oyuncular</div>
+            </div>
+        </div>
+
+        <div style="flex: 1; min-width: 180px;">
+            <div class="dash-stat-card">
+                <div class="dash-stat-icon" style="background: rgba(108,92,231,0.15); color: #6c5ce7;">👥</div>
+                <div class="dash-stat-val">@Model.TotalUsers</div>
+                <div class="dash-stat-label">Kullanıcılar</div>
+            </div>
+        </div>
+
+        <div style="flex: 1; min-width: 180px;">
+            <div class="dash-stat-card">
+                <div class="dash-stat-icon" style="background: rgba(225,112,85,0.15); color: #e17055;">💬</div>
+                <div class="dash-stat-val">@Model.TotalReviews</div>
+                <div class="dash-stat-label">Yorumlar</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Tables Row -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px;">
+        <!-- Top Rated Movies -->
+        <div class="dash-table-card">
+            <div class="dash-section-title">⭐ En Yüksek Puanlı Filmler</div>
+            <table class="dash-table">
+                <thead>
+                    <tr>
+                        <th>Görsel</th>
+                        <th>Film Adı</th>
+                        <th>Yıl</th>
+                        <th>Puan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.TopRatedMovies.Any())
+                    {
+                        foreach (var m in Model.TopRatedMovies)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@(string.IsNullOrEmpty(m.MovieCoverImageURL) ? "/MovieTheme/images/uploads/mv-item1.jpg" : m.MovieCoverImageURL)" style="width: 36px; height: 50px; object-fit: cover; border-radius: 4px;" alt="" />
+                                </td>
+                                <td style="font-weight: 600; color: #fff;">@m.MovieTitle</td>
+                                <td>@m.MovileCreatedYear</td>
+                                <td><span style="color: #f5b50a; font-weight: bold;">★ @m.MovieRating</span></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="4" style="text-align: center; color: #666;">Kayıtlı film bulunmuyor.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Top Rated Series -->
+        <div class="dash-table-card">
+            <div class="dash-section-title">📺 En Yüksek Puanlı Diziler</div>
+            <table class="dash-table">
+                <thead>
+                    <tr>
+                        <th>Görsel</th>
+                        <th>Dizi Adı</th>
+                        <th>Yıl</th>
+                        <th>Puan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.TopRatedSeries.Any())
+                    {
+                        foreach (var s in Model.TopRatedSeries)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@(string.IsNullOrEmpty(s.SeriesCoverImageURL) ? "/MovieTheme/images/uploads/mv-item1.jpg" : s.SeriesCoverImageURL)" style="width: 36px; height: 50px; object-fit: cover; border-radius: 4px;" alt="" />
+                                </td>
+                                <td style="font-weight: 600; color: #fff;">@s.SeriesTitle</td>
+                                <td>@s.SeriesCreatedYear</td>
+                                <td><span style="color: #f5b50a; font-weight: bold;">★ @s.SeriesRating</span></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="4" style="text-align: center; color: #666;">Kayıtlı dizi bulunmuyor.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Recent Reviews Row -->
+    <div class="dash-table-card" style="margin-top: 24px;">
+        <div class="dash-section-title">💬 Son Kullanıcı Yorumları</div>
+        <table class="dash-table">
+            <thead>
+                <tr>
+                    <th>Film / İçerik</th>
+                    <th>Yorum</th>
+                    <th>Verilen Puan</th>
+                    <th>Tarih</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.LatestReviews.Any())
+                {
+                    foreach (var r in Model.LatestReviews)
+                    {
+                        <tr>
+                            <td style="font-weight: 600; color: #fff;">@r.MovieTitle</td>
+                            <td style="color: #bbb; max-width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@r.UserComment</td>
+                            <td><span style="color: #f5b50a; font-weight: bold;">★ @r.UserRating</span></td>
+                            <td style="color: #777;">@r.ReviewDate.ToString("dd.MM.yyyy HH:mm")</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="4" style="text-align: center; color: #666;">Son yapılan yorum bulunmuyor.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

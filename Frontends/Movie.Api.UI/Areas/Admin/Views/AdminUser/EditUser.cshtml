@@ -1,0 +1,46 @@
+@model MovieApi.DTOs.DTOs.UserDTOs.UpdateUserDto
+
+@{
+    ViewData["Title"] = "Kullanıcı Düzenle";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="container-fluid" style="padding: 24px; max-width: 800px; margin: 0 auto;">
+    <div style="margin-bottom: 24px;">
+        <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; color: #fff; margin: 0;">
+            KULLANICI <em style="color: #e50914; font-style: normal;">DÜZENLE</em>
+        </h2>
+        <p style="color: #777; font-size: 13px; margin-top: 4px;">Kullanıcı profil bilgilerini güncelleyin</p>
+    </div>
+
+    <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; padding: 32px;">
+        <form asp-action="EditUser" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 8px;">Ad</label>
+                <input asp-for="Name" type="text" style="width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 14px;" />
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 8px;">Soyad</label>
+                <input asp-for="Surname" type="text" style="width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 14px;" />
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 8px;">E-Posta Adresi</label>
+                <input asp-for="Email" type="email" style="width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 14px;" />
+            </div>
+
+            <div style="margin-bottom: 32px;">
+                <label style="display: block; font-size: 11px; text-transform: uppercase; color: #888; margin-bottom: 8px;">Telefon Numarası</label>
+                <input asp-for="PhoneNumber" type="text" style="width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 14px;" />
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 12px;">
+                <a href="/Admin/AdminUser/UserList" style="background: #222; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600;">İptal</a>
+                <button type="submit" style="background: #e50914; color: #fff; padding: 12px 24px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer;">✦ Değişiklikleri Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>

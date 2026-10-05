@@ -1,0 +1,77 @@
+@model List<MovieApi.DTOs.DTOs.UserDTOs.ResultUserDto>
+
+@{
+    ViewData["Title"] = "Kullanıcı Listesi";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="container-fluid" style="padding: 24px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+        <div>
+            <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; color: #fff; margin: 0;">
+                KULLANICI <em style="color: #e50914; font-style: normal;">YÖNETİMİ</em>
+            </h2>
+            <p style="color: #777; font-size: 13px; margin-top: 4px;">Kayıtlı sistem kullanıcıları, durum ve erişim engeli ayarları</p>
+        </div>
+    </div>
+
+    <div style="background: #111111; border: 1px solid #222222; border-radius: 12px; overflow: hidden;">
+        <table class="table" style="width: 100%; color: #eee; border-collapse: collapse; margin: 0;">
+            <thead style="background: #181818;">
+                <tr>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase;">Kullanıcı Adı</th>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase;">Ad Soyad</th>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase;">E-Posta</th>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase;">E-Posta Onayı</th>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase;">Durum</th>
+                    <th style="padding: 16px; color: #888; font-size: 11px; text-transform: uppercase; text-align: right;">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var user in Model)
+                    {
+                        <tr style="border-bottom: 1px solid #1a1a1a;">
+                            <td style="padding: 16px; font-weight: 600; color: #fff;">@user.UserName</td>
+                            <td style="padding: 16px; color: #ccc;">@(string.IsNullOrEmpty(user.FullName) ? "-" : user.FullName)</td>
+                            <td style="padding: 16px; color: #aaa;">@user.Email</td>
+                            <td style="padding: 16px;">
+                                @if (user.EmailConfirmed)
+                                {
+                                    <span style="background: rgba(0,184,148,0.15); color: #00b894; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">✔ Onaylı</span>
+                                }
+                                else
+                                {
+                                    <span style="background: rgba(253,203,110,0.15); color: #fdcb6e; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">⏳ Onaysız</span>
+                                }
+                            </td>
+                            <td style="padding: 16px;">
+                                @if (user.IsLockedOut)
+                                {
+                                    <span style="background: rgba(225,112,85,0.15); color: #e17055; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">🔒 Engelli</span>
+                                }
+                                else
+                                {
+                                    <span style="background: rgba(0,184,148,0.15); color: #00b894; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">Aktif</span>
+                                }
+                            </td>
+                            <td style="padding: 16px; text-align: right;">
+                                <a href="/Admin/AdminUser/EditUser/@user.Id" style="background: #222; color: #fff; padding: 6px 14px; border-radius: 6px; text-decoration: none; font-size: 12px; margin-right: 8px; border: 1px solid #333;">Düzenle</a>
+                                <a href="/Admin/AdminUser/ChangeStatus/@user.Id" onclick="return confirm('Kullanıcı engel durumunu değiştirmek istediğinize emin misiniz?');" style="background: @(user.IsLockedOut ? "#00b894" : "#e50914"); color: #fff; padding: 6px 14px; border-radius: 6px; text-decoration: none; font-size: 12px;">
+                                    @(user.IsLockedOut ? "Engeli Kaldır" : "Engelle")
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 32px; color: #777;">Henüz kayıtlı kullanıcı bulunmamaktadır.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
