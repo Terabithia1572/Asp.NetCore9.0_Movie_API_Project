@@ -1,0 +1,143 @@
+@model Movie.Api.UI.Models.UserFavoriteViewModel
+
+@{
+    ViewData["Title"] = "Favorilerim";
+    Layout = "~/Views/UserWebUILayout/LayoutUI.cshtml";
+}
+
+<div class="hero mv-single-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Favorilerim</h1>
+                <ul class="breadcumb">
+                    <li class="active"><a href="/">Ana Sayfa</a></li>
+                    <li> <span class="ion-ios-arrow-right"></span> Favorilerim</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-single movie_list">
+    <div class="container">
+        <div class="row ipad-width2">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger" style="background-color: #233a50; color: #ff4d4d; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                        @ViewBag.ErrorMessage
+                    </div>
+                }
+
+                <div class="movie-tabs">
+                    <div class="tabs">
+                        <ul class="tab-links tabs-mv" style="margin-bottom: 30px; display: flex; gap: 15px;">
+                            <li class="active"><a href="#tab-movies"><i class="ion-ios-film"></i> Favori Filmler (@Model.FavoriteMovies.Count)</a></li>
+                            <li><a href="#tab-series"><i class="ion-tv"></i> Favori Diziler (@Model.FavoriteSeries.Count)</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <!-- FAVORITE MOVIES TAB -->
+                            <div id="tab-movies" class="tab active">
+                                @if (Model.FavoriteMovies.Count == 0)
+                                {
+                                    <div style="text-align: center; padding: 50px 20px; background: #0b1a2a; border-radius: 8px; margin-bottom: 30px;">
+                                        <i class="ion-heart-broken" style="font-size: 64px; color: #dd003f;"></i>
+                                        <h3 style="color: #ffffff; margin-top: 15px;">Henüz Favori Film Bulunmamaktadır</h3>
+                                        <p style="color: #abb7c4;">Beğendiğiniz filmleri favorilerinize ekleyerek bu listede görüntüleyebilirsiniz.</p>
+                                        <a href="/Movie/MovieList" class="redbtn" style="margin-top: 15px; display: inline-block;">Filmleri Keşfet</a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    @foreach (var movie in Model.FavoriteMovies)
+                                    {
+                                        <div class="movie-item-style-2" id="fav-movie-@movie.UserFavoriteID" style="position: relative; background: #0b1a2a; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                                            <img src="@(string.IsNullOrEmpty(movie.MovieCoverImageURL) ? "/MovieTheme/images/uploads/mv-item1.jpg" : movie.MovieCoverImageURL)" alt="@movie.MovieTitle" style="width: 120px; height: 180px; object-fit: cover; border-radius: 5px;">
+                                            <div class="mv-item-infor" style="margin-left: 140px;">
+                                                <h6><a href="/Movie/MovieDetail/@movie.MovieID" style="color: #ffffff; font-size: 18px;">@movie.MovieTitle <span>(@movie.MovileCreatedYear)</span></a></h6>
+                                                <p class="rate"><i class="ion-android-star" style="color: #f5b50a;"></i><span style="color: #ffffff; font-weight: bold;">@movie.MovieRating</span> /10</p>
+                                                <p class="describe" style="color: #abb7c4; max-height: 50px; overflow: hidden; text-overflow: ellipsis;">@movie.MovieDescription</p>
+                                                <p class="run-time" style="color: #4280bf;"> Süre: @movie.MovieDuration dk . <span>Yayın: @movie.MovieReleaseDate.ToString("dd.MM.yyyy")</span></p>
+                                                <div style="margin-top: 10px;">
+                                                    <a href="/Movie/MovieDetail/@movie.MovieID" class="redbtn" style="padding: 6px 15px; font-size: 12px; margin-right: 10px;"><i class="ion-eye"></i> Detaylar</a>
+                                                    <button type="button" onclick="removeFavorite(@movie.UserFavoriteID, 'movie')" class="btn btn-danger" style="background-color: #dd003f; border: none; padding: 6px 15px; font-size: 12px; border-radius: 30px; color: #fff; cursor: pointer;">
+                                                        <i class="ion-trash-a"></i> Favorilerden Çıkar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+
+                            <!-- FAVORITE SERIES TAB -->
+                            <div id="tab-series" class="tab">
+                                @if (Model.FavoriteSeries.Count == 0)
+                                {
+                                    <div style="text-align: center; padding: 50px 20px; background: #0b1a2a; border-radius: 8px; margin-bottom: 30px;">
+                                        <i class="ion-heart-broken" style="font-size: 64px; color: #dd003f;"></i>
+                                        <h3 style="color: #ffffff; margin-top: 15px;">Henüz Favori Dizi Bulunmamaktadır</h3>
+                                        <p style="color: #abb7c4;">Takip ettiğiniz dizileri favorilerinize ekleyerek bu listede görebilirsiniz.</p>
+                                    </div>
+                                }
+                                else
+                                {
+                                    @foreach (var series in Model.FavoriteSeries)
+                                    {
+                                        <div class="movie-item-style-2" id="fav-series-@series.UserFavoriteID" style="position: relative; background: #0b1a2a; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                                            <img src="@(string.IsNullOrEmpty(series.SeriesCoverImageURL) ? "/MovieTheme/images/uploads/mv-item1.jpg" : series.SeriesCoverImageURL)" alt="@series.SeriesTitle" style="width: 120px; height: 180px; object-fit: cover; border-radius: 5px;">
+                                            <div class="mv-item-infor" style="margin-left: 140px;">
+                                                <h6><a href="/Series/SeriesDetail/@series.SeriesID" style="color: #ffffff; font-size: 18px;">@series.SeriesTitle <span>(@series.SeriesCreatedYear)</span></a></h6>
+                                                <p class="rate"><i class="ion-android-star" style="color: #f5b50a;"></i><span style="color: #ffffff; font-weight: bold;">@series.SeriesRating</span> /10</p>
+                                                <p class="describe" style="color: #abb7c4; max-height: 50px; overflow: hidden; text-overflow: ellipsis;">@series.SeriesDescription</p>
+                                                <p class="run-time" style="color: #4280bf;"> @series.SeriesSeasonCount Sezon . @series.SeriesEpisodeCount Bölüm <span>İlk Yayın: @series.FirstAirDate.ToString("dd.MM.yyyy")</span></p>
+                                                <div style="margin-top: 10px;">
+                                                    <a href="/Series/SeriesDetail/@series.SeriesID" class="redbtn" style="padding: 6px 15px; font-size: 12px; margin-right: 10px;"><i class="ion-eye"></i> Detaylar</a>
+                                                    <button type="button" onclick="removeFavorite(@series.UserFavoriteID, 'series')" class="btn btn-danger" style="background-color: #dd003f; border: none; padding: 6px 15px; font-size: 12px; border-radius: 30px; color: #fff; cursor: pointer;">
+                                                        <i class="ion-trash-a"></i> Favorilerden Çıkar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function removeFavorite(favId, type) {
+            if (!confirm('Bu içeriği favorilerinizden çıkarmak istediğinize emin misiniz?')) {
+                return;
+            }
+
+            $.ajax({
+                url: '/Favorite/RemoveFavorite/' + favId,
+                type: 'POST',
+                success: function (res) {
+                    if (res.success) {
+                        var targetId = type === 'movie' ? '#fav-movie-' + favId : '#fav-series-' + favId;
+                        $(targetId).fadeOut(400, function () {
+                            $(this).remove();
+                        });
+                    } else {
+                        alert(res.message || 'Bir hata oluştu.');
+                    }
+                },
+                error: function () {
+                    alert('Sunucu ile iletişim kurulurken bir hata oluştu.');
+                }
+            });
+        }
+    </script>
+}

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MovieApi.DTOs.DTOs.MovieDTO;
 using Newtonsoft.Json;
 
@@ -34,8 +34,8 @@ namespace Movie.Api.UI.Controllers
 
         public async Task<IActionResult> MovieDetail(int id)
         {
-          
-            id = 0;
+            ViewBag.id = id;
+            ViewBag.MovieID = id;
             return View();
         }
     }

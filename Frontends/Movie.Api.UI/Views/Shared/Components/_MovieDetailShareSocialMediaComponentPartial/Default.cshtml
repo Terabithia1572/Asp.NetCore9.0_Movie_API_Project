@@ -1,5 +1,7 @@
-﻿<div class="social-btn">
-	<a href="#" class="parent-btn"><i class="ion-heart"></i> Favorilere Ekle</a>
+<div class="social-btn">
+	<a href="javascript:void(0);" id="btn-toggle-favorite" onclick="toggleMovieFavorite()" class="parent-btn" style="transition: all 0.3s ease;">
+		<i id="favorite-icon" class="ion-heart"></i> <span id="favorite-text">Favorilere Ekle</span>
+	</a>
 	<div class="hover-bnt">
 		<a href="#" class="parent-btn"><i class="ion-android-share-alt"></i>Paylaş</a>
 		<div class="hvr-item">
@@ -10,3 +12,84 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		var movieId = "@ViewBag.MovieID" || "@ViewBag.id";
+		if (!movieId || movieId === "0" || isNaN(movieId)) {
+			var pathParts = window.location.pathname.split('/');
+			movieId = pathParts[pathParts.length - 1];
+		}
+
+		if (movieId && !isNaN(movieId) && parseInt(movieId) > 0) {
+			window.currentMovieId = parseInt(movieId);
+			checkFavoriteStatus(window.currentMovieId);
+		}
+	});
+
+	function checkFavoriteStatus(movieId) {
+		if (typeof $ === 'undefined') return;
+		$.ajax({
+			url: '/Favorite/CheckMovieFavoriteStatus?movieId=' + movieId,
+			type: 'GET',
+			success: function (res) {
+				updateFavoriteButtonState(res.isFavorited);
+			}
+		});
+	}
+
+	function toggleMovieFavorite() {
+		var movieId = window.currentMovieId || "@ViewBag.MovieID" || "@ViewBag.id";
+		if (!movieId || isNaN(movieId) || parseInt(movieId) <= 0) {
+			var pathParts = window.location.pathname.split('/');
+			movieId = parseInt(pathParts[pathParts.length - 1]);
+		}
+
+		if (!movieId || isNaN(movieId) || movieId <= 0) {
+			alert("Film ID bulunamadı.");
+			return;
+		}
+
+		$.ajax({
+			url: '/Favorite/ToggleMovieFavorite?movieId=' + movieId,
+			type: 'POST',
+			success: function (res) {
+				if (res.success) {
+					updateFavoriteButtonState(res.isFavorited);
+				} else {
+					alert(res.message || "İşlem sırasında bir hata oluştu.");
+				}
+			},
+			error: function (xhr) {
+				if (xhr.status === 401) {
+					alert("Favorilere eklemek için lütfen giriş yapınız.");
+				} else {
+					alert("Favori durumu güncellenirken bir hata oluştu.");
+				}
+			}
+		});
+	}
+
+	function updateFavoriteButtonState(isFavorited) {
+		if (typeof $ === 'undefined') return;
+		var icon = $('#favorite-icon');
+		var text = $('#favorite-text');
+		var btn = $('#btn-toggle-favorite');
+
+		if (isFavorited) {
+			icon.css('color', '#dd003f');
+			text.text('Favorilerimde');
+			btn.css({
+				'border': '1px solid #dd003f',
+				'color': '#dd003f'
+			});
+		} else {
+			icon.css('color', '');
+			text.text('Favorilere Ekle');
+			btn.css({
+				'border': '',
+				'color': ''
+			});
+		}
+	}
+</script>
