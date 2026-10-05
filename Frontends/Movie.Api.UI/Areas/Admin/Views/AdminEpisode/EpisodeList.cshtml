@@ -1,0 +1,129 @@
+@model List<ResultEpisodeDto>
+@{
+    ViewData["Title"] = "EpisodeList";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int count = 0;
+    int seasonId = ViewBag.SeasonID != null ? (int)ViewBag.SeasonID : 0;
+    int seasonNumber = ViewBag.SeasonNumber != null ? (int)ViewBag.SeasonNumber : 0;
+    int seriesId = ViewBag.SeriesID != null ? (int)ViewBag.SeriesID : 0;
+}
+
+<div class="cinema-shell">
+    <div class="cinema-topbar">
+        <div class="d-flex align-items-start align-items-md-center justify-content-between gap-3 flex-column flex-md-row">
+            <div>
+                <h5 class="cinema-title">
+                    <span class="badge-dot"></span>
+                    Sezon @seasonNumber - Bölüm Yönetimi
+                </h5>
+                <div class="cinema-sub">Sezona ait bölümleri listeleyin, ekleyin ve düzenleyin • FlixTheme</div>
+            </div>
+
+            <div class="cinema-actions">
+                <a href="/Admin/AdminSeason/SeasonList?seriesId=@seriesId" class="btn-cinema btn-cinema-ghost">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    Sezonlara Dön
+                </a>
+
+                <a href="/Admin/AdminEpisode/CreateEpisode?seasonId=@seasonId" class="btn-cinema btn-cinema-primary">
+                    <ion-icon name="add-circle-outline"></ion-icon>
+                    Yeni Bölüm Ekle
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="cinema-body">
+        <div class="table-responsive">
+            <table class="cinema-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Görsel</th>
+                        <th>Bölüm No</th>
+                        <th>Bölüm Başlığı</th>
+                        <th>Süre (dk)</th>
+                        <th>Yayın Tarihi</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            count++;
+                            <tr class="cinema-row">
+                                <td>@count</td>
+
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.StillImageUrl))
+                                    {
+                                        <img src="@item.StillImageUrl" alt="Still" style="width:75px; height:45px; object-fit:cover; border-radius:6px;" />
+                                    }
+                                    else
+                                    {
+                                        <div class="tag tag-lg">
+                                            <ion-icon name="film-outline"></ion-icon>
+                                        </div>
+                                    }
+                                </td>
+
+                                <td>
+                                    <span class="metric">
+                                        <ion-icon name="videocam-outline"></ion-icon>
+                                        Bölüm @item.EpisodeNumber
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="movie-title">
+                                        <div>
+                                            <div>@item.EpisodeTitle</div>
+                                            <div class="muted" style="max-width:250px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                                                @(string.IsNullOrEmpty(item.Overview) ? "-" : item.Overview)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="metric">
+                                        <ion-icon name="time-outline"></ion-icon>
+                                        @(item.DurationMinutes.HasValue ? $"{item.DurationMinutes} dk" : "-")
+                                    </span>
+                                </td>
+
+                                <td class="muted">
+                                    @(item.AirDate.HasValue ? item.AirDate.Value.ToString("dd.MM.yyyy") : "-")
+                                </td>
+
+                                <td>
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <a href="/Admin/AdminEpisode/UpdateEpisode/@item.EpisodeID" class="btn-mini btn-mini-warning">
+                                            <ion-icon name="create-outline"></ion-icon>
+                                            Güncelle
+                                        </a>
+                                        <a href="/Admin/AdminEpisode/DeleteEpisode?id=@item.EpisodeID&seasonId=@seasonId" class="btn-mini btn-mini-danger" onclick="return confirm('Bu bölümü silmek istediğinize emin misiniz?');">
+                                            <ion-icon name="trash-outline"></ion-icon>
+                                            Sil
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-4 muted">
+                                Bu sezona ait henüz bir bölüm bulunmamaktadır.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

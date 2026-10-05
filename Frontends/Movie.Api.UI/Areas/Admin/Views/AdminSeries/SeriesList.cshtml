@@ -1,4 +1,4 @@
-﻿@model List<AdminResultSeriesDTO>
+@model List<AdminResultSeriesDTO>
 @{
     ViewData["Title"] = "SeriesList";
     Layout = "~/Views/AdminLayout/Index.cshtml";
@@ -113,6 +113,10 @@
 
                             <td>
                                 <div class="d-flex gap-2 flex-wrap">
+                                    <a href="/Admin/AdminSeason/SeasonList?seriesId=@item.SeriesID" class="btn-mini btn-mini-info">
+                                        <ion-icon name="albums-outline"></ion-icon>
+                                        Sezonlar
+                                    </a>
                                     <a href="javascript:;" class="btn-mini btn-mini-warning">
                                         <ion-icon name="create-outline"></ion-icon>
                                         Güncelle

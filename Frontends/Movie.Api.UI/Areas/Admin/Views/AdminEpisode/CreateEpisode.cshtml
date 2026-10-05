@@ -1,0 +1,162 @@
+@model CreateEpisodeDto
+@{
+    ViewData["Title"] = "CreateEpisode";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    int seasonId = Model?.SeasonID ?? (ViewBag.SeasonID != null ? (int)ViewBag.SeasonID : 0);
+    int seasonNumber = ViewBag.SeasonNumber != null ? (int)ViewBag.SeasonNumber : 0;
+}
+
+<div class="cinema-shell">
+    <div class="cinema-topbar">
+        <div class="d-flex align-items-start align-items-md-center justify-content-between gap-3 flex-column flex-md-row">
+            <div>
+                <h5 class="cinema-title">
+                    <span class="badge-dot"></span>
+                    Yeni Bölüm Ekle (Sezon @seasonNumber)
+                </h5>
+                <div class="cinema-sub">Bölüm bilgilerini girin ve kaydet butonuna basın • FlixTheme</div>
+            </div>
+
+            <div class="cinema-actions">
+                <a href="/Admin/AdminEpisode/EpisodeList?seasonId=@seasonId" class="btn-cinema btn-cinema-ghost">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    Bölümlere Dön
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="cinema-body">
+        <div class="cinema-card">
+            <div class="cinema-card-head">
+                <div class="d-flex align-items-center gap-3 cinema-card-head-row">
+                    <span class="tag tag-lg">
+                        <ion-icon name="videocam-outline"></ion-icon>
+                    </span>
+
+                    <div>
+                        <div class="cinema-card-title">Bölüm Formu</div>
+                        <div class="muted">Sezona yeni bir bölüm ekleyin</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cinema-card-body">
+                <form method="post" asp-area="Admin" asp-action="CreateEpisode" asp-controller="AdminEpisode">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="SeasonID" />
+
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger mb-4" role="alert">
+                            @Html.ValidationSummary(false, "", new { @class = "text-danger m-0" })
+                        </div>
+                    }
+
+                    <div class="row g-3">
+                        <div class="col-12 col-md-4">
+                            <label class="cinema-label">Bölüm Numarası</label>
+                            <div class="cinema-input">
+                                <span class="cinema-input-icon">
+                                    <ion-icon name="list-number-outline"></ion-icon>
+                                </span>
+                                <input asp-for="EpisodeNumber"
+                                       class="form-control cinema-control"
+                                       type="number"
+                                       min="1"
+                                       placeholder="Örn: 1"
+                                       required />
+                            </div>
+                            <span asp-validation-for="EpisodeNumber" class="cinema-val"></span>
+                        </div>
+
+                        <div class="col-12 col-md-8">
+                            <label class="cinema-label">Bölüm Başlığı</label>
+                            <div class="cinema-input">
+                                <span class="cinema-input-icon">
+                                    <ion-icon name="text-outline"></ion-icon>
+                                </span>
+                                <input asp-for="EpisodeTitle"
+                                       class="form-control cinema-control"
+                                       placeholder="Örn: Pilot"
+                                       required />
+                            </div>
+                            <span asp-validation-for="EpisodeTitle" class="cinema-val"></span>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label class="cinema-label">Süre (Dakika)</label>
+                            <div class="cinema-input">
+                                <span class="cinema-input-icon">
+                                    <ion-icon name="time-outline"></ion-icon>
+                                </span>
+                                <input asp-for="DurationMinutes"
+                                       class="form-control cinema-control"
+                                       type="number"
+                                       min="1"
+                                       placeholder="Örn: 45" />
+                            </div>
+                            <span asp-validation-for="DurationMinutes" class="cinema-val"></span>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label class="cinema-label">Yayın Tarihi</label>
+                            <div class="cinema-input">
+                                <span class="cinema-input-icon">
+                                    <ion-icon name="calendar-outline"></ion-icon>
+                                </span>
+                                <input asp-for="AirDate"
+                                       class="form-control cinema-control"
+                                       type="date" />
+                            </div>
+                            <span asp-validation-for="AirDate" class="cinema-val"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="cinema-label">Bölüm Görsel URL (Still Image)</label>
+                            <div class="cinema-input">
+                                <span class="cinema-input-icon">
+                                    <ion-icon name="image-outline"></ion-icon>
+                                </span>
+                                <input asp-for="StillImageUrl"
+                                       class="form-control cinema-control"
+                                       placeholder="https://.../still.jpg"
+                                       autocomplete="off" />
+                            </div>
+                            <span asp-validation-for="StillImageUrl" class="cinema-val"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="cinema-label">Bölüm Açıklaması / Konusu</label>
+                            <div class="cinema-input">
+                                <span class="cinema-input-icon" style="align-self:flex-start; margin-top:10px;">
+                                    <ion-icon name="document-text-outline"></ion-icon>
+                                </span>
+                                <textarea asp-for="Overview"
+                                          class="form-control cinema-control"
+                                          rows="5"
+                                          placeholder="Bölümün kısa özeti..."
+                                          style="resize:none;"></textarea>
+                            </div>
+                            <span asp-validation-for="Overview" class="cinema-val"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 cinema-divider"></div>
+
+                    <div class="d-flex gap-2 flex-wrap mt-3">
+                        <button type="submit" class="btn-cinema btn-cinema-primary">
+                            <ion-icon name="save-outline"></ion-icon>
+                            Kaydet
+                        </button>
+
+                        <a href="/Admin/AdminEpisode/EpisodeList?seasonId=@seasonId" class="btn-cinema btn-cinema-ghost">
+                            <ion-icon name="close-circle-outline"></ion-icon>
+                            Vazgeç
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
