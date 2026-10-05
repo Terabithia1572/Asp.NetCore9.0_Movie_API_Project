@@ -187,7 +187,7 @@ namespace MovieApi.Persistence.Migrations
 
                     b.HasKey("CastID");
 
-                    b.ToTable("Casts");
+                    b.ToTable("Casts", (string)null);
                 });
 
             modelBuilder.Entity("MovieApi.Domain.Entities.Category", b =>
@@ -210,7 +210,7 @@ namespace MovieApi.Persistence.Migrations
 
                     b.HasKey("CategoryID");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("MovieApi.Domain.Entities.Movie", b =>
@@ -256,7 +256,7 @@ namespace MovieApi.Persistence.Migrations
 
                     b.HasIndex("CategoryID");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("MovieApi.Domain.Entities.Review", b =>
@@ -301,7 +301,7 @@ namespace MovieApi.Persistence.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("MovieApi.Domain.Entities.Series", b =>
@@ -353,7 +353,7 @@ namespace MovieApi.Persistence.Migrations
 
                     b.HasIndex("CategoryID");
 
-                    b.ToTable("Series");
+                    b.ToTable("Series", (string)null);
                 });
 
             modelBuilder.Entity("MovieApi.Domain.Entities.Tag", b =>
@@ -370,7 +370,7 @@ namespace MovieApi.Persistence.Migrations
 
                     b.HasKey("TagID");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
                 });
 
             modelBuilder.Entity("MovieApi.Persistence.Identity.AppUser", b =>

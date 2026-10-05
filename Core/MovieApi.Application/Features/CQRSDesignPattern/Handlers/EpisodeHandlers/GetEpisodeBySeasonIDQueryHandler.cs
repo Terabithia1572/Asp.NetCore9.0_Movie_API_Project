@@ -19,6 +19,12 @@ namespace MovieApi.Application.Features.CQRSDesignPattern.Handlers.EpisodeHandle
 
         public async Task<List<GetEpisodeBySeasonIDQueryResult>> Handle(GetEpisodeBySeasonIDQuery query)
         {
+            var seasonExists = await _context.Seasons.AnyAsync(s => s.SeasonID == query.SeasonID);
+            if (!seasonExists)
+            {
+                throw new KeyNotFoundException($"Season with ID {query.SeasonID} was not found.");
+            }
+
             var values = await _context.Episodes
                 .Where(x => x.SeasonID == query.SeasonID)
                 .ToListAsync();

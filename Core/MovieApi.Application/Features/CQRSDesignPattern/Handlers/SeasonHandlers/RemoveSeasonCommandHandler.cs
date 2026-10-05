@@ -1,5 +1,6 @@
 using MovieApi.Application.Features.CQRSDesignPattern.Commands.SeasonCommands;
 using MovieApi.Persistence.Context;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MovieApi.Application.Features.CQRSDesignPattern.Handlers.SeasonHandlers
@@ -16,11 +17,13 @@ namespace MovieApi.Application.Features.CQRSDesignPattern.Handlers.SeasonHandler
         public async Task Handle(RemoveSeasonCommand command)
         {
             var value = await _context.Seasons.FindAsync(command.SeasonID);
-            if (value != null)
+            if (value == null)
             {
-                _context.Seasons.Remove(value);
-                await _context.SaveChangesAsync();
+                throw new KeyNotFoundException($"Season with ID {command.SeasonID} was not found.");
             }
+
+            _context.Seasons.Remove(value);
+            await _context.SaveChangesAsync();
         }
     }
 }
