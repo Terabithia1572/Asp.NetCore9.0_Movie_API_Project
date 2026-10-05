@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,5 +18,7 @@ namespace MovieApi.DTOs.DTOs.AdminMovieDTOs
         public string MovileCreatedYear { get; set; } //Film çıkış yılı
         public bool MovieStatus { get; set; } //Film durumu
         public int CategoryID { get; set; } //Film kategorisi
+        public List<int> SelectedCastIds { get; set; } = new();
+        public List<int> SelectedTagIds { get; set; } = new();
     }
 }

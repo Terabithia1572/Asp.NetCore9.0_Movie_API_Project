@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MovieApi.Application.Features.CQRSDesignPattern.Commands.SeriesCommands;
 using MovieApi.Application.Features.CQRSDesignPattern.Handlers.SeriesHandlers;
 using MovieApi.Application.Features.CQRSDesignPattern.Queries.SeriesQueries;
-
+using MovieApi.Persistence.Context;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Series.Api.WebApi.Controllers
 {
@@ -17,8 +20,16 @@ namespace Series.Api.WebApi.Controllers
         private readonly UpdateSeriesCommandHandler _updateSeriesCommandHandler;
         private readonly RemoveSeriesCommandHandler _removeSeriesCommandHandler;
         private readonly GetSeriesWithCategoryQueryHandler _getSeriesWithCategoryQueryHandler;
+        private readonly MovieContext _context;
 
-        public SeriesController(GetSeriesByIDQueryHandler getSeriesByIDQueryHandler, GetSeriesQueryHandler getSeriesQueryHandler, CreateSeriesCommandHandler createSeriesCommandHandler, UpdateSeriesCommandHandler updateSeriesCommandHandler, RemoveSeriesCommandHandler removeSeriesCommandHandler, GetSeriesWithCategoryQueryHandler getSeriesWithCategoryQueryHandler)
+        public SeriesController(
+            GetSeriesByIDQueryHandler getSeriesByIDQueryHandler,
+            GetSeriesQueryHandler getSeriesQueryHandler,
+            CreateSeriesCommandHandler createSeriesCommandHandler,
+            UpdateSeriesCommandHandler updateSeriesCommandHandler,
+            RemoveSeriesCommandHandler removeSeriesCommandHandler,
+            GetSeriesWithCategoryQueryHandler getSeriesWithCategoryQueryHandler,
+            MovieContext context)
         {
             _getSeriesByIDQueryHandler = getSeriesByIDQueryHandler;
             _getSeriesQueryHandler = getSeriesQueryHandler;
@@ -26,6 +37,7 @@ namespace Series.Api.WebApi.Controllers
             _updateSeriesCommandHandler = updateSeriesCommandHandler;
             _removeSeriesCommandHandler = removeSeriesCommandHandler;
             _getSeriesWithCategoryQueryHandler = getSeriesWithCategoryQueryHandler;
+            _context = context;
         }
 
         [HttpGet]
@@ -34,35 +46,60 @@ namespace Series.Api.WebApi.Controllers
             var values = await _getSeriesQueryHandler.Handle();
             return Ok(values);
         }
+
         [HttpPost]
         public async Task<IActionResult> CreateSeries(CreateSeriesCommand createSeriesCommand)
         {
             await _createSeriesCommandHandler.Handle(createSeriesCommand);
             return Ok("Dizi Başarıyla Eklendi..");
         }
-        [HttpDelete]
+
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSeries(int id)
         {
             await _removeSeriesCommandHandler.Handle(new RemoveSeriesCommand(id));
             return Ok("Dizi Başarıyla Silindi..");
         }
+
         [HttpGet("GetMovile")]
         public async Task<IActionResult> GetSeries(int id)
         {
             var values = await _getSeriesByIDQueryHandler.Handle(new GetSeriesByIDQuery(id));
             return Ok(values);
         }
+
         [HttpPut]
         public async Task<IActionResult> UpdateSeries(UpdateSeriesCommand updateSeriesCommand)
         {
             await _updateSeriesCommandHandler.Handle(updateSeriesCommand);
             return Ok("Dizi Başarıyla Güncellendi..");
         }
+
         [HttpGet("GetSeriesWithCategory")]
         public async Task<IActionResult> GetSeriesWithCategory()
         {
             var values = await _getSeriesWithCategoryQueryHandler.Handle();
             return Ok(values);
+        }
+
+        [HttpGet("{id}/casts")]
+        public async Task<IActionResult> GetSeriesCasts(int id)
+        {
+            var castIds = await _context.SeriesCasts
+                .Where(sc => sc.SeriesID == id)
+                .Select(sc => sc.CastID)
+                .ToListAsync();
+            return Ok(castIds);
+        }
+
+        [HttpGet("{id}/tags")]
+        public async Task<IActionResult> GetSeriesTags(int id)
+        {
+            var tagIds = await _context.SeriesTags
+                .Where(st => st.SeriesID == id)
+                .Select(st => st.TagID)
+                .ToListAsync();
+            return Ok(tagIds);
         }
     }
 }

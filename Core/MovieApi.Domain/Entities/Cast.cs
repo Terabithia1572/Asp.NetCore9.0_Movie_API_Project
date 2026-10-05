@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +16,7 @@ namespace MovieApi.Domain.Entities
         public string? CastOverview { get; set; } //Oyuncu Genel bakış
         public string? CastBiography { get; set; } //Oyuncu Biyografisi
 
+        public ICollection<MovieCast> MovieCasts { get; set; } = new List<MovieCast>();
+        public ICollection<SeriesCast> SeriesCasts { get; set; } = new List<SeriesCast>();
     }
 }

@@ -1,4 +1,4 @@
-﻿@model AdminCreateMovieDTO
+@model AdminCreateMovieDTO
 
 @using Microsoft.AspNetCore.Mvc.Rendering
 
@@ -615,7 +615,7 @@
                 </div>
 
                 <!-- Kapak Görseli -->
-                <div class="card">
+                <div class="card" style="margin-bottom:24px;">
                     <div class="card-header">
                         <div class="card-icon">🖼️</div>
                         <div>
@@ -629,6 +629,58 @@
                             <input asp-for="MovieCoverImageURL" type="text" placeholder="https://image.tmdb.org/..." id="coverUrlInput" />
                             <div class="field-hint">Önerilen: 500×750 piksel, TMDB veya IMDB poster linki</div>
                             <span asp-validation-for="MovieCoverImageURL" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Oyuncular -->
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <div class="card-icon">🎭</div>
+                        <div>
+                            <div class="card-title">Oyuncular (Cast)</div>
+                            <div class="card-desc">Filme ait oyuncuları seçin</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="field-group" style="max-height: 200px; overflow-y: auto; padding: 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;">
+                            @if (ViewBag.CastList != null)
+                            {
+                                foreach (var cast in (List<SelectListItem>)ViewBag.CastList)
+                                {
+                                    var isChecked = Model?.SelectedCastIds != null && Model.SelectedCastIds.Contains(int.Parse(cast.Value));
+                                    <div style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                                        <input type="checkbox" name="SelectedCastIds" value="@cast.Value" id="cast_@cast.Value" @(isChecked ? "checked" : "") style="width: 16px; height: 16px; accent-color: var(--red); cursor: pointer;" />
+                                        <label for="cast_@cast.Value" style="margin: 0; cursor: pointer; color: var(--text); font-size: 13px;">@cast.Text</label>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Etiketler -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🏷️</div>
+                        <div>
+                            <div class="card-title">Etiketler (Tags)</div>
+                            <div class="card-desc">Filme ait etiketleri seçin</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="field-group" style="max-height: 200px; overflow-y: auto; padding: 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;">
+                            @if (ViewBag.TagList != null)
+                            {
+                                foreach (var tag in (List<SelectListItem>)ViewBag.TagList)
+                                {
+                                    var isChecked = Model?.SelectedTagIds != null && Model.SelectedTagIds.Contains(int.Parse(tag.Value));
+                                    <div style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                                        <input type="checkbox" name="SelectedTagIds" value="@tag.Value" id="tag_@tag.Value" @(isChecked ? "checked" : "") style="width: 16px; height: 16px; accent-color: var(--red); cursor: pointer;" />
+                                        <label for="tag_@tag.Value" style="margin: 0; cursor: pointer; color: var(--text); font-size: 13px;">@tag.Text</label>
+                                    </div>
+                                }
+                            }
                         </div>
                     </div>
                 </div>

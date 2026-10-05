@@ -1,0 +1,397 @@
+@model MovieApi.DTOs.DTOs.AdminMovieDTOs.AdminUpdateMovieDTO
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "UpdateMovie";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    :root {
+        --bg: #080808;
+        --surface: #111111;
+        --surface2: #1a1a1a;
+        --surface3: #222222;
+        --border: #2c2c2c;
+        --border-hover: #444;
+        --red: #e50914;
+        --red-glow: rgba(229,9,20,0.2);
+        --red-dim: rgba(229,9,20,0.08);
+        --text: #f2f2f2;
+        --muted: #666;
+        --muted2: #888;
+        --accent: #ff6b35;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Sora', sans-serif;
+        min-height: 100vh;
+    }
+
+    .create-page {
+        min-height: 100vh;
+        background:
+            radial-gradient(ellipse 60% 50% at 70% 0%, rgba(229,9,20,0.07) 0%, transparent 60%),
+            radial-gradient(ellipse 40% 30% at 0% 80%, rgba(255,107,53,0.04) 0%, transparent 50%),
+            var(--bg);
+        padding: 48px 56px 80px;
+    }
+
+    .create-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 48px;
+    }
+
+    .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 12px;
+    }
+
+    .breadcrumb a { color: var(--muted); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--red); }
+    .breadcrumb span { color: var(--muted2); }
+
+    .page-title {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 56px;
+        letter-spacing: 4px;
+        line-height: 1;
+    }
+
+    .page-title em { color: var(--red); font-style: normal; }
+
+    .page-subtitle {
+        font-size: 13px;
+        color: var(--muted2);
+        margin-top: 8px;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        border: none;
+        transition: all 0.2s ease;
+    }
+
+    .btn-ghost {
+        background: var(--surface2);
+        color: var(--text);
+        border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--border-hover); background: var(--surface3); }
+
+    .btn-primary {
+        background: var(--red);
+        color: #fff;
+        box-shadow: 0 4px 20px var(--red-glow);
+    }
+    .btn-primary:hover { background: #ff0f1a; transform: translateY(-1px); }
+
+    .form-layout {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 32px;
+    }
+
+    .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .card-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .card-icon {
+        width: 36px;
+        height: 36px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+    }
+
+    .card-title {
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    .card-desc {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+    }
+
+    .card-body { padding: 24px; }
+
+    .field-group {
+        margin-bottom: 20px;
+    }
+    .field-group:last-child { margin-bottom: 0; }
+
+    .field-group label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--muted2);
+        margin-bottom: 8px;
+    }
+
+    .field-group input[type="text"],
+    .field-group input[type="number"],
+    .field-group input[type="date"],
+    .field-group select,
+    .field-group textarea {
+        width: 100%;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px 16px;
+        color: var(--text);
+        font-size: 13px;
+        outline: none;
+        transition: all 0.2s ease;
+    }
+
+    .field-group input:focus,
+    .field-group select:focus,
+    .field-group textarea:focus {
+        border-color: var(--red);
+        background: var(--surface3);
+        box-shadow: 0 0 0 3px var(--red-dim);
+    }
+
+    .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .form-bottom-bar {
+        margin-top: 40px;
+        padding: 24px 32px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+</style>
+
+<div class="create-page">
+    <div class="create-header">
+        <div>
+            <div class="breadcrumb">
+                <a href="/Admin/AdminMovie">Filmler</a>
+                <span>›</span>
+                <span>Film Güncelle</span>
+            </div>
+            <h1 class="page-title">FİLM <em>GÜNCELLE</em></h1>
+            <p class="page-subtitle">@Model.MovieTitle yapım bilgilerini düzenleyin</p>
+        </div>
+        <div class="header-actions">
+            <a href="/Admin/AdminMovie" class="btn btn-ghost">← Geri Dön</a>
+        </div>
+    </div>
+
+    <form asp-action="UpdateMovie" method="post">
+        <input type="hidden" asp-for="MovieID" />
+
+        <div class="form-layout">
+            <!-- LEFT COLUMN -->
+            <div>
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <div class="card-icon">🎬</div>
+                        <div>
+                            <div class="card-title">Temel Bilgiler</div>
+                            <div class="card-desc">Film adı ve açıklaması</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="field-group">
+                            <label asp-for="MovieTitle">Film Adı</label>
+                            <input asp-for="MovieTitle" type="text" />
+                            <span asp-validation-for="MovieTitle" class="text-danger"></span>
+                        </div>
+
+                        <div class="field-group">
+                            <label asp-for="MovieDescription">Açıklama</label>
+                            <textarea asp-for="MovieDescription" rows="4"></textarea>
+                            <span asp-validation-for="MovieDescription" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <div class="card-icon">📊</div>
+                        <div>
+                            <div class="card-title">Film Detayları</div>
+                            <div class="card-desc">Kategori, yıl, süre ve puan</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="field-group">
+                            <label asp-for="CategoryID">Kategori</label>
+                            <select asp-for="CategoryID" asp-items="ViewBag.Categories">
+                                <option value="">— Kategori Seçin —</option>
+                            </select>
+                            <span asp-validation-for="CategoryID" class="text-danger"></span>
+                        </div>
+
+                        <div class="field-group field-row">
+                            <div>
+                                <label asp-for="MovileCreatedYear">Yapım Yılı</label>
+                                <input asp-for="MovileCreatedYear" type="text" />
+                            </div>
+                            <div>
+                                <label asp-for="MovieReleaseDate">Yayın Tarihi</label>
+                                <input asp-for="MovieReleaseDate" type="date" />
+                            </div>
+                        </div>
+
+                        <div class="field-group field-row">
+                            <div>
+                                <label asp-for="MovieDuration">Süre (Dk)</label>
+                                <input asp-for="MovieDuration" type="number" />
+                            </div>
+                            <div>
+                                <label asp-for="MovieRating">Reyting</label>
+                                <input asp-for="MovieRating" type="number" step="0.1" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <div class="card-icon">🖼️</div>
+                        <div>
+                            <div class="card-title">Kapak Görseli</div>
+                            <div class="card-desc">Poster URL adresi</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="field-group">
+                            <label asp-for="MovieCoverImageURL">Görsel URL</label>
+                            <input asp-for="MovieCoverImageURL" type="text" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Oyuncular -->
+                <div class="card" style="margin-bottom:24px;">
+                    <div class="card-header">
+                        <div class="card-icon">🎭</div>
+                        <div>
+                            <div class="card-title">Oyuncular (Cast)</div>
+                            <div class="card-desc">Filme ait oyuncuları seçin</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="field-group" style="max-height: 200px; overflow-y: auto; padding: 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;">
+                            @if (ViewBag.CastList != null)
+                            {
+                                foreach (var cast in (List<SelectListItem>)ViewBag.CastList)
+                                {
+                                    var isChecked = Model?.SelectedCastIds != null && Model.SelectedCastIds.Contains(int.Parse(cast.Value));
+                                    <div style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                                        <input type="checkbox" name="SelectedCastIds" value="@cast.Value" id="cast_@cast.Value" @(isChecked ? "checked" : "") style="width: 16px; height: 16px; accent-color: var(--red); cursor: pointer;" />
+                                        <label for="cast_@cast.Value" style="margin: 0; cursor: pointer; color: var(--text); font-size: 13px;">@cast.Text</label>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Etiketler -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🏷️</div>
+                        <div>
+                            <div class="card-title">Etiketler (Tags)</div>
+                            <div class="card-desc">Filme ait etiketleri seçin</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="field-group" style="max-height: 200px; overflow-y: auto; padding: 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;">
+                            @if (ViewBag.TagList != null)
+                            {
+                                foreach (var tag in (List<SelectListItem>)ViewBag.TagList)
+                                {
+                                    var isChecked = Model?.SelectedTagIds != null && Model.SelectedTagIds.Contains(int.Parse(tag.Value));
+                                    <div style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                                        <input type="checkbox" name="SelectedTagIds" value="@tag.Value" id="tag_@tag.Value" @(isChecked ? "checked" : "") style="width: 16px; height: 16px; accent-color: var(--red); cursor: pointer;" />
+                                        <label for="tag_@tag.Value" style="margin: 0; cursor: pointer; color: var(--text); font-size: 13px;">@tag.Text</label>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">👁️</div>
+                        <div>
+                            <div class="card-title">Önizleme</div>
+                            <div class="card-desc">Kapak Görseli</div>
+                        </div>
+                    </div>
+                    <div class="card-body" style="text-align: center;">
+                        <img src="@Model.MovieCoverImageURL" style="max-width: 100%; border-radius: 8px; max-height: 350px; object-fit: cover;" alt="@Model.MovieTitle" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-bottom-bar">
+            <div>İçeriği güncellemek için butona tıklayın</div>
+            <div style="display:flex; gap:12px;">
+                <a href="/Admin/AdminMovie" class="btn btn-ghost">İptal</a>
+                <button type="submit" class="btn btn-primary">✦ Değişiklikleri Kaydet</button>
+            </div>
+        </div>
+    </form>
+</div>

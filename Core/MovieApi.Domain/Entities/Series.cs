@@ -23,5 +23,7 @@ namespace MovieApi.Domain.Entities
         public Category Category { get; set; } //Kategori nesnesi 
         public ICollection<Season> Seasons { get; set; } = new List<Season>();
         public ICollection<UserFavorite> UserFavorites { get; set; } = new List<UserFavorite>();
+        public ICollection<SeriesCast> SeriesCasts { get; set; } = new List<SeriesCast>();
+        public ICollection<SeriesTag> SeriesTags { get; set; } = new List<SeriesTag>();
     }
 }

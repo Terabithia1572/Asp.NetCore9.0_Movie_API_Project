@@ -5,12 +5,13 @@ using MovieApi.Persistence.Identity;
 
 namespace MovieApi.Persistence.Context
 {
-    public class MovieContext:IdentityDbContext<AppUser>
+    public class MovieContext : IdentityDbContext<AppUser>
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-           optionsBuilder.UseSqlServer("Server=.;Initial Catalog=ApiMovieDB;Integrated Security=True;TrustServerCertificate=true;");
+            optionsBuilder.UseSqlServer("Server=.;Initial Catalog=ApiMovieDB;Integrated Security=True;TrustServerCertificate=true;");
         }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -79,15 +80,84 @@ namespace MovieApi.Persistence.Context
                     .HasForeignKey(uf => uf.SeriesID)
                     .OnDelete(DeleteBehavior.Cascade);
             });
+
+            builder.Entity<MovieCast>(entity =>
+            {
+                entity.ToTable("MovieCasts", "dbo");
+                entity.HasKey(mc => mc.MovieCastID);
+
+                entity.HasOne(mc => mc.Movie)
+                    .WithMany(m => m.MovieCasts)
+                    .HasForeignKey(mc => mc.MovieID)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(mc => mc.Cast)
+                    .WithMany(c => c.MovieCasts)
+                    .HasForeignKey(mc => mc.CastID)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            builder.Entity<SeriesCast>(entity =>
+            {
+                entity.ToTable("SeriesCasts", "dbo");
+                entity.HasKey(sc => sc.SeriesCastID);
+
+                entity.HasOne(sc => sc.Series)
+                    .WithMany(s => s.SeriesCasts)
+                    .HasForeignKey(sc => sc.SeriesID)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(sc => sc.Cast)
+                    .WithMany(c => c.SeriesCasts)
+                    .HasForeignKey(sc => sc.CastID)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            builder.Entity<MovieTag>(entity =>
+            {
+                entity.ToTable("MovieTags", "dbo");
+                entity.HasKey(mt => mt.MovieTagID);
+
+                entity.HasOne(mt => mt.Movie)
+                    .WithMany(m => m.MovieTags)
+                    .HasForeignKey(mt => mt.MovieID)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(mt => mt.Tag)
+                    .WithMany(t => t.MovieTags)
+                    .HasForeignKey(mt => mt.TagID)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            builder.Entity<SeriesTag>(entity =>
+            {
+                entity.ToTable("SeriesTags", "dbo");
+                entity.HasKey(st => st.SeriesTagID);
+
+                entity.HasOne(st => st.Series)
+                    .WithMany(s => s.SeriesTags)
+                    .HasForeignKey(st => st.SeriesID)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(st => st.Tag)
+                    .WithMany(t => t.SeriesTags)
+                    .HasForeignKey(st => st.TagID)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
         }
-        public DbSet<Category> Categories { get; set; } //Kategoriler tablosu
-        public DbSet<Movie> Movies { get; set; } //Filmler tablosu
-        public DbSet<Review> Reviews { get; set; } //Yorumlar tablosu
-        public DbSet<Tag> Tags { get; set; } //Etiketler tablosu
-        public DbSet<Cast> Casts { get; set; } //Oyuncular tablosu
-        public DbSet<Series> Series { get; set; } //Diziler tablosu
+
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Cast> Casts { get; set; }
+        public DbSet<Series> Series { get; set; }
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Episode> Episodes { get; set; }
         public DbSet<UserFavorite> UserFavorites { get; set; }
+        public DbSet<MovieCast> MovieCasts { get; set; }
+        public DbSet<SeriesCast> SeriesCasts { get; set; }
+        public DbSet<MovieTag> MovieTags { get; set; }
+        public DbSet<SeriesTag> SeriesTags { get; set; }
     }
 }

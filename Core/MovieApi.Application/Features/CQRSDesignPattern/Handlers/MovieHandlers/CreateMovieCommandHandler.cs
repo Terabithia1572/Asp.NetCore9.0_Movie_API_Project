@@ -1,10 +1,9 @@
-﻿using MovieApi.Application.Features.CQRSDesignPattern.Commands.MovieCommands;
+using Microsoft.EntityFrameworkCore;
+using MovieApi.Application.Features.CQRSDesignPattern.Commands.MovieCommands;
 using MovieApi.Domain.Entities;
 using MovieApi.Persistence.Context;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MovieApi.Application.Features.CQRSDesignPattern.Handlers.MovieHandlers
@@ -17,21 +16,46 @@ namespace MovieApi.Application.Features.CQRSDesignPattern.Handlers.MovieHandlers
         {
             _context = context;
         }
+
         public async Task Handle(CreateMovieCommand createMovieCommand)
         {
-            _context.Movies.Add(new Movie
+            var movie = new Movie
             {
-                MovieTitle = createMovieCommand.MovieTitle, //Film adı 
-                MovieCoverImageURL = createMovieCommand.MovieCoverImageURL,//Film kapak resmi
-                MovieRating = createMovieCommand.MovieRating,//Film puanı
-                MovieDescription = createMovieCommand.MovieDescription,//Film açıklaması
-                MovieDuration = createMovieCommand.MovieDuration,//Film süresi
-                MovieReleaseDate = createMovieCommand.MovieReleaseDate,//Film yayın tarihi
-                MovileCreatedYear = createMovieCommand.MovileCreatedYear,//Film çıkış yılı
-                MovieStatus = createMovieCommand.MovieStatus, //Film durumu
-                CategoryID = createMovieCommand.CategoryID //Film kategorisi
-            });
+                MovieTitle = createMovieCommand.MovieTitle,
+                MovieCoverImageURL = createMovieCommand.MovieCoverImageURL,
+                MovieRating = createMovieCommand.MovieRating,
+                MovieDescription = createMovieCommand.MovieDescription,
+                MovieDuration = createMovieCommand.MovieDuration,
+                MovieReleaseDate = createMovieCommand.MovieReleaseDate,
+                MovileCreatedYear = createMovieCommand.MovileCreatedYear,
+                MovieStatus = createMovieCommand.MovieStatus,
+                CategoryID = createMovieCommand.CategoryID
+            };
+
+            _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
+
+            if (createMovieCommand.SelectedCastIds != null && createMovieCommand.SelectedCastIds.Any())
+            {
+                foreach (var castId in createMovieCommand.SelectedCastIds)
+                {
+                    _context.MovieCasts.Add(new MovieCast { MovieID = movie.MovieID, CastID = castId });
+                }
+            }
+
+            if (createMovieCommand.SelectedTagIds != null && createMovieCommand.SelectedTagIds.Any())
+            {
+                foreach (var tagId in createMovieCommand.SelectedTagIds)
+                {
+                    _context.MovieTags.Add(new MovieTag { MovieID = movie.MovieID, TagID = tagId });
+                }
+            }
+
+            if ((createMovieCommand.SelectedCastIds != null && createMovieCommand.SelectedCastIds.Any()) ||
+                (createMovieCommand.SelectedTagIds != null && createMovieCommand.SelectedTagIds.Any()))
+            {
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
