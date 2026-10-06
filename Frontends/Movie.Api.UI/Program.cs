@@ -1,4 +1,4 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
@@ -14,8 +14,11 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseStatusCodePagesWithReExecute("/Error/NotFound404");
+
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 // ✅ Area route (ÖNCE)

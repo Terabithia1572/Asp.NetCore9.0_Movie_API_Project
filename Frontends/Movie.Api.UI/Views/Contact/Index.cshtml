@@ -1,0 +1,107 @@
+@{
+    ViewData["Title"] = "İletişim";
+    Layout = "~/Views/UserWebUILayout/LayoutUI.cshtml";
+}
+
+<!-- head -->
+<section class="section section--head section--head-fixed">
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-xl-6">
+				<h1 class="section__title section__title--head">İletişim</h1>
+			</div>
+
+			<div class="col-12 col-xl-6">
+				<ul class="breadcrumb">
+					<li class="breadcrumb__item"><a href="/">Ana Sayfa</a></li>
+					<li class="breadcrumb__item breadcrumb__item--active">İletişim</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- end head -->
+
+<!-- contacts -->
+<section class="section section--pb0">
+	<div class="container">
+		@if (TempData["SuccessMessage"] != null)
+		{
+			<div class="alert alert-success" style="background-color: #29b473; color: #fff; border: none; padding: 12px 20px; border-radius: 6px; margin-bottom: 25px;">
+				@TempData["SuccessMessage"]
+			</div>
+		}
+		@if (TempData["ErrorMessage"] != null)
+		{
+			<div class="alert alert-danger" style="background-color: #eb5757; color: #fff; border: none; padding: 12px 20px; border-radius: 6px; margin-bottom: 25px;">
+				@TempData["ErrorMessage"]
+			</div>
+		}
+
+		<div class="row">
+			<!-- contact form -->
+			<div class="col-12 col-lg-7 col-xl-8">
+				<form action="/Contact/SendMessage" method="post" class="sign__form sign__form--contacts">
+					<div class="row">
+						<div class="col-12 col-xl-6">
+							<div class="sign__group">
+								<input type="text" name="Name" class="sign__input" placeholder="Adınız Soyadınız" required>
+							</div>
+						</div>
+
+						<div class="col-12 col-xl-6">
+							<div class="sign__group">
+								<input type="email" name="Email" class="sign__input" placeholder="E-Posta Adresiniz" required>
+							</div>
+						</div>
+
+						<div class="col-12">
+							<div class="sign__group">
+								<input type="text" name="Subject" class="sign__input" placeholder="Mesaj Konusu" required>
+							</div>
+						</div>
+
+						<div class="col-12">
+							<div class="sign__group">
+								<textarea name="Message" class="sign__textarea" placeholder="Mesajınızı buraya yazınız..." rows="5" required></textarea>
+							</div>
+						</div>
+
+						<div class="col-12 col-xl-4">
+							<button type="submit" class="sign__btn">Mesajı Gönder</button>
+						</div>
+					</div>
+				</form>	
+			</div>
+			<!-- end contact form -->
+
+			<!-- contact info -->
+			<div class="col-12 col-md-6 col-lg-5 col-xl-4">
+				<div style="background: #282830; border-radius: 8px; padding: 30px;">
+					<h3 style="color: #fff; font-size: 20px; margin-bottom: 20px;">İletişim Bilgileri</h3>
+					
+					<p style="color: #b9b9c0; font-size: 14px; margin-bottom: 15px;">
+						Her türlü görüş, öneri ve destek talepleriniz için bize aşağıdaki kanallardan ulaşabilirsiniz.
+					</p>
+
+					<ul style="list-style: none; padding: 0; margin: 0; color: #fff;">
+						<li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+							<strong style="color: #ff55a5;">Adres:</strong> Cumhuriyet Caddesi No:24, Bostancı, Kadıköy / İstanbul
+						</li>
+						<li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+							<strong style="color: #ff55a5;">Telefon:</strong> (+90) 541 810 0000
+						</li>
+						<li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+							<strong style="color: #ff55a5;">E-Posta:</strong> info@flixtv-movieapi.com
+						</li>
+						<li style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+							<strong style="color: #ff55a5;">Çalışma Saatleri:</strong> Hafta içi 09:00 - 18:00
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- end contact info -->
+		</div>
+	</div>
+</section>
+<!-- end contacts -->

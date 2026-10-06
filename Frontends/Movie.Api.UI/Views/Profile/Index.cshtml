@@ -1,0 +1,237 @@
+@model Movie.Api.UI.Models.UserProfileViewModel
+
+@{
+    ViewData["Title"] = "Profilim";
+    Layout = "~/Views/UserWebUILayout/LayoutUI.cshtml";
+}
+
+<!-- head -->
+<section class="section section--head section--head-fixed">
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-xl-6">
+				<h1 class="section__title section__title--head">Kullanıcı Profili</h1>
+			</div>
+
+			<div class="col-12 col-xl-6">
+				<ul class="breadcrumb">
+					<li class="breadcrumb__item"><a href="/">Ana Sayfa</a></li>
+					<li class="breadcrumb__item breadcrumb__item--active">Profilim</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- end head -->
+
+<!-- profile -->
+<div class="catalog catalog--page">
+	<div class="container">
+		@if (TempData["SuccessMessage"] != null)
+		{
+			<div class="alert alert-success" style="background-color: #29b473; color: #fff; border: none; padding: 12px 20px; border-radius: 6px; margin-bottom: 20px;">
+				@TempData["SuccessMessage"]
+			</div>
+		}
+		@if (TempData["ErrorMessage"] != null)
+		{
+			<div class="alert alert-danger" style="background-color: #eb5757; color: #fff; border: none; padding: 12px 20px; border-radius: 6px; margin-bottom: 20px;">
+				@TempData["ErrorMessage"]
+			</div>
+		}
+
+		<div class="row">
+			<div class="col-12">
+				<div class="profile">
+					<div class="profile__user">
+						<div class="profile__avatar">
+							<img src="/FlixTheme/images/avatar.svg" alt="Avatar">
+						</div>
+						<div class="profile__meta">
+							<h3>@(string.IsNullOrEmpty(Model.Name) ? Model.Username : $"{Model.Name} {Model.Surname}")</h3>
+							<span>Kullanıcı Adı: @Model.Username</span>
+						</div>
+					</div>
+
+					<!-- tabs nav -->
+					<ul class="nav nav-tabs profile__tabs" id="profile__tabs" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Profil Bilgileri</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Favorilerim (@(Model.FavoriteMoviesCount + Model.FavoriteSeriesCount))</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">Şifre Değiştir</a>
+						</li>
+					</ul>
+					<!-- end tabs nav -->
+
+					<a href="/Login/LogOut" class="profile__logout">
+						<span>Çıkış Yap</span>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4,12a1,1,0,0,0,1,1h7.59l-2.3,2.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0l4-4a1,1,0,0,0,.21-.33,1,1,0,0,0,0-.76,1,1,0,0,0-.21-.33l-4-4a1,1,0,1,0-1.42,1.42L12.59,11H5A1,1,0,0,0,4,12ZM17,2H7A3,3,0,0,0,4,5V8A1,1,0,0,0,6,8V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V19a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V16a1,1,0,0,0-2,0v3a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V5A3,3,0,0,0,17,2Z"></path></svg>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<!-- tab content -->
+		<div class="tab-content" id="profile__tabs-content">
+			<!-- TAB 1: Profile Details Form -->
+			<div class="tab-pane fade show active" id="tab-1" role="tabpanel">
+				<div class="row">
+					<div class="col-12 col-lg-6">
+						<form action="/Profile/UpdateProfile" method="post" class="sign__form sign__form--profile">
+							<div class="row">
+								<div class="col-12">
+									<h4 class="sign__title">Hesap Detayları</h4>
+								</div>
+
+								<div class="col-12 col-md-6">
+									<div class="sign__group">
+										<label class="sign__label" for="Name">Ad</label>
+										<input id="Name" type="text" name="Name" class="sign__input" value="@Model.UpdateModel.Name" placeholder="Adınız">
+									</div>
+								</div>
+
+								<div class="col-12 col-md-6">
+									<div class="sign__group">
+										<label class="sign__label" for="Surname">Soyad</label>
+										<input id="Surname" type="text" name="Surname" class="sign__input" value="@Model.UpdateModel.Surname" placeholder="Soyadınız">
+									</div>
+								</div>
+
+								<div class="col-12 col-md-6">
+									<div class="sign__group">
+										<label class="sign__label" for="Email">E-Posta</label>
+										<input id="Email" type="text" name="Email" class="sign__input" value="@Model.UpdateModel.Email" placeholder="E-Posta adresiniz">
+									</div>
+								</div>
+
+								<div class="col-12 col-md-6">
+									<div class="sign__group">
+										<label class="sign__label" for="PhoneNumber">Telefon</label>
+										<input id="PhoneNumber" type="text" name="PhoneNumber" class="sign__input" value="@Model.UpdateModel.PhoneNumber" placeholder="Telefon numaranız">
+									</div>
+								</div>
+
+								<div class="col-12">
+									<button class="sign__btn" type="submit">Değişiklikleri Kaydet</button>
+								</div>
+							</div>
+						</form>
+					</div>
+
+					<!-- Stats widget -->
+					<div class="col-12 col-lg-6">
+						<div style="background: #282830; border-radius: 8px; padding: 30px; margin-top: 20px;">
+							<h4 style="color: #fff; font-size: 18px; margin-bottom: 20px;">Kullanıcı İstatistikleri</h4>
+							<div class="row">
+								<div class="col-6" style="margin-bottom: 20px;">
+									<div style="background: #212127; border-radius: 6px; padding: 20px; text-align: center;">
+										<h2 style="color: #ff55a5; margin: 0; font-size: 32px;">@Model.FavoriteMoviesCount</h2>
+										<p style="color: #b9b9c0; margin: 5px 0 0 0; font-size: 13px;">Favori Filmler</p>
+									</div>
+								</div>
+								<div class="col-6" style="margin-bottom: 20px;">
+									<div style="background: #212127; border-radius: 6px; padding: 20px; text-align: center;">
+										<h2 style="color: #ff55a5; margin: 0; font-size: 32px;">@Model.FavoriteSeriesCount</h2>
+										<p style="color: #b9b9c0; margin: 5px 0 0 0; font-size: 13px;">Favori Diziler</p>
+									</div>
+								</div>
+							</div>
+							<a href="/Favorite/Index" class="sign__btn" style="display: block; text-align: center; line-height: 42px; text-decoration: none;">
+								Tüm Favorilerim Sayfasına Git
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- TAB 2: Favorites Quick View -->
+			<div class="tab-pane fade" id="tab-2" role="tabpanel">
+				<div class="row row--grid" style="padding-top: 20px;">
+					@if (Model.FavoriteMovies.Any() || Model.FavoriteSeries.Any())
+					{
+						foreach (var m in Model.FavoriteMovies)
+						{
+							<div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+								<div class="card">
+									<a href="/Movie/MovieDetail/@m.MovieID" class="card__cover">
+										<img src="@(string.IsNullOrEmpty(m.MovieCoverImageURL) ? "/FlixTheme/images/1.jpg" : m.MovieCoverImageURL)" alt="@m.MovieTitle" style="object-fit: cover; height: 320px; width: 100%;">
+									</a>
+									<div class="card__content">
+										<h3 class="card__title"><a href="/Movie/MovieDetail/@m.MovieID">@m.MovieTitle</a></h3>
+										<span class="card__category"><a href="#">Favori Film</a></span>
+									</div>
+								</div>
+							</div>
+						}
+						foreach (var s in Model.FavoriteSeries)
+						{
+							<div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+								<div class="card">
+									<a href="/Series/SeriesDetail/@s.SeriesID" class="card__cover">
+										<img src="@(string.IsNullOrEmpty(s.SeriesCoverImageURL) ? "/FlixTheme/images/1.jpg" : s.SeriesCoverImageURL)" alt="@s.SeriesTitle" style="object-fit: cover; height: 320px; width: 100%;">
+									</a>
+									<div class="card__content">
+										<h3 class="card__title"><a href="/Series/SeriesDetail/@s.SeriesID">@s.SeriesTitle</a></h3>
+										<span class="card__category"><a href="#">Favori Dizi</a></span>
+									</div>
+								</div>
+							</div>
+						}
+					}
+					else
+					{
+						<div class="col-12" style="padding: 40px 0; text-align: center;">
+							<h4 style="color: #fff;">Henüz favorilerinize eklediğiniz film veya dizi bulunmamaktadır.</h4>
+						</div>
+					}
+				</div>
+			</div>
+
+			<!-- TAB 3: Change Password -->
+			<div class="tab-pane fade" id="tab-3" role="tabpanel">
+				<div class="row">
+					<div class="col-12 col-lg-6">
+						<form action="/Profile/ChangePassword" method="post" class="sign__form sign__form--profile">
+							<div class="row">
+								<div class="col-12">
+									<h4 class="sign__title">Şifre Değiştirme</h4>
+								</div>
+
+								<div class="col-12">
+									<div class="sign__group">
+										<label class="sign__label" for="CurrentPassword">Mevcut Şifre</label>
+										<input id="CurrentPassword" type="password" name="CurrentPassword" class="sign__input" placeholder="Mevcut Şifreniz">
+									</div>
+								</div>
+
+								<div class="col-12 col-md-6">
+									<div class="sign__group">
+										<label class="sign__label" for="NewPassword">Yeni Şifre</label>
+										<input id="NewPassword" type="password" name="NewPassword" class="sign__input" placeholder="Yeni Şifreniz">
+									</div>
+								</div>
+
+								<div class="col-12 col-md-6">
+									<div class="sign__group">
+										<label class="sign__label" for="ConfirmPassword">Yeni Şifre Tekrarı</label>
+										<input id="ConfirmPassword" type="password" name="ConfirmPassword" class="sign__input" placeholder="Yeni Şifre Tekrarı">
+									</div>
+								</div>
+
+								<div class="col-12">
+									<button class="sign__btn" type="submit">Şifreyi Güncelle</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end tab content -->
+	</div>
+</div>
+<!-- end profile -->

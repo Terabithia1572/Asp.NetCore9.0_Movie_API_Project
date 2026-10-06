@@ -1,65 +1,95 @@
-<header class="ht-header">
+@model List<MovieApi.DTOs.DTOs.AdminCategoryDTOs.AdminResultCategoryDTO>
+
+<!-- header -->
+<header class="header header--static">
 	<div class="container">
-		<nav class="navbar navbar-default navbar-custom">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header logo">
-				<div class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					<span class="sr-only">Toggle navigation</span>
-					<div id="nav-icon1">
+		<div class="row">
+			<div class="col-12">
+				<div class="header__content">
+					<button class="header__menu" type="button">
 						<span></span>
 						<span></span>
 						<span></span>
+					</button>
+
+					<a href="/" class="header__logo">
+						<img src="~/FlixTheme/images/logo.svg" alt="FlixTV Logo" style="height: 34px;">
+					</a>
+
+					<ul class="header__nav">
+						<li class="header__nav-item">
+							<a class="header__nav-link" href="/">Ana Sayfa</a>
+						</li>
+
+						<li class="header__nav-item">
+							<a class="header__nav-link" href="/Movie/MovieList">Filmler</a>
+						</li>
+
+						<li class="header__nav-item">
+							<a class="header__nav-link" href="/Series/SeriesList">Diziler</a>
+						</li>
+
+						<li class="header__nav-item">
+							<a class="header__nav-link" href="#" role="button" id="dropdownMenuCategories" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Kategoriler 
+								<svg width="4" height="4" viewBox="0 0 4 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.93893 3.30334C1.08141 3.30334 0.384766 2.60669 0.384766 1.75047C0.384766 0.894254 1.08141 0.196308 1.93893 0.196308C2.79644 0.196308 3.49309 0.894254 3.49309 1.75047C3.49309 2.60669 2.79644 3.30334 1.93893 3.30334Z"></path></svg>
+							</a>
+							<ul class="dropdown-menu header__nav-menu" aria-labelledby="dropdownMenuCategories">
+								@if (Model != null && Model.Any())
+								{
+									foreach (var category in Model)
+									{
+										<li><a href="/Category/Index?id=@category.CategoryID">@category.CategoryName</a></li>
+									}
+								}
+								else
+								{
+									<li><a href="#">Kategori Bulunamadı</a></li>
+								}
+							</ul>
+						</li>
+
+						<li class="header__nav-item">
+							<a class="header__nav-link" href="/About/Index">Hakkımızda</a>
+						</li>
+
+						<li class="header__nav-item">
+							<a class="header__nav-link" href="/Contact/Index">İletişim</a>
+						</li>
+					</ul>
+
+					<div class="header__actions">
+						@if (User.Identity != null && User.Identity.IsAuthenticated)
+						{
+							<ul class="header__nav" style="margin-left: 0;">
+								<li class="header__nav-item">
+									<a class="header__nav-link" href="#" role="button" id="dropdownUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										@User.Identity.Name
+										<svg width="4" height="4" viewBox="0 0 4 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.93893 3.30334C1.08141 3.30334 0.384766 2.60669 0.384766 1.75047C0.384766 0.894254 1.08141 0.196308 1.93893 0.196308C2.79644 0.196308 3.49309 0.894254 3.49309 1.75047C3.49309 2.60669 2.79644 3.30334 1.93893 3.30334Z"></path></svg>
+									</a>
+									<ul class="dropdown-menu header__nav-menu" aria-labelledby="dropdownUser">
+										<li><a href="/Profile/Index">Profilim</a></li>
+										<li><a href="/Favorite/Index">Favorilerim</a></li>
+										@if (User.IsInRole("Admin") || User.IsInRole("admin"))
+										{
+											<li><a href="/Admin/Dashboard/Index">Admin Paneli</a></li>
+										}
+										<li><a href="/Login/LogOut">Çıkış Yap</a></li>
+									</ul>
+								</li>
+							</ul>
+						}
+						else
+						{
+							<a href="/Login/Index" class="header__user">
+								<span>Giriş Yap</span>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,12a1,1,0,0,0-1-1H11.41l2.3-2.29a1,1,0,1,0-1.42-1.42l-4,4a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l4,4a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L11.41,13H19A1,1,0,0,0,20,12ZM17,2H7A3,3,0,0,0,4,5V19a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V16a1,1,0,0,0-2,0v3a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V8a1,1,0,0,0,2,0V5A3,3,0,0,0,17,2Z"></path></svg>
+							</a>
+						}
 					</div>
 				</div>
-				<a href="index-2.html"><img class="logo" src="~/MovieTheme/images/logo1.png" alt="" width="119" height="58"></a>
 			</div>
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav flex-child-menu menu-left">
-					<li class="hidden">
-						<a href="#page-top"></a>
-					</li>
-					<li class="dropdown first"><a class="btn btn-default dropdown-toggle lv1" >Ana Sayfa</a></li>
-					<li class="dropdown first"><a class="btn btn-default dropdown-toggle lv1">Filmler</a></li>
-					<li class="dropdown first"><a class="btn btn-default dropdown-toggle lv1">Diziler</a></li>
-					<li class="dropdown first"><a class="btn btn-default dropdown-toggle lv1">Bloglar</a></li>
-					<li class="dropdown first"><a class="btn btn-default dropdown-toggle lv1">Yorumlar</a></li>
-					<li class="dropdown first"><a href="/Favorite/Index" class="btn btn-default dropdown-toggle lv1"><i class="ion-heart" style="color: #dd003f; margin-right: 5px;"></i>Favorilerim</a></li>
-				
-
-
-					
-					
-				</ul>
-				<ul class="nav navbar-nav flex-child-menu menu-right">
-					<li class="dropdown first">
-						<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
-							Sayfalar <i class="fa fa-angle-down" aria-hidden="true"></i>
-						</a>
-						<ul class="dropdown-menu level1">
-							<li><a href="landing.html">Oyuncular</a></li>
-							<li><a href="404.html">Yeni Çıkanlar</a></li>
-							<li><a href="404.html">Yakında Gelecekler</a></li>
-							<li class="it-last"><a href="comingsoon.html">Diğer</a></li>
-						</ul>
-					</li>
-					<li><a href="#">Yardım</a></li>
-					<li class="loginLink"><a href="#">Giriş Yap</a></li>
-					<li class="btn signupLink"><a href="#">Kayıt Ol</a></li>
-				</ul>
-			</div>
-			<!-- /.navbar-collapse -->
-		</nav>
-
-		<!-- top search form -->
-		<div class="top-search">
-			<select>
-				<option value="united">Filmler</option>
-				<option value="saab">Diziler</option>
-				<option value="saab">Belgeseller</option>
-				<option value="saab">Diğer</option>
-			</select>
-			<input type="text" placeholder="Aranacak kelimeyi giriniz.. (film adı, oyuncu, diğer...)">
 		</div>
 	</div>
 </header>
+<!-- end header -->

@@ -1,41 +1,26 @@
-﻿
 @{
     Layout = null;
 }
-
 <!DOCTYPE html>
-<html lang="en" class="no-js">
-
-<!-- movielist07:38-->
-@await Component.InvokeAsync("_UserLayoutWebUIHeadComponentPartial");  <!-- Burası Bizim head etiketi Alanında tutulan kodlar -->
+<html lang="tr">
+@await Component.InvokeAsync("_UserLayoutWebUIHeadComponentPartial")
 <body>
-	<!--preloading-->
-	@await Component.InvokeAsync("_UserLayoutWebUIPreloaderComponentPartial"); <!--Burası bizim preloader alanının tutulduğu kodlar-->
-	<!--end of preloading-->
-	<!--login form popup-->
-	@await Component.InvokeAsync("_UserLayoutWebUILoginModalComponentPartial"); <!--Burası bizim Login (Giriş Yap) ekranımızın tutulduğu alan -->
-	<!--end of login form popup-->
-	<!--signup form popup-->
-    @await Component.InvokeAsync("_UserLayoutWebUIRegisterModalComponentPartial"); <!--Burası bizim SignUp (Kayıt Ol) ekranımızın tutulduğu alan -->
-	<!--end of signup form popup-->
-	<!-- BEGIN | Header -->
-    @await Component.InvokeAsync("_UserLayoutWebUINavbarComponentPartial") <!-- Burası bizim Navbar alanımızın tutulduğu kodlar -->
+	@await Component.InvokeAsync("_UserLayoutWebUINavbarComponentPartial")
 
-	
-	<!-- END | Header -->
-    @await Component.InvokeAsync("_UserLayoutWebUIHeroComponentPartial") <!-- Burası bizim Hero alanımızın tutulduğu kodlar -->
 	@RenderBody()
 
-	<!-- footer section-->
-	@await Component.InvokeAsync("_UserLayoutWebUIFooterComponentPartial") <!-- Burası bizim Footer alanımızın tutulduğu kodlar -->
-	
-	<!-- end of footer section-->
+	@await Component.InvokeAsync("_UserLayoutWebUIFooterComponentPartial")
 
-	<script src="~/MovieTheme/js/jquery.js"></script>
-	<script src="~/MovieTheme/js/plugins.js"></script>
-	<script src="~/MovieTheme/js/plugins2.js"></script>
-	<script src="~/MovieTheme/js/custom.js"></script>
+	<!-- JS -->
+	<script src="~/FlixTheme/js/jquery-3.5.1.min.js"></script>
+	<script src="~/FlixTheme/js/bootstrap.bundle.min.js"></script>
+	<script src="~/FlixTheme/js/owl.carousel.min.js"></script>
+	<script src="~/FlixTheme/js/slider-radio.js"></script>
+	<script src="~/FlixTheme/js/select2.min.js"></script>
+	<script src="~/FlixTheme/js/smooth-scrollbar.js"></script>
+	<script src="~/FlixTheme/js/jquery.magnific-popup.min.js"></script>
+	<script src="~/FlixTheme/js/plyr.min.js"></script>
+	<script src="~/FlixTheme/js/main.js"></script>
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
-
-<!-- movielist07:38-->
 </html>
