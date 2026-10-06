@@ -215,9 +215,8 @@
 	<script>
 		function toggleFavoriteSeries(seriesId) {
 			$.ajax({
-				url: '/Favorite/ToggleSeriesFavorite',
+				url: '/Favorite/ToggleSeriesFavorite?seriesId=' + seriesId,
 				type: 'POST',
-				data: { seriesId: seriesId },
 				success: function (res) {
 					if (res && res.success) {
 						var isFav = res.isFavorited;

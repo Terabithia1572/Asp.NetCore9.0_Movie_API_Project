@@ -52,6 +52,45 @@ namespace Movie.Api.UI.Controllers
             return View(viewModel);
         }
 
+        public async Task<IActionResult> Search(string query, int page = 1, int pageSize = 18)
+        {
+            if (page < 1) page = 1;
+
+            ViewBag.v1 = "Arama Sonuçları";
+            ViewBag.v2 = "Ana Sayfa";
+            ViewBag.v3 = "Arama";
+            ViewBag.Query = query;
+            ViewBag.IsSearch = true;
+
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync($"{ApiBaseUrl}/Movies");
+            var allMovies = new List<ResultMovieDTO>();
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                allMovies = JsonConvert.DeserializeObject<List<ResultMovieDTO>>(jsonData) ?? new List<ResultMovieDTO>();
+            }
+
+            if (!string.IsNullOrEmpty(query))
+            {
+                allMovies = allMovies.Where(x => x.MovieTitle != null && x.MovieTitle.Contains(query, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            var totalCount = allMovies.Count;
+            var pagedItems = allMovies.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            var viewModel = new PagedListViewModel<ResultMovieDTO>
+            {
+                Items = pagedItems,
+                CurrentPage = page,
+                PageSize = pageSize,
+                TotalCount = totalCount
+            };
+
+            return View("MovieList", viewModel);
+        }
+
         public async Task<IActionResult> MovieDetail(int id)
         {
             ViewBag.id = id;

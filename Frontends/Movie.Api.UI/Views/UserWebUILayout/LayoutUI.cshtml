@@ -7,8 +7,9 @@
 <body>
 	@await Component.InvokeAsync("_UserLayoutWebUINavbarComponentPartial")
 
-	@RenderBody()
-
+	<main class="main">
+		@RenderBody()
+	</main>
 	@await Component.InvokeAsync("_UserLayoutWebUIFooterComponentPartial")
 
 	<!-- JS -->
