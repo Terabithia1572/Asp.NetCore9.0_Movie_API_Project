@@ -1,15 +1,16 @@
-﻿<div class="hero common-hero">
+<section class="section section--head section--head-fixed">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
-				<div class="hero-ct">
-					<h1> @ViewBag.v1</h1>
-					<ul class="breadcumb">
-						<li class="active"><a href="#">@ViewBag.v2</a></li>
-						<li> <span class="ion-ios-arrow-right"></span> @ViewBag.v3</li>
-					</ul>
-				</div>
+			<div class="col-12 col-xl-6">
+				<h1 class="section__title section__title--head">@(ViewBag.v1 ?? "FlixTV")</h1>
+			</div>
+
+			<div class="col-12 col-xl-6">
+				<ul class="breadcrumb">
+					<li class="breadcrumb__item"><a href="/">Ana Sayfa</a></li>
+					<li class="breadcrumb__item breadcrumb__item--active">@(ViewBag.v3 ?? ViewBag.v1 ?? "Katalog")</li>
+				</ul>
 			</div>
 		</div>
 	</div>
-</div>
+</section>

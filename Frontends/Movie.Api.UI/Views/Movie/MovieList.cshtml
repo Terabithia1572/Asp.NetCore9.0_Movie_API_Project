@@ -1,144 +1,86 @@
-﻿@model List<ResultMovieDTO>
+@model List<ResultMovieDTO>
 
 @{
-	ViewData["Title"] = "MovieList";
-	Layout = "~/Views/UserWebUILayout/LayoutUI.cshtml";
+    ViewData["Title"] = "Tüm Filmler";
+    Layout = "~/Views/UserWebUILayout/LayoutUI.cshtml";
 }
 
-<div class="page-single movie_list">
+<!-- head -->
+<section class="section section--head section--head-fixed">
 	<div class="container">
-		<div class="row ipad-width2">
-			<div class="col-md-8 col-sm-12 col-xs-12">
-				<div class="topbar-filter">
-					<p>Toplam <span>187</span> Film Mevcut.</p>
-					<label>Filtrele:</label>
-					<select>
-						<option value="popularity">Popüler Filmler A--Z</option>
-						<option value="popularity">Popüler Filmler Z--A</option>
-						<option value="rating">En Çok Değerlendirilenler</option>
-						<option value="rating">En Çok İzlenenler</option>
-						<option value="date">Eklenme Tarihi A-Z</option>
-						<option value="date">Eklenme Tarihi Z-A</option>
-						@* <option value="date">Eklenme Tarihi Z-A</option> *@
-						@* <option value="date">Eklenme Tarihi Z-A</option> *@
-					</select>
-					<a href="movielist.html" class="list"><i class="ion-ios-list-outline active"></i></a>
-					<a href="moviegrid.html" class="grid"><i class="ion-grid"></i></a>
-				</div>
-				@foreach(var item in Model)
-				{
-					<div class="movie-item-style-2">
-						<img src="@item.MovieCoverImageURL" alt="">
-						<div class="mv-item-infor">
-							<h6><a href="moviesingle.html">@item.MovieTitle <span>@item.MovileCreatedYear</span></a></h6>
-							<p class="rate"><i class="ion-android-star"></i><span>@item.MovieRating</span> /10</p>
-							<p class="describe">@item.MovieDescription</p>
-							<p class="run-time"> Film Uzunluğu: @item.MovieDuration’ Dakika<span>MMPA: PG-13 </span>    .     <span>Çıkış Tarihi: @item.MovieReleaseDate</span></p>
-							<p>Director: <a href="#">Joss Whedon</a></p>
-							<p>Stars: <a href="#">Robert Downey Jr.,</a> <a href="#">Chris Evans,</a> <a href="#">  Chris Hemsworth</a></p>
-						</div>
-					</div>
-				}
-				
-				
-				<div class="topbar-filter">
-					<label>Her Sayfadaki Film Sayısı:</label>
-					<select>
-						<option value="range">5 Film</option>
-						<option value="saab">10 Film</option>
-					</select>
-					<div class="pagination2">
-						<span>Sayfa 1 - 2:</span>
-						<a class="active" href="#">1</a>
-						<a href="#">2</a>
-						<a href="#"><i class="ion-arrow-right-b"></i></a>
-					</div>
-				</div>
+		<div class="row">
+			<div class="col-12 col-xl-6">
+				<h1 class="section__title section__title--head">Film Katalogu</h1>
 			</div>
-			<div class="col-md-4 col-sm-12 col-xs-12">
-				<div class="sidebar">
-					<div class="searh-form">
-						<h4 class="sb-title">Film Arama</h4>
-						<form class="form-style-1" action="#">
-							<div class="row">
-								<div class="col-md-12 form-it">
-									<label>Film Adı</label>
-									<input type="text" placeholder="Aranacak Kelimeler">
-								</div>
-								<div class="col-md-12 form-it">
-									<label>Tür & Kategori</label>
-									<div class="group-ip">
-										<select name="skills" multiple="" class="ui fluid dropdown">
-											<option value="">Film Türü Seçiniz..</option>
-											<option value="Action1">Aksiyon</option>
-											<option value="Action2">Macera</option>
-											<option value="Action3">Animasyon</option>
-											<option value="Action4">Korku</option>
-											<option value="Action5">Komedi</option>
-										</select>
-									</div>
 
-								</div>
-								<div class="col-md-12 form-it">
-									<label>Reyting Puanı</label>
-
-									<select>
-										<option value="range">-- Reyting Puanı Seçin --</option>
-										<option value="saab">-- 8.0 ve Üzeri --</option>
-										<option value="saab">-- 7.0 & 8.0 --</option>
-										<option value="saab">-- 5.0 & 6.9 --</option>
-										<option value="saab">-- 5.0'ten düşük --</option>
-									</select>
-
-								</div>
-								<div class="col-md-12 form-it">
-									<label>Film Çıkış Tarihi</label>
-									<div class="row">
-										<div class="col-md-6">
-											<select>
-												<option value="range">Yıl Seçiniz</option>
-												<option value="number">2000</option>
-												<option value="number">2010</option>
-												<option value="number">2020</option>
-											</select>
-										</div>
-										<div class="col-md-6">
-											<select>
-												<option value="range">Yıl Seçiniz</option>
-												<option value="number">2000</option>
-												<option value="number">2010</option>
-												<option value="number">2020</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-12 ">
-									<input class="submit" type="submit" value="Ara">
-								</div>
-							</div>
-						</form>
-					</div>
-					<div class="ads">
-						<img src="~/MovieTheme/images/uploads/ads1.png" alt="">
-					</div>
-					<div class="sb-facebook sb-it">
-						<h4 class="sb-title">Find us on Facebook</h4>
-						<iframe src="#" data-src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ftemplatespoint.net%2F%3Ffref%3Dts&tabs=timeline&width=340&height=315px&small_header=true&adapt_container_width=false&hide_cover=false&show_facepile=true&appId" height="315" style="width:100%;border:none;overflow:hidden"></iframe>
-					</div>
-					<div class="sb-twitter sb-it">
-						<h4 class="sb-title">Tweet to us</h4>
-						<div class="slick-tw">
-							<div class="tweet item" id="">
-								<!-- Put your twiter id here -->
-							</div>
-							<div class="tweet item" id="">
-								<!-- Put your 2nd twiter account id here -->
-							</div>
-						</div>
-					</div>
-				</div>
+			<div class="col-12 col-xl-6">
+				<ul class="breadcrumb">
+					<li class="breadcrumb__item"><a href="/">Ana Sayfa</a></li>
+					<li class="breadcrumb__item breadcrumb__item--active">Filmler</li>
+				</ul>
 			</div>
 		</div>
 	</div>
-</div>
+</section>
+<!-- end head -->
 
+<!-- catalog -->
+<div class="catalog catalog--page">
+	<div class="container">
+		<!-- filter bar -->
+		<div class="row">
+			<div class="col-12">
+				<div class="catalog__nav">
+					<div class="catalog__select-wrap">
+						<span class="catalog__select-title">Sırala:</span>
+						<select class="catalog__select" name="sort">
+							<option value="rating">Reytinge Göre</option>
+							<option value="year">Çıkış Yılına Göre</option>
+							<option value="name">İsme Göre</option>
+						</select>
+					</div>
+					<span class="catalog__pages">Toplam @(Model?.Count ?? 0) Film Listeleniyor</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- card grid -->
+		<div class="row row--grid">
+			@if (Model != null && Model.Any())
+			{
+				foreach (var item in Model)
+				{
+					<div class="col-6 col-sm-4 col-md-3 col-xl-2">
+						<div class="card">
+							<div class="card__cover">
+								<img src="@(string.IsNullOrEmpty(item.MovieCoverImageURL) ? "/FlixTheme/images/1.jpg" : item.MovieCoverImageURL)" 
+									 alt="@item.MovieTitle" 
+									 onerror="this.onerror=null;this.src='/FlixTheme/images/1.jpg';" />
+								<a href="/Movie/MovieDetail/@item.MovieID" class="card__play">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.54,9,5,1.15A2.51,2.51,0,0,0,1.15,3.37V18.63A2.51,2.51,0,0,0,5,20.85L18.54,13A2.51,2.51,0,0,0,18.54,9Z"></path></svg>
+								</a>
+								<span class="card__rate">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22,9.67A1,1,0,0,0,21.14,9l-5.69-.83L12.9,3a1,1,0,0,0-1.8,0L8.55,8.16,2.86,9a1,1,0,0,0-.55,1.7l4.11,4L5.45,20.4a1,1,0,0,0,1.45,1.05L12,18.68l5.1,2.77a1,1,0,0,0,1.45-1.05l-.97-5.7,4.11-4A1,1,0,0,0,22,9.67Z"></path></svg>
+									@item.MovieRating
+								</span>
+							</div>
+							<div class="card__content">
+								<h3 class="card__title"><a href="/Movie/MovieDetail/@item.MovieID">@item.MovieTitle</a></h3>
+								<span class="card__category">
+									<a href="#">Film</a>
+								</span>
+							</div>
+						</div>
+					</div>
+				}
+			}
+			else
+			{
+				<div class="col-12" style="padding: 40px 0; text-align: center;">
+					<h3 style="color: #fff;">Henüz yayınlanmış bir film bulunmamaktadır.</h3>
+				</div>
+			}
+		</div>
+	</div>
+</div>
+<!-- end catalog -->
