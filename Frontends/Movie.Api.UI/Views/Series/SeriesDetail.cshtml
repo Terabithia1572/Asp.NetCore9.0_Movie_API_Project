@@ -6,12 +6,12 @@
 }
 
 <!-- details -->
-<section class="section section--details section--bg" data-bg="@(string.IsNullOrEmpty(Model.Series.SeriesCoverImageURL) ? "/FlixTheme/images/bg.jpg" : Model.Series.SeriesCoverImageURL)">
+<section class="section section--details section--bg" data-bg="@(string.IsNullOrEmpty(Model.Series.SeriesCoverImageURL) ? "/FlixTheme/images/bg.jpg" : Model.Series.SeriesCoverImageURL)" style="position: relative; padding: 60px 0 30px;">
 	<div class="container">
 		<div class="row">
 			<!-- title -->
 			<div class="col-12">
-				<h1 class="section__title section__title--head">@Model.Series.SeriesTitle</h1>
+				<h1 class="section__title section__title--head" style="font-size: 32px; font-weight: 600; color: #fff; margin-bottom: 20px;">@Model.Series.SeriesTitle</h1>
 			</div>
 			<!-- end title -->
 
@@ -21,8 +21,11 @@
 					<div class="row">
 						<!-- card cover -->
 						<div class="col-12 col-sm-5 col-md-4 col-lg-3 col-xl-5">
-							<div class="card__cover">
-								<img src="@(string.IsNullOrEmpty(Model.Series.SeriesCoverImageURL) ? "/FlixTheme/images/1.jpg" : Model.Series.SeriesCoverImageURL)" alt="@Model.Series.SeriesTitle">
+							<div class="card__cover" style="border-radius: 16px; overflow: hidden; position: relative;">
+								<img src="@(string.IsNullOrEmpty(Model.Series.SeriesCoverImageURL) ? "/FlixTheme/images/1.jpg" : Model.Series.SeriesCoverImageURL)" 
+									 alt="@Model.Series.SeriesTitle"
+									 onerror="this.onerror=null;this.src='/FlixTheme/images/1.jpg';"
+									 style="width: 100%; height: 340px; object-fit: cover;">
 								<span class="card__rate">
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22,9.67A1,1,0,0,0,21.14,9l-5.69-.83L12.9,3a1,1,0,0,0-1.8,0L8.55,8.16,2.86,9a1,1,0,0,0-.55,1.7l4.11,4L5.45,20.4a1,1,0,0,0,1.45,1.05L12,18.68l5.1,2.77a1,1,0,0,0,1.45-1.05l-.97-5.7,4.11-4A1,1,0,0,0,22,9.67Z"></path></svg>
 									@Model.Series.SeriesRating
@@ -34,31 +37,31 @@
 						<!-- card content -->
 						<div class="col-12 col-sm-7 col-md-8 col-lg-9 col-xl-7">
 							<div class="card__content">
-								<ul class="card__meta">
-									<li><span>Kategori:</span> <a href="/Category/Index?id=@Model.Series.CategoryID">@(string.IsNullOrEmpty(Model.CategoryName) ? "Dizi" : Model.CategoryName)</a></li>
-									<li><span>Çıkış Yılı:</span> @Model.Series.SeriesCreatedYear</li>
-									<li><span>Sezon Sayısı:</span> @Model.Seasons.Count Sezon</li>
-									<li><span>Ortalama Süre:</span> @(Model.Series.SeriesAverageEpisodeDuration ?? 45) dk</li>
+								<ul class="card__meta" style="list-style: none; padding: 0; margin-bottom: 15px; color: #b9b9c0; font-size: 14px;">
+									<li style="margin-bottom: 8px;"><span style="color: #fff; font-weight: 500;">Kategori:</span> <a href="/Category/Index?id=@Model.Series.CategoryID" style="color: #ff55a5; font-weight: 500;">@(string.IsNullOrEmpty(Model.CategoryName) ? "TV Dizisi" : Model.CategoryName)</a></li>
+									<li style="margin-bottom: 8px;"><span style="color: #fff; font-weight: 500;">Çıkış Yılı:</span> @Model.Series.SeriesCreatedYear</li>
+									<li style="margin-bottom: 8px;"><span style="color: #fff; font-weight: 500;">Sezon Sayısı:</span> @Model.Seasons.Count Sezon</li>
+									<li style="margin-bottom: 8px;"><span style="color: #fff; font-weight: 500;">Ortalama Bölüm Süresi:</span> @(Model.Series.SeriesAverageEpisodeDuration ?? 45) dk</li>
 									@if (Model.Tags != null && Model.Tags.Any())
 									{
-										<li>
-											<span>Etiketler:</span>
+										<li style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+											<span style="color: #fff; font-weight: 500;">Etiketler:</span>
 											@foreach (var tag in Model.Tags)
 											{
-												<span class="badge" style="background-color: #2b2b35; color: #ff55a5; padding: 4px 8px; margin-right: 4px; border-radius: 4px;">#@tag.TagTitle</span>
+												<a href="/Category/Index?id=@Model.Series.CategoryID" class="badge" style="background-color: #282830; color: #ff55a5; padding: 4px 10px; border-radius: 6px; text-decoration: none; font-size: 12px;">#@tag.TagTitle</a>
 											}
 										</li>
 									}
 								</ul>
 
-								<div class="card__description">
+								<div class="card__description" style="color: #d1d1d6; font-size: 14px; line-height: 1.6; margin-top: 15px;">
 									@Model.Series.SeriesDescription
 								</div>
 
-								<div style="margin-top: 20px;">
+								<div style="margin-top: 25px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
 									@if (User.Identity != null && User.Identity.IsAuthenticated)
 									{
-										<button id="btnToggleFav" class="sign__btn" style="width: auto; padding: 0 25px; display: inline-flex; align-items: center; gap: 8px; height: 42px; line-height: 42px;" onclick="toggleFavoriteSeries(@Model.Series.SeriesID)">
+										<button id="btnToggleFav" class="sign__btn" style="width: auto; padding: 0 25px; display: inline-flex; align-items: center; gap: 8px; height: 42px; line-height: 42px; border-radius: 8px;" onclick="toggleFavoriteSeries(@Model.Series.SeriesID)">
 											<svg id="favHeartIcon" width="18" height="18" viewBox="0 0 24 24" fill="@(Model.IsFavorited ? "#ff55a5" : "none")" stroke="@(Model.IsFavorited ? "#ff55a5" : "#fff")" stroke-width="2">
 												<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
 											</svg>
@@ -67,7 +70,7 @@
 									}
 									else
 									{
-										<a href="/Login/Index" class="sign__btn" style="width: auto; padding: 0 25px; display: inline-flex; align-items: center; height: 42px; line-height: 42px;">
+										<a href="/Login/Index" class="sign__btn" style="width: auto; padding: 0 25px; display: inline-flex; align-items: center; height: 42px; line-height: 42px; border-radius: 8px; text-decoration: none;">
 											Favorilere Eklemek İçin Giriş Yapın
 										</a>
 									}
@@ -79,26 +82,37 @@
 				</div>
 			</div>
 			<!-- end content -->
+
+			<!-- Trailer / Video Player Area -->
+			<div class="col-12 col-xl-6" style="margin-top: 20px;">
+				<div style="background: #282830; border-radius: 16px; padding: 20px; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+					<div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; background: #131720;">
+						<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Fragman" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top:0; left: 0; width: 100%; height: 100%; border-radius: 12px;"></iframe>
+					</div>
+					<p style="color: #b9b9c0; font-size: 13px; margin-top: 12px; margin-bottom: 0;">Resmi Dizi Fragmanı &amp; Sezon Tanıtımı</p>
+				</div>
+			</div>
 		</div>
 	</div>
 </section>
 <!-- end details -->
 
 <!-- content tabs & seasons -->
-<section class="content">
-	<div class="content__head">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<h2 class="content__title">Sezonlar ve Bölümler</h2>
-					<ul class="nav nav-tabs content__tabs" id="season__tabs" role="tablist" style="margin-top: 15px;">
+<section class="content" style="padding: 40px 0;">
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-lg-8">
+				<div style="background: #282830; border-radius: 16px; padding: 30px; margin-bottom: 40px;">
+					<h2 style="color: #fff; font-size: 20px; font-weight: 600; margin-bottom: 20px;">Sezonlar ve Bölümler</h2>
+					
+					<ul class="nav nav-tabs content__tabs" id="season__tabs" role="tablist" style="border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 20px;">
 						@if (Model.Seasons != null && Model.Seasons.Any())
 						{
 							for (int i = 0; i < Model.Seasons.Count; i++)
 							{
 								var s = Model.Seasons[i];
 								<li class="nav-item">
-									<a class="nav-link @(i == 0 ? "active" : "")" data-toggle="tab" href="#season-tab-@s.SeasonID" role="tab" aria-controls="season-tab-@s.SeasonID" aria-selected="@(i == 0 ? "true" : "false")">
+									<a class="nav-link @(i == 0 ? "active" : "")" data-toggle="tab" href="#season-tab-@s.SeasonID" role="tab" aria-controls="season-tab-@s.SeasonID" aria-selected="@(i == 0 ? "true" : "false")" style="padding: 10px 20px; font-weight: 500;">
 										Sezon @s.SeasonNumber
 									</a>
 								</li>
@@ -111,88 +125,87 @@
 							</li>
 						}
 					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
 
-	<div class="container">
-		<div class="row">
-			<div class="col-12 col-lg-8">
-				<div class="tab-content" id="season__tabs-content">
-					@if (Model.Seasons != null && Model.Seasons.Any())
-					{
-						for (int i = 0; i < Model.Seasons.Count; i++)
+					<div class="tab-content" id="season__tabs-content">
+						@if (Model.Seasons != null && Model.Seasons.Any())
 						{
-							var s = Model.Seasons[i];
-							var episodes = Model.EpisodesBySeason.ContainsKey(s.SeasonID) ? Model.EpisodesBySeason[s.SeasonID] : new List<MovieApi.DTOs.DTOs.EpisodeDTOs.ResultEpisodeDto>();
+							for (int i = 0; i < Model.Seasons.Count; i++)
+							{
+								var s = Model.Seasons[i];
+								var episodes = Model.EpisodesBySeason.ContainsKey(s.SeasonID) ? Model.EpisodesBySeason[s.SeasonID] : new List<MovieApi.DTOs.DTOs.EpisodeDTOs.ResultEpisodeDto>();
 
-							<div class="tab-pane fade @(i == 0 ? "show active" : "")" id="season-tab-@s.SeasonID" role="tabpanel">
-								<div class="row row--grid" style="padding-top: 20px;">
-									@if (episodes.Any())
-									{
-										foreach (var ep in episodes)
+								<div class="tab-pane fade @(i == 0 ? "show active" : "")" id="season-tab-@s.SeasonID" role="tabpanel">
+									<div class="row row--grid">
+										@if (episodes.Any())
 										{
-											<div class="col-12" style="margin-bottom: 20px;">
-												<div style="background: #282830; border-radius: 8px; padding: 20px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
-													<div style="width: 140px; flex-shrink: 0;">
-														<img src="@(string.IsNullOrEmpty(ep.StillImageUrl) ? (string.IsNullOrEmpty(s.PosterImageUrl) ? "/FlixTheme/images/1.jpg" : s.PosterImageUrl) : ep.StillImageUrl)" alt="@ep.EpisodeTitle" style="width: 100%; height: 90px; object-fit: cover; border-radius: 6px;">
-													</div>
-													<div style="flex-grow: 1;">
-														<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-															<h4 style="color: #fff; margin: 0; font-size: 16px;">Bölüm @ep.EpisodeNumber: @ep.EpisodeTitle</h4>
-															<span style="color: #ff55a5; font-size: 13px;">@(ep.DurationMinutes ?? 45) dk</span>
+											foreach (var ep in episodes)
+											{
+												<div class="col-12" style="margin-bottom: 15px;">
+													<div style="background: #212127; border-radius: 12px; padding: 18px; display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+														<div style="width: 130px; flex-shrink: 0; border-radius: 8px; overflow: hidden;">
+															<img src="@(string.IsNullOrEmpty(ep.StillImageUrl) ? (string.IsNullOrEmpty(s.PosterImageUrl) ? "/FlixTheme/images/1.jpg" : s.PosterImageUrl) : ep.StillImageUrl)" 
+																 alt="@ep.EpisodeTitle" 
+																 onerror="this.onerror=null;this.src='/FlixTheme/images/1.jpg';"
+																 style="width: 100%; height: 85px; object-fit: cover;">
 														</div>
-														<p style="color: #b9b9c0; font-size: 13px; margin: 0;">@(string.IsNullOrEmpty(ep.Overview) ? "Bu bölüm için henüz açıklama bulunmamaktadır." : ep.Overview)</p>
+														<div style="flex-grow: 1;">
+															<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+																<h4 style="color: #fff; margin: 0; font-size: 15px; font-weight: 500;">Bölüm @ep.EpisodeNumber: @ep.EpisodeTitle</h4>
+																<span style="color: #ff55a5; font-size: 13px; font-weight: 500;">@(ep.DurationMinutes ?? 45) dk</span>
+															</div>
+															<p style="color: #b9b9c0; font-size: 13px; margin: 0; line-height: 1.4;">@(string.IsNullOrEmpty(ep.Overview) ? "Bu bölüm için detaylı açıklama yakında eklenecektir." : ep.Overview)</p>
+														</div>
 													</div>
 												</div>
+											}
+										}
+										else
+										{
+											<div class="col-12" style="padding: 20px 0;">
+												<p style="color: #b9b9c0;">Bu sezona ait bölüm bulunmamaktadır.</p>
 											</div>
 										}
-									}
-									else
-									{
-										<div class="col-12" style="padding: 20px 0;">
-											<p style="color: #b9b9c0;">Bu sezona ait bölüm bulunmamaktadır.</p>
-										</div>
-									}
-								</div>
-							</div>
-						}
-					}
-					else
-					{
-						<div class="tab-pane fade show active" id="season-none" role="tabpanel">
-							<p style="color: #b9b9c0; padding: 30px 0;">Bu diziye henüz sezon veya bölüm tanımlanmamıştır.</p>
-						</div>
-					}
-				</div>
-			</div>
-
-			<!-- Sidebar / Cast -->
-			<div class="col-12 col-lg-4">
-				<div class="row row--grid" style="padding-top: 20px;">
-					<div class="col-12">
-						<h3 style="color: #fff; font-size: 18px; margin-bottom: 20px;">Oyuncu Kadrosu</h3>
-						@if (Model.Casts != null && Model.Casts.Any())
-						{
-							<div class="row">
-								@foreach (var actor in Model.Casts)
-								{
-									<div class="col-6 col-sm-4 col-lg-6" style="margin-bottom: 15px;">
-										<div style="background: #282830; border-radius: 6px; padding: 12px; text-align: center;">
-											<img src="@(string.IsNullOrEmpty(actor.CastImageURL) ? "/FlixTheme/images/avatar.svg" : actor.CastImageURL)" alt="@actor.CastFullName" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-bottom: 8px;">
-											<h5 style="color: #fff; font-size: 13px; margin: 0;">@actor.CastFullName</h5>
-										</div>
 									</div>
-								}
-							</div>
+								</div>
+							}
 						}
 						else
 						{
-							<p style="color: #b9b9c0;">Oyuncu kadrosu henüz eklenmedi.</p>
+							<div class="tab-pane fade show active" id="season-none" role="tabpanel">
+								<p style="color: #b9b9c0;">Bu diziye henüz sezon veya bölüm tanımlanmamıştır.</p>
+							</div>
 						}
 					</div>
 				</div>
+			</div>
+
+			<!-- Sidebar / Cast & Crew -->
+			<div class="col-12 col-lg-4">
+				<h2 style="color: #fff; font-size: 20px; font-weight: 600; margin-bottom: 20px;">Oyuncu Kadrosu</h2>
+				@if (Model.Casts != null && Model.Casts.Any())
+				{
+					<div class="row row--grid">
+						@foreach (var actor in Model.Casts)
+						{
+							<div class="col-6 col-sm-6 col-lg-12" style="margin-bottom: 15px;">
+								<div style="background: #282830; border-radius: 12px; padding: 12px; display: flex; align-items: center; gap: 15px;">
+									<img src="@(string.IsNullOrEmpty(actor.CastImageURL) ? "/FlixTheme/images/avatar.svg" : actor.CastImageURL)" 
+										 alt="@actor.CastFullName" 
+										 onerror="this.onerror=null;this.src='/FlixTheme/images/avatar.svg';"
+										 style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover;">
+									<div>
+										<h5 style="color: #fff; font-size: 14px; margin: 0; font-weight: 500;">@actor.CastFullName</h5>
+										<span style="color: #ff55a5; font-size: 12px;">Oyuncu</span>
+									</div>
+								</div>
+							</div>
+						}
+					</div>
+				}
+				else
+				{
+					<p style="color: #b9b9c0;">Oyuncu kadrosu henüz eklenmedi.</p>
+				}
 			</div>
 		</div>
 	</div>

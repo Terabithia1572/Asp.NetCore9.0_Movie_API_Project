@@ -1,4 +1,4 @@
-@model List<MovieApi.DTOs.DTOs.AdminSeriesDTOs.AdminResultSeriesDTO>
+@model Movie.Api.UI.Models.PagedListViewModel<MovieApi.DTOs.DTOs.AdminSeriesDTOs.AdminResultSeriesDTO>
 
 @{
     ViewData["Title"] = "Tüm TV Dizileri";
@@ -38,15 +38,15 @@
 							<option value="name">İsme Göre</option>
 						</select>
 					</div>
-					<span class="catalog__pages">Toplam @(Model?.Count ?? 0) Dizi Listeleniyor</span>
+					<span class="catalog__pages" style="display: block; color: #b9b9c0; font-size: 13px;">Toplam @Model.TotalCount Dizi (Sayfa @Model.CurrentPage / @Model.TotalPages)</span>
 				</div>
 			</div>
 		</div>
 
 		<div class="row row--grid">
-			@if (Model != null && Model.Any())
+			@if (Model.Items != null && Model.Items.Any())
 			{
-				foreach (var item in Model)
+				foreach (var item in Model.Items)
 				{
 					<div class="col-6 col-sm-4 col-md-3 col-xl-2">
 						<div class="card">
@@ -65,7 +65,8 @@
 							<div class="card__content">
 								<h3 class="card__title"><a href="/Series/SeriesDetail/@item.SeriesID">@item.SeriesTitle</a></h3>
 								<span class="card__category">
-									<a href="#">TV Series</a>
+									<a href="/Series/SeriesDetail/@item.SeriesID">TV Series</a>
+									<span style="color: #b9b9c0; font-size: 11px; margin-left: auto;">@item.SeriesCreatedYear</span>
 								</span>
 							</div>
 						</div>
@@ -77,6 +78,34 @@
 				<div class="col-12" style="padding: 40px 0; text-align: center;">
 					<h3 style="color: #fff;">Henüz yayınlanmış bir dizi bulunmamaktadır.</h3>
 				</div>
+			}
+
+			@if (Model.TotalPages > 1)
+			{
+				<!-- paginator -->
+				<div class="col-12">
+					<ul class="paginator">
+						@if (Model.HasPreviousPage)
+						{
+							<li class="paginator__item paginator__item--prev">
+								<a href="?page=@(Model.CurrentPage - 1)">&laquo;</a>
+							</li>
+						}
+						@for (int i = 1; i <= Model.TotalPages; i++)
+						{
+							<li class="paginator__item @(Model.CurrentPage == i ? "paginator__item--active" : "")">
+								<a href="?page=@i">@i</a>
+							</li>
+						}
+						@if (Model.HasNextPage)
+						{
+							<li class="paginator__item paginator__item--next">
+								<a href="?page=@(Model.CurrentPage + 1)">&raquo;</a>
+							</li>
+						}
+					</ul>
+				</div>
+				<!-- end paginator -->
 			}
 		</div>
 	</div>

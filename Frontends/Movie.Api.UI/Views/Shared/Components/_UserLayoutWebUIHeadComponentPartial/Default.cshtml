@@ -11,12 +11,81 @@
 	<link rel="stylesheet" href="~/FlixTheme/css/select2.min.css">
 	<link rel="stylesheet" href="~/FlixTheme/css/main.css">
 
-	<!-- Custom Uniform Image Style -->
+	<!-- Custom Card Typography & Paginator Style Overrides -->
 	<style>
+		.card__title {
+			font-family: 'Rubik', sans-serif;
+			font-weight: 500;
+			font-size: 15px;
+			line-height: 1.3;
+			color: #fff;
+			margin-top: 10px;
+			margin-bottom: 4px;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+			white-space: normal;
+			text-overflow: ellipsis;
+			height: 38px;
+		}
+		.card__title a {
+			color: #fff;
+			transition: color 0.3s;
+		}
+		.card__title a:hover {
+			color: #ff55a5;
+		}
+		.card__category {
+			font-size: 12px;
+			line-height: 1.3;
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			color: #ff55a5;
+			margin-bottom: 5px;
+		}
+		.card__category a {
+			color: #ff55a5;
+		}
 		.card__cover img {
 			width: 100%;
-			height: 320px;
+			height: 300px;
 			object-fit: cover;
+			border-radius: 12px;
+		}
+
+		/* Paginator Styling */
+		.paginator {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			list-style: none;
+			padding: 0;
+			margin: 40px auto 0;
+		}
+		.paginator__item {
+			margin: 0 4px;
+		}
+		.paginator__item a {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 40px;
+			height: 40px;
+			border-radius: 8px;
+			background-color: #282830;
+			color: #fff;
+			font-size: 14px;
+			font-weight: 500;
+			text-decoration: none;
+			transition: background-color 0.3s, color 0.3s;
+		}
+		.paginator__item:hover a,
+		.paginator__item--active a {
+			background-color: #ff55a5;
+			color: #fff;
 		}
 	</style>
 

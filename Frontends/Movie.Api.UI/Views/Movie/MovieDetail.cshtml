@@ -7,12 +7,12 @@
 }
 
 <!-- details -->
-<section class="section section--details section--bg" data-bg="@(string.IsNullOrEmpty(movie.MovieCoverImageURL) ? "/FlixTheme/images/bg.jpg" : movie.MovieCoverImageURL)">
+<section class="section section--details section--bg" data-bg="@(string.IsNullOrEmpty(movie.MovieCoverImageURL) ? "/FlixTheme/images/bg.jpg" : movie.MovieCoverImageURL)" style="position: relative; padding: 60px 0 30px;">
 	<div class="container">
 		<div class="row">
 			<!-- title -->
 			<div class="col-12">
-				<h1 class="section__title section__title--head">@movie.MovieTitle</h1>
+				<h1 class="section__title section__title--head" style="font-size: 32px; font-weight: 600; color: #fff; margin-bottom: 20px;">@movie.MovieTitle</h1>
 			</div>
 			<!-- end title -->
 
@@ -22,10 +22,11 @@
 					<div class="row">
 						<!-- card cover -->
 						<div class="col-12 col-sm-5 col-md-4 col-lg-3 col-xl-5">
-							<div class="card__cover">
+							<div class="card__cover" style="border-radius: 16px; overflow: hidden; position: relative;">
 								<img src="@(string.IsNullOrEmpty(movie.MovieCoverImageURL) ? "/FlixTheme/images/1.jpg" : movie.MovieCoverImageURL)" 
 									 alt="@movie.MovieTitle"
-									 onerror="this.onerror=null;this.src='/FlixTheme/images/1.jpg';">
+									 onerror="this.onerror=null;this.src='/FlixTheme/images/1.jpg';"
+									 style="width: 100%; height: 340px; object-fit: cover;">
 								<span class="card__rate">
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22,9.67A1,1,0,0,0,21.14,9l-5.69-.83L12.9,3a1,1,0,0,0-1.8,0L8.55,8.16,2.86,9a1,1,0,0,0-.55,1.7l4.11,4L5.45,20.4a1,1,0,0,0,1.45,1.05L12,18.68l5.1,2.77a1,1,0,0,0,1.45-1.05l-.97-5.7,4.11-4A1,1,0,0,0,22,9.67Z"></path></svg>
 									@movie.MovieRating
@@ -37,40 +38,40 @@
 						<!-- card content -->
 						<div class="col-12 col-sm-7 col-md-8 col-lg-9 col-xl-7">
 							<div class="card__content">
-								<ul class="card__meta">
-									<li><span>Kategori:</span> <a href="/Category/Index?id=@movie.CategoryID">Film</a></li>
-									<li><span>Yayın Yılı:</span> @movie.MovileCreatedYear</li>
-									<li><span>Süre:</span> @(movie.MovieDuration) dk</li>
-									<li><span>Yayın Tarihi:</span> @movie.MovieReleaseDate.ToString("dd.MM.yyyy")</li>
-									@if (Model?.Tags != null && Model.Tags.Any())
+								<ul class="card__meta" style="list-style: none; padding: 0; margin-bottom: 15px; color: #b9b9c0; font-size: 14px;">
+									<li style="margin-bottom: 8px;"><span style="color: #fff; font-weight: 500;">Kategori:</span> <a href="/Category/Index?id=@movie.CategoryID" style="color: #ff55a5; font-weight: 500;">@(string.IsNullOrEmpty(Model.CategoryName) ? "Film" : Model.CategoryName)</a></li>
+									<li style="margin-bottom: 8px;"><span style="color: #fff; font-weight: 500;">Yayın Yılı:</span> @movie.MovileCreatedYear</li>
+									<li style="margin-bottom: 8px;"><span style="color: #fff; font-weight: 500;">Süre:</span> @(movie.MovieDuration) dk</li>
+									<li style="margin-bottom: 8px;"><span style="color: #fff; font-weight: 500;">Çıkış Tarihi:</span> @movie.MovieReleaseDate.ToString("dd.MM.yyyy")</li>
+									@if (Model.Tags != null && Model.Tags.Any())
 									{
-										<li>
-											<span>Etiketler:</span>
+										<li style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+											<span style="color: #fff; font-weight: 500;">Etiketler:</span>
 											@foreach (var tag in Model.Tags)
 											{
-												<span class="badge" style="background-color: #2b2b35; color: #ff55a5; padding: 4px 8px; margin-right: 4px; border-radius: 4px;">#@tag.TagTitle</span>
+												<a href="/Category/Index?id=@movie.CategoryID" class="badge" style="background-color: #282830; color: #ff55a5; padding: 4px 10px; border-radius: 6px; text-decoration: none; font-size: 12px;">#@tag.TagTitle</a>
 											}
 										</li>
 									}
 								</ul>
 
-								<div class="card__description">
+								<div class="card__description" style="color: #d1d1d6; font-size: 14px; line-height: 1.6; margin-top: 15px;">
 									@movie.MovieDescription
 								</div>
 
-								<div style="margin-top: 20px;">
+								<div style="margin-top: 25px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
 									@if (User.Identity != null && User.Identity.IsAuthenticated)
 									{
-										<button id="btnToggleFavMovie" class="sign__btn" style="width: auto; padding: 0 25px; display: inline-flex; align-items: center; gap: 8px; height: 42px; line-height: 42px;" onclick="toggleFavoriteMovie(@movie.MovieID)">
-											<svg id="favHeartIconMovie" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+										<button id="btnToggleFavMovie" class="sign__btn" style="width: auto; padding: 0 25px; display: inline-flex; align-items: center; gap: 8px; height: 42px; line-height: 42px; border-radius: 8px;" onclick="toggleFavoriteMovie(@movie.MovieID)">
+											<svg id="favHeartIconMovie" width="18" height="18" viewBox="0 0 24 24" fill="@(Model.IsFavorited ? "#ff55a5" : "none")" stroke="@(Model.IsFavorited ? "#ff55a5" : "#fff")" stroke-width="2">
 												<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
 											</svg>
-											<span id="favBtnTextMovie">Favorilerime Ekle</span>
+											<span id="favBtnTextMovie">@(Model.IsFavorited ? "Favorilerimden Çıkar" : "Favorilerime Ekle")</span>
 										</button>
 									}
 									else
 									{
-										<a href="/Login/Index" class="sign__btn" style="width: auto; padding: 0 25px; display: inline-flex; align-items: center; height: 42px; line-height: 42px;">
+										<a href="/Login/Index" class="sign__btn" style="width: auto; padding: 0 25px; display: inline-flex; align-items: center; height: 42px; line-height: 42px; border-radius: 8px; text-decoration: none;">
 											Favorilere Eklemek İçin Giriş Yapın
 										</a>
 									}
@@ -82,29 +83,146 @@
 				</div>
 			</div>
 			<!-- end content -->
+
+			<!-- Trailer / Player Area -->
+			<div class="col-12 col-xl-6" style="margin-top: 20px;">
+				<div style="background: #282830; border-radius: 16px; padding: 20px; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+					<div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; background: #131720;">
+						<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Fragman" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top:0; left: 0; width: 100%; height: 100%; border-radius: 12px;"></iframe>
+					</div>
+					<p style="color: #b9b9c0; font-size: 13px; margin-top: 12px; margin-bottom: 0;">Resmi Film Fragmanı &amp; Tanıtım Videosu</p>
+				</div>
+			</div>
 		</div>
 	</div>
 </section>
 <!-- end details -->
 
-<!-- content cast -->
-<section class="content">
+<!-- content cast, comments & related -->
+<section class="content" style="padding: 40px 0;">
 	<div class="container">
 		<div class="row">
-			<div class="col-12">
-				<h2 class="content__title" style="margin-bottom: 20px;">Oyuncu Kadrosu</h2>
-				@if (Model?.Casts != null && Model.Casts.Any())
+			<!-- Left Column: Cast & Comments -->
+			<div class="col-12 col-lg-8">
+				<!-- Cast & Crew -->
+				<div style="margin-bottom: 40px;">
+					<h2 style="color: #fff; font-size: 20px; font-weight: 600; margin-bottom: 20px;">Oyuncu Kadrosu</h2>
+					@if (Model.Casts != null && Model.Casts.Any())
+					{
+						<div class="row row--grid">
+							@foreach (var actor in Model.Casts)
+							{
+								<div class="col-6 col-sm-4 col-md-3" style="margin-bottom: 15px;">
+									<div style="background: #282830; border-radius: 12px; padding: 15px; text-align: center;">
+										<img src="@(string.IsNullOrEmpty(actor.CastImageURL) ? "/FlixTheme/images/avatar.svg" : actor.CastImageURL)" 
+											 alt="@actor.CastFullName" 
+											 onerror="this.onerror=null;this.src='/FlixTheme/images/avatar.svg';"
+											 style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;">
+										<h5 style="color: #fff; font-size: 14px; margin: 0; font-weight: 500;">@actor.CastFullName</h5>
+										<span style="color: #ff55a5; font-size: 12px;">Oyuncu</span>
+									</div>
+								</div>
+							}
+						</div>
+					}
+					else
+					{
+						<p style="color: #b9b9c0;">Bu film için oyuncu kadrosu henüz eklenmedi.</p>
+					}
+				</div>
+
+				<!-- Reviews & Comments Section -->
+				<div style="background: #282830; border-radius: 16px; padding: 30px; margin-bottom: 40px;">
+					<h2 style="color: #fff; font-size: 20px; font-weight: 600; margin-bottom: 25px;">Kullanıcı Yorumları ve Değerlendirmeler (@Model.Reviews.Count)</h2>
+					
+					@if (Model.Reviews != null && Model.Reviews.Any())
+					{
+						<div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px;">
+							@foreach (var review in Model.Reviews)
+							{
+								<div style="background: #212127; border-radius: 12px; padding: 20px;">
+									<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+										<div style="display: flex; align-items: center; gap: 10px;">
+											<img src="/FlixTheme/images/avatar.svg" alt="Avatar" style="width: 40px; height: 40px; border-radius: 50%;">
+											<div>
+												<h5 style="color: #fff; margin: 0; font-size: 14px;">Kullanıcı #@(review.UserID ?? "Anonim")</h5>
+												<span style="color: #b9b9c0; font-size: 12px;">@review.ReviewDate.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))</span>
+											</div>
+										</div>
+										<div style="background: #131720; padding: 4px 12px; border-radius: 6px; color: #ff55a5; font-weight: 600; font-size: 14px;">
+											★ @review.UserRating / 10
+										</div>
+									</div>
+									<p style="color: #d1d1d6; font-size: 14px; margin: 0; line-height: 1.5;">@review.ReviewComment</p>
+								</div>
+							}
+						</div>
+					}
+					else
+					{
+						<p style="color: #b9b9c0; margin-bottom: 30px;">Henüz bu filme yorum yapılmamış. İlk yorumu siz yazın!</p>
+					}
+
+					<!-- Add Comment Form -->
+					@if (User.Identity != null && User.Identity.IsAuthenticated)
+					{
+						<form action="#" method="post" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 25px;">
+							<h4 style="color: #fff; font-size: 16px; margin-bottom: 15px;">Yorum Yap &amp; Puan Ver</h4>
+							<div class="row">
+								<div class="col-12 col-md-4" style="margin-bottom: 15px;">
+									<label style="color: #b9b9c0; font-size: 13px; display: block; margin-bottom: 5px;">Puanınız (1 - 10)</label>
+									<select class="sign__input" name="UserRating" style="height: 44px;">
+										<option value="10">10 - Mükemmel</option>
+										<option value="9">9 - Çok İyi</option>
+										<option value="8">8 - Harika</option>
+										<option value="7">7 - İnanılmaz</option>
+										<option value="6">6 - İyi</option>
+										<option value="5">5 - Ortalama</option>
+										<option value="4">4 - Zayıf</option>
+										<option value="3">3 - Kötü</option>
+										<option value="2">2 - Çok Kötü</option>
+										<option value="1">1 - Berbat</option>
+									</select>
+								</div>
+								<div class="col-12" style="margin-bottom: 15px;">
+									<textarea class="sign__textarea" name="ReviewComment" placeholder="Film hakkındaki düşüncelerinizi buraya yazınız..." rows="4" required></textarea>
+								</div>
+								<div class="col-12">
+									<button type="submit" class="sign__btn" style="width: auto; padding: 0 30px; height: 42px; line-height: 42px;">Yorumu Gönder</button>
+								</div>
+							</div>
+						</form>
+					}
+					else
+					{
+						<div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; text-align: center;">
+							<a href="/Login/Index" class="sign__btn" style="display: inline-block; width: auto; padding: 0 25px; text-decoration: none;">Yorum Yapmak İçin Giriş Yapın</a>
+						</div>
+					}
+				</div>
+			</div>
+
+			<!-- Right Column: Related Movies -->
+			<div class="col-12 col-lg-4">
+				<h2 style="color: #fff; font-size: 20px; font-weight: 600; margin-bottom: 20px;">Benzer Filmler</h2>
+				@if (Model.RelatedMovies != null && Model.RelatedMovies.Any())
 				{
 					<div class="row row--grid">
-						@foreach (var actor in Model.Casts)
+						@foreach (var rel in Model.RelatedMovies)
 						{
-							<div class="col-6 col-sm-4 col-md-3 col-xl-2" style="margin-bottom: 15px;">
-								<div style="background: #282830; border-radius: 6px; padding: 15px; text-align: center;">
-									<img src="@(string.IsNullOrEmpty(actor.CastImageURL) ? "/FlixTheme/images/avatar.svg" : actor.CastImageURL)" 
-										 alt="@actor.CastFullName" 
-										 onerror="this.onerror=null;this.src='/FlixTheme/images/avatar.svg';"
-										 style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;">
-									<h5 style="color: #fff; font-size: 14px; margin: 0;">@actor.CastFullName</h5>
+							<div class="col-6 col-sm-6 col-lg-12" style="margin-bottom: 15px;">
+								<div class="card" style="display: flex; flex-direction: row; gap: 15px; background: #282830; padding: 10px; border-radius: 12px; align-items: center;">
+									<a href="/Movie/MovieDetail/@rel.MovieID" style="width: 80px; flex-shrink: 0; display: block; border-radius: 8px; overflow: hidden;">
+										<img src="@(string.IsNullOrEmpty(rel.MovieCoverImageURL) ? "/FlixTheme/images/1.jpg" : rel.MovieCoverImageURL)" 
+											 alt="@rel.MovieTitle" 
+											 onerror="this.onerror=null;this.src='/FlixTheme/images/1.jpg';"
+											 style="width: 100%; height: 100px; object-fit: cover;">
+									</a>
+									<div style="flex-grow: 1;">
+										<h4 style="margin: 0 0 5px 0; font-size: 14px;"><a href="/Movie/MovieDetail/@rel.MovieID" style="color: #fff; text-decoration: none;">@rel.MovieTitle</a></h4>
+										<span style="color: #ff55a5; font-size: 12px;">★ @rel.MovieRating</span>
+										<p style="color: #b9b9c0; font-size: 12px; margin: 3px 0 0 0;">@rel.MovileCreatedYear</p>
+									</div>
 								</div>
 							</div>
 						}
@@ -112,7 +230,7 @@
 				}
 				else
 				{
-					<p style="color: #b9b9c0;">Bu film için oyuncu kadrosu henüz eklenmedi.</p>
+					<p style="color: #b9b9c0;">Benzer film bulunamadı.</p>
 				}
 			</div>
 		</div>

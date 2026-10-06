@@ -21,21 +21,36 @@ namespace Movie.Api.UI.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<IActionResult> SeriesList()
+        public async Task<IActionResult> SeriesList(int page = 1, int pageSize = 18)
         {
+            if (page < 1) page = 1;
+
             ViewBag.v1 = "Dizi Listesi";
             ViewBag.v2 = "Ana Sayfa";
             ViewBag.v3 = "Tüm Diziler";
 
             var client = _httpClientFactory.CreateClient();
             var response = await client.GetAsync($"{ApiBaseUrl}/Series");
+            var allSeries = new List<AdminResultSeriesDTO>();
+
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<AdminResultSeriesDTO>>(json) ?? new List<AdminResultSeriesDTO>();
-                return View(values);
+                allSeries = JsonConvert.DeserializeObject<List<AdminResultSeriesDTO>>(json) ?? new List<AdminResultSeriesDTO>();
             }
-            return View(new List<AdminResultSeriesDTO>());
+
+            var totalCount = allSeries.Count;
+            var pagedItems = allSeries.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            var viewModel = new PagedListViewModel<AdminResultSeriesDTO>
+            {
+                Items = pagedItems,
+                CurrentPage = page,
+                PageSize = pageSize,
+                TotalCount = totalCount
+            };
+
+            return View(viewModel);
         }
 
         public async Task<IActionResult> Index()
