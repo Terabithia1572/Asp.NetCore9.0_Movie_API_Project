@@ -1,4 +1,4 @@
-﻿
+
 @{
     Layout = null;
 }
@@ -76,40 +76,47 @@
                         <p class="text-gray-400 text-sm font-medium">Discover movies, TV shows &amp; reviews</p>
                     </div>
                 </div>
+                @if (ViewBag.Error != null)
+                {
+                    <div class="bg-red-500/20 border border-red-500/50 text-red-200 px-4 py-2 rounded-xl text-sm text-center mb-2">
+                        @ViewBag.Error
+                    </div>
+                }
                 <!-- Inputs Section -->
-                <form class="flex flex-col gap-4 mt-2">
-                    <!-- Email Field -->
+                <form method="post" action="/Login/SignIn" class="flex flex-col gap-4 mt-2">
+                    @Html.AntiForgeryToken()
+                    <!-- Username Field -->
                     <div class="flex flex-col gap-1.5">
-                        <label class="text-xs font-semibold text-gray-300 ml-1 uppercase tracking-wide">Email Address</label>
+                        <label class="text-xs font-semibold text-gray-300 ml-1 uppercase tracking-wide">Kullanıcı Adı veya E-posta</label>
                         <div class="group flex w-full items-stretch rounded-xl transition-all duration-200 focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary">
-                            <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-l-xl text-white focus:outline-0 focus:ring-0 border border-[#543b3c] bg-[#271b1c]/80 focus:border-primary h-12 placeholder:text-[#ba9c9d] px-4 text-base font-normal leading-normal border-r-0 transition-colors" placeholder="name@example.com" type="email" />
+                            <input name="Username" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-l-xl text-white focus:outline-0 focus:ring-0 border border-[#543b3c] bg-[#271b1c]/80 focus:border-primary h-12 placeholder:text-[#ba9c9d] px-4 text-base font-normal leading-normal border-r-0 transition-colors" placeholder="Kullanıcı adınız..." type="text" required />
                             <div class="text-[#ba9c9d] flex border border-[#543b3c] bg-[#271b1c]/80 items-center justify-center w-12 rounded-r-xl border-l-0 group-focus-within:border-primary transition-colors">
-                                <span class="material-symbols-outlined text-[20px]">mail</span>
+                                <span class="material-symbols-outlined text-[20px]">person</span>
                             </div>
                         </div>
                     </div>
                     <!-- Password Field -->
                     <div class="flex flex-col gap-1.5">
                         <div class="flex justify-between items-center ml-1">
-                            <label class="text-xs font-semibold text-gray-300 uppercase tracking-wide">Password</label>
-                            <a class="text-xs text-primary font-medium hover:text-red-400 hover:underline transition-colors" href="#">Forgot password?</a>
+                            <label class="text-xs font-semibold text-gray-300 uppercase tracking-wide">Şifre</label>
+                            <a class="text-xs text-primary font-medium hover:text-red-400 hover:underline transition-colors" href="#">Şifremi Unuttum?</a>
                         </div>
                         <div class="group flex w-full items-stretch rounded-xl transition-all duration-200 focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary">
-                            <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-l-xl text-white focus:outline-0 focus:ring-0 border border-[#543b3c] bg-[#271b1c]/80 focus:border-primary h-12 placeholder:text-[#ba9c9d] px-4 text-base font-normal leading-normal border-r-0 transition-colors" placeholder="Enter your password" type="password" />
+                            <input name="Password" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-l-xl text-white focus:outline-0 focus:ring-0 border border-[#543b3c] bg-[#271b1c]/80 focus:border-primary h-12 placeholder:text-[#ba9c9d] px-4 text-base font-normal leading-normal border-r-0 transition-colors" placeholder="Şifreniz..." type="password" required />
                             <div class="text-[#ba9c9d] flex border border-[#543b3c] bg-[#271b1c]/80 items-center justify-center w-12 rounded-r-xl border-l-0 group-focus-within:border-primary transition-colors">
                                 <span class="material-symbols-outlined text-[20px]">lock</span>
                             </div>
                         </div>
                     </div>
                     <!-- Submit Button -->
-                    <button class="mt-2 flex items-center justify-center h-12 w-full bg-primary hover:bg-red-600 active:scale-[0.98] transition-all rounded-xl text-white font-bold text-base shadow-lg shadow-primary/25 tracking-wide" type="button">
-                        Sign In
+                    <button class="mt-2 flex items-center justify-center h-12 w-full bg-primary hover:bg-red-600 active:scale-[0.98] transition-all rounded-xl text-white font-bold text-base shadow-lg shadow-primary/25 tracking-wide" type="submit">
+                        Giriş Yap
                     </button>
                 </form>
                 <!-- Divider -->
                 <div class="flex items-center gap-3 w-full">
                     <div class="h-px bg-white/10 flex-1"></div>
-                    <span class="text-xs text-gray-500 font-medium whitespace-nowrap">or continue with</span>
+                    <span class="text-xs text-gray-500 font-medium whitespace-nowrap">veya şununla devam et</span>
                     <div class="h-px bg-white/10 flex-1"></div>
                 </div>
                 <!-- Social Login -->
@@ -127,8 +134,8 @@
             <!-- Footer Section -->
             <div class="p-4 bg-black/20 border-t border-white/5 text-center">
                 <p class="text-gray-400 text-sm">
-                    New to BlockBuster?
-                    <a class="text-white font-semibold hover:text-primary transition-colors ml-1" href="#">Create an account</a>
+                    Hesabınız yok mu?
+                    <a class="text-white font-semibold hover:text-primary transition-colors ml-1" href="/Register/SignUp">Kayıt Ol</a>
                 </p>
             </div>
         </div>

@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MovieApi.Application.Features.MediatorDesignPattern.Queries.ReviewQueries;
 using MovieApi.Application.Features.MediatorDesignPattern.Results.ReviewResult;
@@ -25,16 +25,16 @@ namespace MovieApi.Application.Features.MediatorDesignPattern.Handlers.ReviewHan
             var values = await _context.Reviews.Skip((request.Page - 1) * request.PageSize).Take(request.PageSize)
                          .Select(x => new GetReviewQueryResult
                          {
-                             IsSpoiler = x.IsSpoiler,
-                             LikeCount = x.LikeCount,
+                             IsSpoiler = x.IsSpoiler ?? false,
+                             LikeCount = x.LikeCount ?? 0,
                              MovieID = x.MovieID,
-                             ReviewComment = x.ReviewComment,
-                             ReviewDate = x.ReviewDate,
+                             ReviewComment = x.ReviewComment ?? string.Empty,
+                             ReviewDate = x.ReviewDate ?? DateTime.UtcNow,
                              ReviewID = x.ReviewID,
-                             SentimentScore = x.SentimentScore,
-                             ReviewStatus = x.ReviewStatus,
+                             SentimentScore = x.SentimentScore ?? 0,
+                             ReviewStatus = x.ReviewStatus ?? true,
                              UserID = x.UserID,
-                             UserRating = x.UserRating
+                             UserRating = x.UserRating ?? 0
                          }).ToListAsync();
             return values;
         }
