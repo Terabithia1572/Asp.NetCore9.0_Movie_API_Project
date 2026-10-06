@@ -58,7 +58,7 @@
 			}
 			<div class="sb-it">
 				<h6>Çıkış Tarihi:</h6>
-				<p>@(Model?.Movie?.MovieReleaseDate.ToString("dd MMMM yyyy") ?? "-")</p>
+				<p>@(Model?.Movie?.MovieReleaseDate?.ToString("dd MMMM yyyy") ?? "-")</p>
 			</div>
 			<div class="sb-it">
 				<h6>Film Süresi:</h6>

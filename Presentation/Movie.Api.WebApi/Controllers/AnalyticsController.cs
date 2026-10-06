@@ -38,8 +38,11 @@ namespace Movie.Api.WebApi.Controllers
             var movies = await _context.Movies.Select(m => m.MovieRating).ToListAsync();
             foreach (var r in movies)
             {
-                int bucket = Math.Clamp((int)Math.Floor(r), 1, 10) - 1;
-                ratingDistribution[bucket]++;
+                if (r.HasValue)
+                {
+                    int bucket = Math.Clamp((int)Math.Floor(r.Value), 1, 10) - 1;
+                    ratingDistribution[bucket]++;
+                }
             }
 
             // Review sentiments breakdown (Simulated sentiment analysis)

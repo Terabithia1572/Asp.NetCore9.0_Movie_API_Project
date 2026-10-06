@@ -28,7 +28,7 @@
 									 style="width: 100%; height: 340px; object-fit: cover;">
 								<span class="card__rate">
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22,9.67A1,1,0,0,0,21.14,9l-5.69-.83L12.9,3a1,1,0,0,0-1.8,0L8.55,8.16,2.86,9a1,1,0,0,0-.55,1.7l4.11,4L5.45,20.4a1,1,0,0,0,1.45,1.05L12,18.68l5.1,2.77a1,1,0,0,0,1.45-1.05l-.97-5.7,4.11-4A1,1,0,0,0,22,9.67Z"></path></svg>
-									@Model.Series.SeriesRating
+									@(Model.Series?.SeriesRating?.ToString("0.0") ?? "N/A")
 								</span>
 							</div>
 						</div>
@@ -38,8 +38,8 @@
 						<div class="col-12 col-sm-7 col-md-8 col-lg-9 col-xl-7">
 							<div class="card__content">
 								<ul class="card__meta" style="list-style: none; padding: 0; margin-bottom: 15px; color: #b9b9c0; font-size: 14px;">
-									<li style="margin-bottom: 8px;"><span style="color: #fff; font-weight: 500;">Kategori:</span> <a href="/Category/Index?id=@Model.Series.CategoryID" style="color: #ff55a5; font-weight: 500;">@(string.IsNullOrEmpty(Model.CategoryName) ? "TV Dizisi" : Model.CategoryName)</a></li>
-									<li style="margin-bottom: 8px;"><span style="color: #fff; font-weight: 500;">Çıkış Yılı:</span> @Model.Series.SeriesCreatedYear</li>
+									<li style="margin-bottom: 8px;"><span style="color: #fff; font-weight: 500;">Kategori:</span> <a href="/Category/Index?id=@Model.Series?.CategoryID" style="color: #ff55a5; font-weight: 500;">@(string.IsNullOrEmpty(Model.CategoryName) ? "TV Dizisi" : Model.CategoryName)</a></li>
+									<li style="margin-bottom: 8px;"><span style="color: #fff; font-weight: 500;">Çıkış Yılı:</span> @(Model.Series?.SeriesCreatedYear ?? "N/A")</li>
 									<li style="margin-bottom: 8px;"><span style="color: #fff; font-weight: 500;">Sezon Sayısı:</span> @Model.Seasons.Count Sezon</li>
 									<li style="margin-bottom: 8px;"><span style="color: #fff; font-weight: 500;">Ortalama Bölüm Süresi:</span> @(Model.Series.SeriesAverageEpisodeDuration ?? 45) dk</li>
 									@if (Model.Tags != null && Model.Tags.Any())

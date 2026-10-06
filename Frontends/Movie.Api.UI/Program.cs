@@ -29,6 +29,6 @@ app.MapControllerRoute(
 // ✅ Default route (SONRA)
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Movie}/{action=MovieList}/{id?}");
 
 app.Run();
