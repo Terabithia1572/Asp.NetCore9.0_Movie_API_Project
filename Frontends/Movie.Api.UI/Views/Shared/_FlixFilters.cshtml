@@ -1,0 +1,14 @@
+@model FlixCatalogViewModel
+<form action="/category" method="get" class="catalog__nav" data-filter>
+<input type="hidden" name="query" value="@Model.Query">
+<div class="catalog__select-wrap">
+<select class="catalog__select" name="categoryId" aria-label="Genre"><option value="">All genres</option>@foreach (var category in Model.Categories) { <option value="@category.CategoryID" selected="@(Model.CategoryId == category.CategoryID)">@category.CategoryName</option> }</select>
+<select class="catalog__select" name="year" aria-label="Year"><option value="">All years</option>@foreach (var year in Model.Years) { <option value="@year" selected="@(Model.Year == year)">@year</option> }</select>
+<select class="catalog__select" name="kind" aria-label="Content type"><option value="">Movies &amp; series</option><option value="movie" selected="@(Model.Kind == "movie")">Movies</option><option value="series" selected="@(Model.Kind == "series")">TV series</option></select>
+</div>
+<div class="slider-radio">
+<input type="radio" name="sort" id="sort-rating" value="rating" checked="@(Model.Sort == "rating")"><label for="sort-rating">Top rated</label>
+<input type="radio" name="sort" id="sort-title" value="title" checked="@(Model.Sort == "title")"><label for="sort-title">Title</label>
+<input type="radio" name="sort" id="sort-newest" value="newest" checked="@(Model.Sort == "newest")"><label for="sort-newest">Newest</label>
+</div><noscript><button type="submit" class="sign__btn">Apply filters</button></noscript>
+</form>

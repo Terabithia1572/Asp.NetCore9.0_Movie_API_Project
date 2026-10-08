@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Movie.Api.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
     public class AdminSettingController : Controller
     {
         private static PlatformSettingsModel _currentSettings = new PlatformSettingsModel

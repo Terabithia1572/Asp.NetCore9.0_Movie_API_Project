@@ -1,0 +1,4 @@
+@model List<FlixCard>
+<div class="row"><div class="col-12"><h5 class="sidebar__title">New items</h5></div>
+@foreach (var item in Model) { <div class="col-6 col-sm-4 col-xl-6"><partial name="_FlixCard" model="item" /></div> }
+</div>

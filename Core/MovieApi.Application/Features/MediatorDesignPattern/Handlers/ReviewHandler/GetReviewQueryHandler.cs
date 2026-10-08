@@ -22,12 +22,19 @@ namespace MovieApi.Application.Features.MediatorDesignPattern.Handlers.ReviewHan
 
         public async Task<List<GetReviewQueryResult>> Handle(GetReviewQuery request, CancellationToken cancellationToken)
         {
-            var values = await _context.Reviews.Skip((request.Page - 1) * request.PageSize).Take(request.PageSize)
+            var query = _context.Reviews.AsNoTracking().AsQueryable();
+            if (request.MovieId.HasValue) query = query.Where(x => x.MovieID == request.MovieId);
+            if (request.SeriesId.HasValue) query = query.Where(x => x.SeriesID == request.SeriesId);
+            if (!string.IsNullOrEmpty(request.UserId)) query = query.Where(x => x.UserID == request.UserId);
+            if (!string.IsNullOrWhiteSpace(request.Search)) query = query.Where(x => x.ReviewComment != null && x.ReviewComment.Contains(request.Search));
+            var values = await query.OrderByDescending(x => x.ReviewDate).ThenByDescending(x => x.ReviewID)
+                         .Skip((Math.Max(1, request.Page) - 1) * Math.Clamp(request.PageSize, 1, 100)).Take(Math.Clamp(request.PageSize, 1, 100))
                          .Select(x => new GetReviewQueryResult
                          {
                              IsSpoiler = x.IsSpoiler ?? false,
                              LikeCount = x.LikeCount ?? 0,
                              MovieID = x.MovieID,
+                             SeriesID = x.SeriesID,
                              ReviewComment = x.ReviewComment ?? string.Empty,
                              ReviewDate = x.ReviewDate ?? DateTime.UtcNow,
                              ReviewID = x.ReviewID,

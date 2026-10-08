@@ -6,6 +6,7 @@ using System.Text;
 namespace Movie.Api.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
     public class AdminBackupController : Controller
     {
         private static List<BackupHistoryItem> _backups = new List<BackupHistoryItem>

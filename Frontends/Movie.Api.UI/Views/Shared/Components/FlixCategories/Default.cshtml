@@ -1,0 +1,3 @@
+@model List<MovieApi.DTOs.DTOs.AdminCategoryDTOs.AdminResultCategoryDTO>
+@foreach (var category in Model) { <li><a href="/category/@category.CategoryID">@category.CategoryName</a></li> }
+<li><a href="/category?kind=movie">All movies</a></li><li><a href="/category?kind=series">All TV series</a></li>

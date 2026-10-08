@@ -41,7 +41,8 @@ namespace MovieApi.DTOs.DTOs.DashboardDTOs
         public string UserComment { get; set; } = null!;
         public decimal UserRating { get; set; }
         public DateTime ReviewDate { get; set; }
-        public int MovieID { get; set; }
+        public int? MovieID { get; set; }
+        public int? SeriesID { get; set; }
         public string MovieTitle { get; set; } = null!;
     }
 }

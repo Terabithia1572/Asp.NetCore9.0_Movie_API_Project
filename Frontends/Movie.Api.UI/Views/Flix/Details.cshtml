@@ -1,0 +1,57 @@
+@model FlixDetailViewModel
+@{ Layout = "_FlixLayout"; ViewData["Title"] = Model.Item.Title; ViewData["FixedHeader"] = true; ViewData["Carousel"] = true; }
+
+
+	<!-- details -->
+	<section class="section section--head section--head-fixed section--gradient section--details-bg">
+		<div class="section__bg" data-bg="@Model.Item.Image"></div>
+		<div class="container">
+			<!-- article -->
+			<div class="article">
+				<div class="row">
+					<div class="col-12 col-xl-8">
+						<a class="article__trailer" href="#feature-unavailable" data-unavailable="No trailer URL is stored for this title.">Trailer unavailable</a>
+
+						<!-- article content -->
+						<div class="article__content"><h1>@Model.Item.Title</h1><ul class="list"><li>@Model.Item.RatingText</li><li>@Model.Item.Category</li><li>@Model.Item.Year</li><li>@(Model.Item.Duration.HasValue ? Model.Item.Duration + " min" : "Duration unavailable")</li></ul><p>@Model.Item.Description</p></div>
+						<!-- end article content -->
+					</div>
+
+					<div class="col-12 col-xl-8"><div class="flix-player-unavailable"><img src="@Model.Item.Image" alt="@Model.Item.Title"><p class="section__text">Playback is unavailable: this title has no video source.</p></div><div class="article__actions article__actions--details"><div class="article__download">Downloads unavailable</div><button class="article__favorites @(Model.IsFavorite ? "active" : "")" type="button" data-favorite="@Model.Item.Id" data-kind="@Model.Item.Kind" aria-pressed="@Model.IsFavorite.ToString().ToLowerInvariant()">Toggle favorite</button></div></div>
+
+					@foreach (var season in Model.Seasons) {
+<div class="col-12"><div class="series-wrap"><h3 class="series-wrap__title">Season @season.SeasonNumber</h3><p class="section__text">@season.Overview</p><div class="section__series owl-carousel" id="season-@season.SeasonID">
+@foreach (var episode in Model.Episodes[season.SeasonID]) { <div class="series"><a class="series__cover" href="#episode-@episode.EpisodeID" data-toggle="collapse"><img src="@Movie.Api.UI.Services.FlixCatalogService.ImageUrl(episode.StillImageUrl)" alt="@episode.EpisodeTitle"><span>@episode.DurationMinutes min</span></a><h3 class="series__title"><a href="#episode-@episode.EpisodeID" data-toggle="collapse">@episode.EpisodeNumber. @episode.EpisodeTitle</a></h3><div class="collapse" id="episode-@episode.EpisodeID"><p class="section__text">@episode.Overview</p><p class="section__text">Air date: @episode.AirDate?.ToString("yyyy-MM-dd"). Playback unavailable.</p></div></div> }
+</div></div></div> }
+
+					<div class="col-12 col-xl-8">
+						<div class="categories"><h3 class="categories__title">Genre &amp; tags</h3><a href="/category/@Model.Item.CategoryId">@Model.Item.Category</a>@foreach (var tag in Model.Tags) { <span class="section__text">@tag.TagTitle</span> }</div><div class="categories"><h3 class="categories__title">Cast</h3>@foreach (var cast in Model.Cast) { <span class="section__text">@cast.CastName @cast.CastSurname</span> }</div>
+
+						<div class="share"><h3 class="share__title">Share</h3><button class="article__favorites" type="button" onclick="navigator.clipboard.writeText(location.href).then(() => this.textContent = 'Link copied').catch(() => this.textContent = location.href)">Copy link</button></div>	
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-12 col-xl-8">
+						<div class="comments"><ul class="nav nav-tabs comments__title" role="tablist"><li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#reviews-tab" role="tab">Reviews (@Model.Reviews.Count)</a></li><li class="nav-item"><a class="nav-link" data-toggle="tab" href="#comments-tab" role="tab">Comments</a></li></ul><div class="tab-content"><div class="tab-pane fade show active" id="reviews-tab" role="tabpanel"><ul class="reviews__list">
+@foreach (var review in Model.Reviews) { <li class="reviews__item"><div class="reviews__autor"><img class="reviews__avatar" src="/FlixTheme/images/avatar.svg" alt=""><span class="reviews__name">Viewer review</span><span class="reviews__time">@review.ReviewDate?.ToString("dd MMM yyyy")</span><span class="reviews__rating">@review.UserRating</span></div>@if (review.IsSpoiler == true) { <details><summary class="section__text">Contains spoilers — reveal review</summary><p class="reviews__text">@review.ReviewComment</p></details> } else { <p class="reviews__text">@review.ReviewComment</p> }</li> }
+</ul>@if (Model.Reviews.Count == 0) { <p class="section__text">No published reviews for this title.</p> }<form class="reviews__form" onsubmit="return false"><input class="reviews__input" placeholder="Review title" disabled><textarea class="reviews__textarea" placeholder="Review submission is not supported by the current API." disabled></textarea><button class="reviews__btn" type="button" disabled>Submission unavailable</button></form></div><div class="tab-pane fade" id="comments-tab" role="tabpanel"><p class="section__text">Standalone comments are not supported. Existing viewer feedback is shown under Reviews.</p></div></div></div>
+					</div>
+
+					<div class="col-12 col-xl-4">
+						<div class="sidebar sidebar--mt">
+							<form class="subscribe" onsubmit="return false"><h4 class="subscribe__title">Subscribe</h4><p class="subscribe__text">Email subscriptions are not configured.</p><input class="subscribe__input" type="email" placeholder="Email" disabled><button class="subscribe__btn" type="button" disabled>Unavailable</button></form>
+
+							@foreach (var item in Model.Related.Take(4)) { <div class="col-6 col-sm-4 col-xl-6"><partial name="_FlixCard" model="item" /></div> }
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end article -->
+		</div>
+	</section>
+	<!-- end details -->
+
+	<section class="section"><div class="container"><h2 class="section__title">Similar movies and TV series</h2><partial name="_FlixCarousel" model="Model.Related" view-data='new ViewDataDictionary(ViewData) { ["CarouselId"] = "similar" }' /></div></section>
+
+	

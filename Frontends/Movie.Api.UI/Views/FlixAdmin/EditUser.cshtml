@@ -1,0 +1,96 @@
+@model FlixEditUserInput
+@{ Layout = "_FlixAdminLayout"; }
+<main class="main">
+		<div class="container-fluid">
+			<div class="row">
+				<!-- main title -->
+				<div class="col-12">
+					<div class="main__title">
+						<h2>Edit user</h2>
+					</div>
+				</div>
+				<!-- end main title -->
+
+				<!-- profile -->
+				<div class="col-12">
+					<div class="profile__content">
+						<!-- profile user -->
+						<div class="profile__user">
+							<div class="profile__avatar">
+								<img src="/FlixTheme/admin/images/user.svg" alt="">
+							</div>
+							<!-- or red -->
+							<div class="profile__meta profile__meta--green">
+                                <h3>@Model.Username <span>(@(Model.IsLockedOut ? "Locked" : "Active"))</span></h3>
+								<span>@Model.Username</span>
+							</div>
+						</div>
+						<!-- end profile user -->
+
+						<!-- profile tabs nav -->
+						<ul class="nav nav-tabs profile__tabs" id="profile__tabs" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Profile</a>
+							</li>
+
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Comments</a>
+							</li>
+
+							<li class="nav-item">
+								<a class="nav-link" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">Reviews</a>
+							</li>
+						</ul>
+						<!-- end profile tabs nav -->
+
+						<!-- profile mobile tabs nav -->
+						<div class="profile__mobile-tabs" id="profile__mobile-tabs">
+							<div class="profile__mobile-tabs-btn dropdown-toggle" role="navigation" id="mobile-tabs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<input type="button" value="Profile">
+								<span></span>
+							</div>
+
+							<div class="profile__mobile-tabs-menu dropdown-menu" aria-labelledby="mobile-tabs">
+								<ul class="nav nav-tabs" role="tablist">
+									<li class="nav-item"><a class="nav-link active" id="1-tab" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Profile</a></li>
+
+									<li class="nav-item"><a class="nav-link" id="2-tab" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Comments</a></li>
+
+									<li class="nav-item"><a class="nav-link" id="3-tab" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false">Reviews</a></li>
+								</ul>
+							</div>
+						</div>
+						<!-- end profile mobile tabs nav -->
+
+						<!-- profile btns -->
+						<div class="profile__actions">
+							
+							
+						</div>
+						<!-- end profile btns -->
+					</div>
+				</div>
+				<!-- end profile -->
+
+				<!-- content tabs -->
+				<div class="tab-content" id="myTabContent">
+					<div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
+						<div class="col-12">
+							<div class="sign__wrap">
+								<div class="row">
+									<div class="col-12 col-lg-6"><form method="post" action="/admin/flix/edit-user/@Model.Id" class="sign__form sign__form--profile sign__form--first">@Html.AntiForgeryToken()<input asp-for="Id" type="hidden"><div asp-validation-summary="All"></div><div class="row"><div class="col-12"><h4 class="sign__title">Profile details</h4></div><div class="col-12 col-md-6 col-lg-12 col-xl-6"><div class="sign__group"><label class="sign__label" asp-for="Username">Username</label><input asp-for="Username" class="sign__input" readonly></div></div><div class="col-12 col-md-6 col-lg-12 col-xl-6"><div class="sign__group"><label class="sign__label" asp-for="Email">Email</label><input asp-for="Email" class="sign__input"></div></div><div class="col-12 col-md-6 col-lg-12 col-xl-6"><div class="sign__group"><label class="sign__label" asp-for="Name">First name</label><input asp-for="Name" class="sign__input"></div></div><div class="col-12 col-md-6 col-lg-12 col-xl-6"><div class="sign__group"><label class="sign__label" asp-for="Surname">Last name</label><input asp-for="Surname" class="sign__input"></div></div><div class="col-12 col-md-6 col-lg-12 col-xl-6"><div class="sign__group"><label class="sign__label" asp-for="PhoneNumber">Phone</label><input asp-for="PhoneNumber" class="sign__input"></div></div><div class="col-12"><button class="sign__btn" type="submit">Save</button></div></div></form></div>
+
+									<div class="col-12 col-lg-6"><form class="sign__form sign__form--profile" onsubmit="return false"><h4 class="sign__title">Account administration</h4><p class="flix-message">Password recovery delivery, subscription management and role assignment are not configured on this screen. Users can change their own password in Profile settings.</p><button class="sign__btn" type="button" disabled>Unavailable</button></form></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab"><div class="col-12"><div class="main__table-wrap"><table class="main__table"><thead><tr><th>ID</th><th>MOVIE</th><th>AUTHOR</th><th>COMMENT</th><th>LIKES</th><th>DATE</th><th>ACTIONS</th></tr></thead><tbody>@foreach (var item in Model.Reviews) { <tr><td><div class="main__table-text">@item.ReviewID</div></td><td><div class="main__table-text"><a href="@(item.SeriesID.HasValue ? "/series/" + item.SeriesID : "/details/" + item.MovieID)">@(item.SeriesID.HasValue ? "Series " + item.SeriesID : "Movie " + item.MovieID)</a></div></td><td><div class="main__table-text">@item.UserID</div></td><td><div class="main__table-text">@item.ReviewComment</div></td><td><div class="main__table-text">@item.LikeCount</div></td><td><div class="main__table-text">@item.ReviewDate?.ToString("yyyy-MM-dd")</div></td><td><div class="main__table-btns"><a href="#review-@item.ReviewID" class="main__table-btn main__table-btn--view open-modal" aria-label="Read review"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"></path></svg></a></div></td></tr> }</tbody></table></div></div></div>
+
+					<div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="3-tab"><div class="col-12"><div class="main__table-wrap"><table class="main__table"><thead><tr><th>ID</th><th>MOVIE</th><th>AUTHOR</th><th>REVIEW</th><th>RATING</th><th>DATE</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody>@foreach (var item in Model.Reviews) { <tr><td><div class="main__table-text">@item.ReviewID</div></td><td><div class="main__table-text"><a href="@(item.SeriesID.HasValue ? "/series/" + item.SeriesID : "/details/" + item.MovieID)">@(item.SeriesID.HasValue ? "Series " + item.SeriesID : "Movie " + item.MovieID)</a></div></td><td><div class="main__table-text">@item.UserID</div></td><td><div class="main__table-text">@item.ReviewComment</div></td><td><div class="main__table-text">@item.UserRating</div></td><td><div class="main__table-text">@item.ReviewDate?.ToString("yyyy-MM-dd")</div></td><td><div class="main__table-text">@(item.ReviewStatus == true ? "Published" : "Hidden")</div></td><td><div class="main__table-btns"><a href="#review-@item.ReviewID" class="main__table-btn main__table-btn--view open-modal" aria-label="Read review"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"></path></svg></a></div></td></tr> }</tbody></table></div></div></div>
+				</div>
+				<!-- end content tabs -->
+			</div>
+		</div>
+	</main>@foreach (var item in Model.Reviews) { <div id="review-@item.ReviewID" class="zoom-anim-dialog mfp-hide modal"><h4 class="modal__title">Review @item.ReviewID</h4><p class="modal__text">@item.ReviewComment</p><p class="modal__text">Rating: @item.UserRating · @item.ReviewDate?.ToString("yyyy-MM-dd")</p><div class="modal__btns"><button class="modal__btn modal__btn--dismiss" type="button">Close</button></div></div> }

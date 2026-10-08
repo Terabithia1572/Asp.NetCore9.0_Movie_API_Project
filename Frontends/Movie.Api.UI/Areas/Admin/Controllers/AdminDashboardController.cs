@@ -5,14 +5,16 @@ using Newtonsoft.Json;
 namespace Movie.Api.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
     public class AdminDashboardController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private const string ApiBaseUrl = "https://localhost:44319/api";
+        private readonly string ApiBaseUrl;
 
-        public AdminDashboardController(IHttpClientFactory httpClientFactory)
+        public AdminDashboardController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
+            ApiBaseUrl = (configuration["MovieApi:BaseUrl"] ?? "http://localhost:5114/api/").TrimEnd('/') + "";
         }
 
         public async Task<IActionResult> Index()

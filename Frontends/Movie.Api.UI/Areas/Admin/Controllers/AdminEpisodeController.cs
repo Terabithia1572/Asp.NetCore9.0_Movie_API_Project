@@ -7,13 +7,16 @@ using System.Text;
 namespace Movie.Api.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
     public class AdminEpisodeController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly string ApiBaseUrl;
 
-        public AdminEpisodeController(IHttpClientFactory httpClientFactory)
+        public AdminEpisodeController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
+            ApiBaseUrl = (configuration["MovieApi:BaseUrl"] ?? "http://localhost:5114/api/").TrimEnd('/') + "";
         }
 
         private async Task LoadSeasonInfoAsync(int seasonId)
@@ -21,7 +24,7 @@ namespace Movie.Api.UI.Areas.Admin.Controllers
             try
             {
                 var client = _httpClientFactory.CreateClient();
-                var response = await client.GetAsync($"https://localhost:44319/api/seasons/{seasonId}");
+                var response = await client.GetAsync($"{ApiBaseUrl}/seasons/{seasonId}");
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
@@ -48,7 +51,7 @@ namespace Movie.Api.UI.Areas.Admin.Controllers
             await LoadSeasonInfoAsync(seasonId);
 
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:44319/api/episodes/season/{seasonId}");
+            var responseMessage = await client.GetAsync($"{ApiBaseUrl}/episodes/season/{seasonId}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -84,7 +87,7 @@ namespace Movie.Api.UI.Areas.Admin.Controllers
             var jsonData = JsonConvert.SerializeObject(dto);
             var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var responseMessage = await client.PostAsync("https://localhost:44319/api/episodes", stringContent);
+            var responseMessage = await client.PostAsync($"{ApiBaseUrl}/episodes", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("EpisodeList", new { seasonId = dto.SeasonID });
@@ -103,7 +106,7 @@ namespace Movie.Api.UI.Areas.Admin.Controllers
             ViewBag.v3 = "Bölüm Güncelleme";
 
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:44319/api/episodes/{id}");
+            var responseMessage = await client.GetAsync($"{ApiBaseUrl}/episodes/{id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -140,7 +143,7 @@ namespace Movie.Api.UI.Areas.Admin.Controllers
             var jsonData = JsonConvert.SerializeObject(dto);
             var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var responseMessage = await client.PutAsync("https://localhost:44319/api/episodes", stringContent);
+            var responseMessage = await client.PutAsync($"{ApiBaseUrl}/episodes", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("EpisodeList", new { seasonId = dto.SeasonID });
@@ -154,7 +157,7 @@ namespace Movie.Api.UI.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteEpisode(int id, int seasonId)
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:44319/api/episodes/{id}");
+            var responseMessage = await client.DeleteAsync($"{ApiBaseUrl}/episodes/{id}");
             return RedirectToAction("EpisodeList", new { seasonId = seasonId });
         }
     }

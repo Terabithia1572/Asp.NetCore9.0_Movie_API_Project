@@ -1,127 +1,64 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Movie.Api.UI.Models;
-using MovieApi.DTOs.DTOs.UserDTOs;
+using Movie.Api.UI.Services;
 using MovieApi.DTOs.DTOs.UserFavoriteDTOs;
-using Newtonsoft.Json;
+using MovieApi.Persistence.Identity;
 using System.Security.Claims;
-using System.Text;
 
-namespace Movie.Api.UI.Controllers
+namespace Movie.Api.UI.Controllers;
+
+[Authorize]
+public class ProfileController(UserManager<AppUser> users, MovieApiClient api, FlixCatalogService catalog) : Controller
 {
-    [Authorize]
-    public class ProfileController : Controller
+    [HttpGet("/profile")][HttpGet("/profile.html")][HttpGet("/Profile/Index")]
+    public async Task<IActionResult> Index()
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-        private const string ApiBaseUrl = "https://localhost:44319/api";
-
-        public ProfileController(IHttpClientFactory httpClientFactory)
+        try
         {
-            _httpClientFactory = httpClientFactory;
+            var user = await users.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            if (user == null) return Challenge();
+            var model = new UserProfileViewModel { UserId = user.Id, Username = user.UserName ?? "", Email = user.Email ?? "", Name = user.Name, Surname = user.Surname, PhoneNumber = user.PhoneNumber ?? "" };
+            model.FavoriteMovies = await api.ListAsync<ResultFavoriteMovieDto>($"UserFavorites/movies/{Uri.EscapeDataString(user.Id)}");
+            model.FavoriteSeries = await api.ListAsync<ResultFavoriteSeriesDto>($"UserFavorites/series/{Uri.EscapeDataString(user.Id)}");
+            model.FavoriteMoviesCount = model.FavoriteMovies.Count;
+            model.FavoriteSeriesCount = model.FavoriteSeries.Count;
+            model.FavoriteCards = model.FavoriteMovies.Select(m => new FlixCard { Id = m.MovieID, Title = m.MovieTitle, Image = FlixCatalogService.ImageUrl(m.MovieCoverImageURL), Rating = m.MovieRating, Year = m.MovileCreatedYear })
+                .Concat(model.FavoriteSeries.Select(s => new FlixCard { Id = s.SeriesID, Kind = "series", Title = s.SeriesTitle, Image = FlixCatalogService.ImageUrl(s.SeriesCoverImageURL), Rating = s.SeriesRating, Year = s.SeriesCreatedYear })).ToList();
+            model.Reviews = await api.ListAsync<MovieApi.DTOs.DTOs.AdminReviewDTOs.ResultAdminReviewDTO>($"Reviews?userId={Uri.EscapeDataString(user.Id)}&pageSize=100");
+            model.ReviewsCount = model.Reviews.Count;
+            model.NewTitles = (await catalog.CatalogAsync()).Items.Take(5).ToList();
+            return View("~/Views/Flix/Profile.cshtml", model);
         }
-
-        private string GetUserId()
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or Microsoft.Data.SqlClient.SqlException)
         {
-            return User.FindFirstValue(ClaimTypes.NameIdentifier)
-                   ?? User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value
-                   ?? "";
+            Response.StatusCode = 503;
+            ViewData["Message"] = "Your profile is temporarily unavailable. Please try again shortly.";
+            return View("~/Views/Flix/Unavailable.cshtml");
         }
+    }
 
-        public async Task<IActionResult> Index()
-        {
-            var userId = GetUserId();
-            if (string.IsNullOrEmpty(userId))
-            {
-                return RedirectToAction("Index", "Login");
-            }
+    [HttpPost][ValidateAntiForgeryToken]
+    public async Task<IActionResult> UpdateProfile(UpdateProfileInputModel model)
+    {
+        if (!ModelState.IsValid) { TempData["ErrorMessage"] = "Please enter a valid name and email address."; return RedirectToAction(nameof(Index)); }
+        var user = await users.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        if (user == null) return Challenge();
+        user.Name = model.Name; user.Surname = model.Surname; user.Email = model.Email; user.PhoneNumber = model.PhoneNumber;
+        var result = await users.UpdateAsync(user);
+        TempData[result.Succeeded ? "SuccessMessage" : "ErrorMessage"] = result.Succeeded ? "Profile updated." : string.Join(" ", result.Errors.Select(e => e.Description));
+        return RedirectToAction(nameof(Index));
+    }
 
-            var client = _httpClientFactory.CreateClient();
-            var viewModel = new UserProfileViewModel
-            {
-                UserId = userId
-            };
-
-            // 1. Fetch User Data
-            var userRes = await client.GetAsync($"{ApiBaseUrl}/Users/{userId}");
-            if (userRes.IsSuccessStatusCode)
-            {
-                var userJson = await userRes.Content.ReadAsStringAsync();
-                var userDto = JsonConvert.DeserializeObject<ResultUserDto>(userJson);
-                if (userDto != null)
-                {
-                    viewModel.Username = userDto.UserName;
-                    viewModel.Email = userDto.Email;
-                    viewModel.Name = userDto.Name ?? "";
-                    viewModel.Surname = userDto.Surname ?? "";
-                    viewModel.PhoneNumber = userDto.PhoneNumber ?? "";
-
-                    viewModel.UpdateModel = new UpdateProfileInputModel
-                    {
-                        Name = viewModel.Name,
-                        Surname = viewModel.Surname,
-                        Email = viewModel.Email,
-                        PhoneNumber = viewModel.PhoneNumber
-                    };
-                }
-            }
-
-            // 2. Fetch Favorite Movies & Series
-            var favMoviesRes = await client.GetAsync($"{ApiBaseUrl}/UserFavorites/movies/{userId}");
-            if (favMoviesRes.IsSuccessStatusCode)
-            {
-                var json = await favMoviesRes.Content.ReadAsStringAsync();
-                viewModel.FavoriteMovies = JsonConvert.DeserializeObject<List<ResultFavoriteMovieDto>>(json) ?? new List<ResultFavoriteMovieDto>();
-                viewModel.FavoriteMoviesCount = viewModel.FavoriteMovies.Count;
-            }
-
-            var favSeriesRes = await client.GetAsync($"{ApiBaseUrl}/UserFavorites/series/{userId}");
-            if (favSeriesRes.IsSuccessStatusCode)
-            {
-                var json = await favSeriesRes.Content.ReadAsStringAsync();
-                viewModel.FavoriteSeries = JsonConvert.DeserializeObject<List<ResultFavoriteSeriesDto>>(json) ?? new List<ResultFavoriteSeriesDto>();
-                viewModel.FavoriteSeriesCount = viewModel.FavoriteSeries.Count;
-            }
-
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateProfile(UpdateProfileInputModel model)
-        {
-            var userId = GetUserId();
-            if (string.IsNullOrEmpty(userId))
-            {
-                return RedirectToAction("Index", "Login");
-            }
-
-            var client = _httpClientFactory.CreateClient();
-            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
-            var response = await client.PutAsync($"{ApiBaseUrl}/Users/{userId}", content);
-
-            if (response.IsSuccessStatusCode)
-            {
-                TempData["SuccessMessage"] = "Profil bilgileriniz başarıyla güncellendi.";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "Profil güncellenirken bir hata oluştu.";
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ChangePassword(ChangePasswordInputModel model)
-        {
-            if (model.NewPassword != model.ConfirmPassword)
-            {
-                TempData["ErrorMessage"] = "Yeni şifre ve şifre tekrarı uyuşmuyor.";
-                return RedirectToAction(nameof(Index));
-            }
-
-            // Simulated or identity-backed change password call
-            TempData["SuccessMessage"] = "Şifreniz başarıyla değiştirildi.";
-            return RedirectToAction(nameof(Index));
-        }
+    [HttpPost][ValidateAntiForgeryToken]
+    public async Task<IActionResult> ChangePassword(ChangePasswordInputModel model)
+    {
+        if (!ModelState.IsValid) { TempData["ErrorMessage"] = "Enter your current password and matching new passwords."; return RedirectToAction(nameof(Index)); }
+        var user = await users.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        if (user == null) return Challenge();
+        var result = await users.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+        TempData[result.Succeeded ? "SuccessMessage" : "ErrorMessage"] = result.Succeeded ? "Password changed." : string.Join(" ", result.Errors.Select(e => e.Description));
+        return RedirectToAction(nameof(Index));
     }
 }

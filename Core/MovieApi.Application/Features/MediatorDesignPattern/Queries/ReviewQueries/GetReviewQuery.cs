@@ -12,5 +12,9 @@ namespace MovieApi.Application.Features.MediatorDesignPattern.Queries.ReviewQuer
     {
         public int Page { get; set; } = 1;
         public int PageSize { get; set; } = 10;
+        public int? MovieId { get; set; }
+        public int? SeriesId { get; set; }
+        public string? UserId { get; set; }
+        public string? Search { get; set; }
     }
 }

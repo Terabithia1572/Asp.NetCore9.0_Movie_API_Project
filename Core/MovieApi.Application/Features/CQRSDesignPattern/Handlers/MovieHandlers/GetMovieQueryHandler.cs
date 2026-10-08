@@ -30,7 +30,8 @@ namespace MovieApi.Application.Features.CQRSDesignPattern.Handlers.MovieHandlers
                 MovieDuration = x.MovieDuration,
                 MovieReleaseDate = x.MovieReleaseDate,
                 MovileCreatedYear = x.MovileCreatedYear,
-                MovieStatus = x.MovieStatus
+                MovieStatus = x.MovieStatus,
+                CategoryID = x.CategoryID
             }).ToList();
         }
         }

@@ -15,7 +15,8 @@ namespace MovieApi.Application.Features.MediatorDesignPattern.Results.ReviewResu
         public DateTime? ReviewDate { get; set; } //Değerlendirme tarihi
         public bool? ReviewStatus { get; set; } //Değerlendirme durumu
         public string? UserID { get; set; } // 
-        public int MovieID { get; set; } // Film ID'si
+        public int? MovieID { get; set; } // Film ID'si
+        public int? SeriesID { get; set; }
         public Movie? Movie { get; set; }
         public bool? IsSpoiler { get; set; } // Spoiler İçeriyor mu 
         public int? LikeCount { get; set; } // Film kaç defa beğenildi

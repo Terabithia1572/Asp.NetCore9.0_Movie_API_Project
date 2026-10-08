@@ -5,6 +5,7 @@ using System.Collections.Generic;
 namespace Movie.Api.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
     public class AdminLogController : Controller
     {
         public IActionResult LogList()

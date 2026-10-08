@@ -16,6 +16,10 @@ namespace MovieApi.Persistence.Context
         {
             base.OnModelCreating(builder);
 
+            // Match the existing database (verified against SQL metadata); no schema changes.
+            builder.Entity<Review>().Property(r => r.UserRating).HasConversion<byte>().HasColumnType("tinyint");
+            builder.Entity<Review>().HasOne(r => r.Series).WithMany().HasForeignKey(r => r.SeriesID);
+
             builder.Entity<Review>()
                 .HasOne<AppUser>()          // Navigation yok!
                 .WithMany()

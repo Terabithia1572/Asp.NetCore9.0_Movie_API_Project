@@ -63,7 +63,8 @@ namespace Movie.Api.WebApi.Controllers
                     r.UserRating,
                     r.ReviewDate,
                     r.MovieID,
-                    MovieTitle = r.Movie != null ? r.Movie.MovieTitle : "N/A"
+                    r.SeriesID,
+                    MovieTitle = r.Movie != null ? r.Movie.MovieTitle : r.Series != null ? r.Series.SeriesTitle : "N/A"
                 })
                 .ToListAsync();
 

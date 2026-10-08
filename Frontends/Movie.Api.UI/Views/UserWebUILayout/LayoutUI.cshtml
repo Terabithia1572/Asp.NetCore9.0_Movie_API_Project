@@ -1,27 +1,3 @@
-@{
-    Layout = null;
-}
-<!DOCTYPE html>
-<html lang="tr">
-@await Component.InvokeAsync("_UserLayoutWebUIHeadComponentPartial")
-<body>
-	@await Component.InvokeAsync("_UserLayoutWebUINavbarComponentPartial")
-
-	<main class="main">
-		@RenderBody()
-	</main>
-	@await Component.InvokeAsync("_UserLayoutWebUIFooterComponentPartial")
-
-	<!-- JS -->
-	<script src="~/FlixTheme/js/jquery-3.5.1.min.js"></script>
-	<script src="~/FlixTheme/js/bootstrap.bundle.min.js"></script>
-	<script src="~/FlixTheme/js/owl.carousel.min.js"></script>
-	<script src="~/FlixTheme/js/slider-radio.js"></script>
-	<script src="~/FlixTheme/js/select2.min.js"></script>
-	<script src="~/FlixTheme/js/smooth-scrollbar.js"></script>
-	<script src="~/FlixTheme/js/jquery.magnific-popup.min.js"></script>
-	<script src="~/FlixTheme/js/plyr.min.js"></script>
-	<script src="~/FlixTheme/js/main.js"></script>
-	@await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
+@{ Layout = "_FlixLayout"; }
+@RenderBody()
+@section Scripts { @await RenderSectionAsync("Scripts", false) }

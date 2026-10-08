@@ -7,11 +7,12 @@ namespace Movie.Api.UI.ViewComponents.UserLayoutWebUIViewComponent
     public class _UserLayoutWebUINavbarComponentPartial : ViewComponent
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private const string ApiBaseUrl = "https://localhost:44319/api";
+        private readonly string ApiBaseUrl;
 
-        public _UserLayoutWebUINavbarComponentPartial(IHttpClientFactory httpClientFactory)
+        public _UserLayoutWebUINavbarComponentPartial(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
+            ApiBaseUrl = (configuration["MovieApi:BaseUrl"] ?? "http://localhost:5114/api/").TrimEnd('/') + "";
         }
 
         public async Task<IViewComponentResult> InvokeAsync()

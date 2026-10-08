@@ -1,0 +1,36 @@
+@{ Layout = "_FlixAuthLayout"; }
+
+	<!-- sign in -->
+	<div class="sign section--bg" >
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="sign__content">
+						<!-- authorization form -->
+						<form action="/forgot" onsubmit="return false" class="sign__form">@Html.AntiForgeryToken()<input type="hidden" name="unused" value="">
+							<a href="/admin/flix" class="sign__logo">
+								<img src="/FlixTheme/admin/images/logo.svg" alt="">
+							</a>
+
+							<div class="sign__group">
+								<input type="text" class="sign__input" placeholder="Email">
+							</div>
+
+							<div class="sign__group sign__group--checkbox">
+								<input id="remember" name="remember" type="checkbox" checked="checked">
+								<label for="remember">I agree to the <a href="#feature-unavailable" data-unavailable="Social sign-in is not configured.">Privacy policy</a></label>
+							</div>
+							
+							<button class="sign__btn" type="button" disabled>Unavailable</button>
+
+							<span class="sign__text">Password recovery email is not configured. No reset request has been sent. <a href="/signin">Back to sign in</a></span>
+						</form>
+						<!-- end authorization form -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end sign in -->
+
+	

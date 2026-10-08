@@ -14,8 +14,10 @@ namespace MovieApi.Domain.Entities
         public DateTime? ReviewDate { get; set; } //Değerlendirme tarihi
         public bool? ReviewStatus { get; set; } //Değerlendirme durumu
         public string? UserID { get; set; } // 
-        public int MovieID { get; set; } // Film ID'si
+        public int? MovieID { get; set; } // A review belongs to a movie or a series in the existing database.
         public Movie? Movie { get; set; }
+        public int? SeriesID { get; set; }
+        public Series? Series { get; set; }
         public bool? IsSpoiler { get; set; } // Spoiler İçeriyor mu 
         public int? LikeCount { get; set; } // Film kaç defa beğenildi
         public decimal? SentimentScore { get; set; }

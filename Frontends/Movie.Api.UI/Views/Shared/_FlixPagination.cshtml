@@ -1,0 +1,7 @@
+@model FlixCatalogViewModel
+@if (Model.Pages > 1) {
+<div class="row"><div class="col-12"><div class="catalog__paginator-wrap"><span class="catalog__pages">@Model.Total titles</span><ul class="catalog__paginator">
+@if (Model.Page > 1) { <li><a href="@Model.PageUrl(Model.Page - 1)" aria-label="Previous page">←</a></li> }
+@for (var p = Math.Max(1, Model.Page - 2); p <= Math.Min(Model.Pages, Model.Page + 2); p++) { <li class="@(p == Model.Page ? "active" : "")"><a href="@Model.PageUrl(p)" aria-current="@(p == Model.Page ? "page" : null)">@p</a></li> }
+@if (Model.Page < Model.Pages) { <li><a href="@Model.PageUrl(Model.Page + 1)" aria-label="Next page">→</a></li> }
+</ul></div></div></div> }

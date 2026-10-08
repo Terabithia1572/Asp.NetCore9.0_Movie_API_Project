@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MovieApi.DTOs\MovieApi.DTOs.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\MovieApi.Persistence\MovieApi.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,14 +6,16 @@ using System.Text;
 namespace Movie.Api.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
     public class AdminReviewController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private const string ApiBaseUrl = "https://localhost:44319/api";
+        private readonly string ApiBaseUrl;
 
-        public AdminReviewController(IHttpClientFactory httpClientFactory)
+        public AdminReviewController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
+            ApiBaseUrl = (configuration["MovieApi:BaseUrl"] ?? "http://localhost:5114/api/").TrimEnd('/') + "";
         }
 
         public async Task<IActionResult> ReviewList(int page = 1, int pageSize = 10)

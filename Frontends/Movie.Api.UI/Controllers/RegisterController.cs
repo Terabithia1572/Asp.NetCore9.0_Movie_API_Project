@@ -1,47 +1,29 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MovieApi.DTOs.DTOs.UserRegisterDTOs;
-using Newtonsoft.Json;
+using Movie.Api.UI.Models;
+using MovieApi.Persistence.Identity;
 
-namespace Movie.Api.UI.Controllers
+namespace Movie.Api.UI.Controllers;
+
+public class RegisterController(UserManager<AppUser> users) : Controller
 {
-    public class RegisterController : Controller
+    [HttpGet] public IActionResult Index() => RedirectToAction(nameof(SignUp));
+    [HttpGet("/signup")][HttpGet("/admin/signup.html")][HttpGet("/Register/SignUp")]
+    public IActionResult SignUp() => View("~/Views/Flix/SignUp.cshtml", new FlixRegisterInput());
+
+    [HttpPost("/signup")][HttpPost("/Register/SignUp")][ValidateAntiForgeryToken]
+    public async Task<IActionResult> SignUp(FlixRegisterInput model)
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-
-        public RegisterController(IHttpClientFactory httpClientFactory)
+        if (ModelState.IsValid)
         {
-            _httpClientFactory = httpClientFactory;
-        }
-
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return View("SignUp");
-        }
-
-        [HttpGet]
-        public IActionResult SignUp()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> SignUp(CreateUserRegisterDTO createUserRegisterDTO)
-        {
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(createUserRegisterDTO);
-            StringContent stringContent = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("https://localhost:44319/api/Registers", stringContent);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return RedirectToAction("SignIn", "Login");
+                var result = await users.CreateAsync(new AppUser { Name = model.Name, Surname = model.Surname, UserName = model.Username, Email = model.Email }, model.Password);
+                if (result.Succeeded) return RedirectToAction("SignIn", "Login");
+                foreach (var error in result.Errors) ModelState.AddModelError("", error.Description);
             }
-            else
-            {
-                ModelState.AddModelError("", "Kayıt İşlemi Başarısız. Lütfen Tekrar Deneyin.");
-                return View(createUserRegisterDTO);
-            }
+            catch (Microsoft.Data.SqlClient.SqlException) { ModelState.AddModelError("", "Account service is temporarily unavailable."); }
         }
+        return View("~/Views/Flix/SignUp.cshtml", model);
     }
 }

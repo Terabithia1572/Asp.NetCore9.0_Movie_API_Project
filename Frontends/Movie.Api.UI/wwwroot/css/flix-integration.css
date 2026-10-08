@@ -1,0 +1,16 @@
+/* Dynamic posters retain the template's 2:3 cover geometry. No theme typography overrides. */
+.card__cover img { aspect-ratio: 2 / 3; object-fit: cover; }
+.home__card > a > img { aspect-ratio: 16 / 9; object-fit: cover; }
+.flix-notice { position: fixed; z-index: 2000; bottom: 20px; left: 20px; right: 20px; padding: 16px; background: #151f30; color: #fff; border: 1px solid #2f80ed; border-radius: 12px; }
+.flix-message { color: #a6acb7; margin: 20px 0; }
+.validation-summary-errors { color: #eb5757; width: 100%; margin-bottom: 20px; }
+.validation-summary-errors ul { list-style: none; padding: 0; }
+.catalog__nav form { width: 100%; }
+.flix-filter-search { max-width: 240px; margin: 0; }
+button[disabled] { cursor: not-allowed; }
+
+.flix-player-unavailable { background: #151f30; border-radius: 16px; padding: 20px; text-align: center; }
+.flix-player-unavailable img { max-height: 360px; max-width: 100%; object-fit: contain; }
+/* Select2's default disabled rule otherwise overrides the vendor's dark field background. */
+.form .select2-container--default.select2-container--disabled .select2-selection--single,
+.form .select2-container--default.select2-container--disabled .select2-selection--multiple { background-color: #151f30; }

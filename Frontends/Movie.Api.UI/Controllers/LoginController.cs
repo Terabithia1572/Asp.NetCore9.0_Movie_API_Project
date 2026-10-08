@@ -1,69 +1,49 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Movie.Api.UI.Models;
+using MovieApi.Persistence.Identity;
 using System.Security.Claims;
 
-namespace Movie.Api.UI.Controllers
+namespace Movie.Api.UI.Controllers;
+
+public class LoginController(UserManager<AppUser> users) : Controller
 {
-    public class LoginController : Controller
+    [HttpGet] public IActionResult Index() => RedirectToAction(nameof(SignIn));
+    [HttpGet("/signin")][HttpGet("/admin/signin.html")][HttpGet("/Login/SignIn")]
+    public IActionResult SignIn(string? returnUrl = null) => View("~/Views/Flix/SignIn.cshtml", new FlixLoginInput { ReturnUrl = returnUrl });
+
+    [HttpPost("/signin")][HttpPost("/Login/SignIn")][ValidateAntiForgeryToken]
+    public async Task<IActionResult> SignIn(FlixLoginInput model)
     {
-        [HttpGet]
-        public IActionResult Index()
+        if (ModelState.IsValid)
         {
-            return View("SignIn");
-        }
-
-        [HttpGet]
-        public IActionResult SignIn(string? returnUrl = null)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> SignIn(UserLoginViewModel model, string? returnUrl = null)
-        {
-            if (string.IsNullOrWhiteSpace(model.Username) || string.IsNullOrWhiteSpace(model.Password))
+            try
             {
-                ViewBag.Error = "Lütfen kullanıcı adı ve şifrenizi giriniz.";
-                return View(model);
+                var user = await users.FindByNameAsync(model.Username) ?? await users.FindByEmailAsync(model.Username);
+                if (user != null && !await users.IsLockedOutAsync(user) && await users.CheckPasswordAsync(user, model.Password))
+                {
+                    var claims = new List<Claim> { new(ClaimTypes.NameIdentifier, user.Id), new(ClaimTypes.Name, user.UserName ?? model.Username) };
+                    claims.AddRange((await users.GetRolesAsync(user)).Select(role => new Claim(ClaimTypes.Role, role)));
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)),
+                        new AuthenticationProperties { IsPersistent = model.RememberMe, ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7) });
+                    return LocalRedirect(Url.IsLocalUrl(model.ReturnUrl) ? model.ReturnUrl! : "/");
+                }
+                ModelState.AddModelError("", "Invalid credentials or account unavailable.");
             }
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, model.Username),
-                new Claim(ClaimTypes.Name, model.Username),
-                new Claim(ClaimTypes.Role, model.Username.Equals("admin", StringComparison.OrdinalIgnoreCase) ? "Admin" : "User")
-            };
-
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7)
-            };
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-
-            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-
-            return RedirectToAction("MovieList", "Movie");
+            catch (Microsoft.Data.SqlClient.SqlException) { ModelState.AddModelError("", "Account service is temporarily unavailable."); }
         }
-
-        [HttpGet]
-        public async Task<IActionResult> LogOut()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("MovieList", "Movie");
-        }
+        return View("~/Views/Flix/SignIn.cshtml", model);
     }
 
-    public class UserLoginViewModel
+    [HttpPost("/signout")][HttpPost("/Login/LogOut")][ValidateAntiForgeryToken]
+    public async Task<IActionResult> LogOut()
     {
-        public string Username { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return LocalRedirect("/");
     }
+
+    [HttpGet("/forgot")][HttpGet("/admin/forgot.html")]
+    public IActionResult Forgot() => View("~/Views/Flix/Forgot.cshtml");
 }
